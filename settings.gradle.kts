@@ -22,3 +22,4 @@ dependencyResolutionManagement {
 rootProject.name = "Booyoungee"
 include(":app")
 include(":feature")
+include(":domain")
