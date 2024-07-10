@@ -65,6 +65,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
+    // Hilt
     implementation(libs.hilt.android)
     implementation(libs.hilt.android.compiler)
     implementation(libs.hilt.android.testing)
@@ -72,6 +73,8 @@ dependencies {
     implementation(libs.hilt.compiler)
     implementation(libs.hilt.core)
 
+    //Timber
+    implementation(libs.timber)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
