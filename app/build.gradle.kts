@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -28,6 +30,14 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            buildConfigField(
+                "String",
+                "KAKAO_NATIVE_APP_KEY",
+                gradleLocalProperties(rootDir, providers).getProperty("kakao.native.app.key") ?: "",
+            )
+            manifestPlaceholders["KAKAO_NATIVE_APP_KEY"] =
+                gradleLocalProperties(rootDir, providers).getProperty("kakao.native.app.key") ?: ""
         }
     }
     compileOptions {
@@ -39,6 +49,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -70,11 +81,13 @@ dependencies {
     implementation(libs.hilt.android.compiler)
     implementation(libs.hilt.android.testing)
     implementation(libs.hilt.navigation.compose)
-    implementation(libs.hilt.compiler)
     implementation(libs.hilt.core)
 
     //Timber
     implementation(libs.timber)
+
+    //Kakao SDK
+    implementation(libs.kakao.user)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
