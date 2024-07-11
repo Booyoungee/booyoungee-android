@@ -1,4 +1,4 @@
-package com.eoyeongbooyeong.feature
+package com.eoyeongbooyeong.main
 
 import org.junit.Test
 

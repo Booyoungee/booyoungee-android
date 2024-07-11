@@ -1,4 +1,4 @@
-package com.eoyeongbooyeong.feature.ui.theme
+package com.eoyeongbooyeong.main.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
