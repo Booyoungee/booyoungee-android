@@ -75,6 +75,7 @@ dependencies {
 
     //Kakao SDK
     implementation(libs.kakao.user)
+    implementation(libs.kakao.map)
     
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
