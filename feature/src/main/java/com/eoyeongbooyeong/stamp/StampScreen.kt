@@ -3,6 +3,6 @@ package com.eoyeongbooyeong.stamp
 import androidx.compose.runtime.Composable
 
 @Composable
-fun StampScreen() {
+internal fun StampScreen() {
 
 }

@@ -1,7 +1,6 @@
 package com.eoyeongbooyeong.booyoungee
 
 import android.app.Application
-import androidx.multidex.BuildConfig
 import com.kakao.sdk.common.KakaoSdk
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber

@@ -21,6 +21,14 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        buildConfigField(
+            "String",
+            "KAKAO_NATIVE_APP_KEY",
+            gradleLocalProperties(rootDir, providers).getProperty("kakao.native.app.key") ?: "",
+        )
+        manifestPlaceholders["KAKAO_NATIVE_APP_KEY"] =
+            gradleLocalProperties(rootDir, providers).getProperty("kakao.native.app.key") ?: ""
     }
 
     buildTypes {
@@ -30,14 +38,6 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-
-            buildConfigField(
-                "String",
-                "KAKAO_NATIVE_APP_KEY",
-                gradleLocalProperties(rootDir, providers).getProperty("kakao.native.app.key") ?: "",
-            )
-            manifestPlaceholders["KAKAO_NATIVE_APP_KEY"] =
-                gradleLocalProperties(rootDir, providers).getProperty("kakao.native.app.key") ?: ""
         }
     }
     compileOptions {

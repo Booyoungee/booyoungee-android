@@ -62,6 +62,20 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
+    // Hilt
+    implementation(libs.hilt.android)
+    implementation(libs.hilt.android.compiler)
+    implementation(libs.hilt.android.testing)
+    implementation(libs.hilt.navigation.compose)
+    implementation(libs.hilt.core)
+
+    //Timber
+    implementation(libs.timber)
+
+    //Kakao SDK
+    implementation(libs.kakao.user)
+    
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
