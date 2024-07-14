@@ -57,6 +57,7 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/gradle/incremental.annotation.processors"
         }
     }
 }
@@ -88,6 +89,7 @@ dependencies {
 
     //Kakao SDK
     implementation(libs.kakao.user)
+    implementation(libs.kakao.map)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
