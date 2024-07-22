@@ -1,6 +1,9 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -18,6 +21,14 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        buildConfigField(
+            "String",
+            "KAKAO_NATIVE_APP_KEY",
+            gradleLocalProperties(rootDir, providers).getProperty("kakao.native.app.key") ?: "",
+        )
+        manifestPlaceholders["KAKAO_NATIVE_APP_KEY"] =
+            gradleLocalProperties(rootDir, providers).getProperty("kakao.native.app.key") ?: ""
     }
 
     buildTypes {
@@ -38,6 +49,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -45,6 +57,7 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/gradle/incremental.annotation.processors"
         }
     }
 }
@@ -63,6 +76,21 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
+    // Hilt
+    implementation(libs.hilt.android)
+    implementation(libs.hilt.android.compiler)
+    implementation(libs.hilt.android.testing)
+    implementation(libs.hilt.navigation.compose)
+    implementation(libs.hilt.core)
+
+    //Timber
+    implementation(libs.timber)
+
+    //Kakao SDK
+    implementation(libs.kakao.user)
+    implementation(libs.kakao.map)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

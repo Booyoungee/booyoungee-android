@@ -12,6 +12,14 @@ jetbrainsKotlinJvm = "1.9.0"
 appcompat = "1.7.0"
 material = "1.12.0"
 
+# hilt
+hilt = "2.51.1"
+hiltNavigationCompose = "1.2.0"
+
+## Kakao
+kakao = "2.20.2"
+kakao-map = "2.9.5"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -30,8 +38,20 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
+hilt-core = { group = "com.google.dagger", name = "hilt-core", version.ref = "hilt" }
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
+hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+
+timber = { group = "com.jakewharton.timber", name = "timber", version = "5.0.1" }
+
+kakao-user = { group = "com.kakao.sdk", name = "v2-user", version.ref="kakao"}
+kakao-map = { group = "com.kakao.maps.open", name = "android", version.ref="kakao-map"}
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 android-library = { id = "com.android.library", version.ref = "agp" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }

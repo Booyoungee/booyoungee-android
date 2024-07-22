@@ -45,6 +45,8 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/gradle/incremental.annotation.processors"
+
         }
     }
 }
@@ -62,6 +64,21 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
+    // Hilt
+    implementation(libs.hilt.android)
+    implementation(libs.hilt.android.compiler)
+    implementation(libs.hilt.android.testing)
+    implementation(libs.hilt.navigation.compose)
+    implementation(libs.hilt.core)
+
+    //Timber
+    implementation(libs.timber)
+
+    //Kakao SDK
+    implementation(libs.kakao.user)
+    implementation(libs.kakao.map)
+    
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
