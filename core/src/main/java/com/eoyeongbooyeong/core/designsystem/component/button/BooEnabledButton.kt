@@ -1,9 +1,12 @@
 package com.eoyeongbooyeong.core.designsystem.component.button
 
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.eoyeongbooyeong.core.designsystem.theme.Blue400
 import com.eoyeongbooyeong.core.designsystem.theme.Gray100
@@ -21,10 +24,20 @@ fun BooEnabledButton(
     BooLargeButton(
         text = text,
         onClick = onClick,
-        modifier = modifier.padding(horizontal = 22.dp, vertical = 17.dp),
+        modifier = modifier,
         enabled = enabled,
         backgroundColor = if (enabled) Blue400 else Gray100,
-        textColor = if (enabled) Gray300 else White,
+        textColor = if (enabled) White else Gray300,
         textStyle = textStyle
     )
+}
+
+@Preview
+@Composable
+fun BooEnabledButtonPreview() {
+    Column {
+        BooEnabledButton(text = "Enabled Button", enabled = true)
+        Spacer(modifier = Modifier.height(20.dp))
+        BooEnabledButton(text = "UnEnabled Button", enabled = false)
+    }
 }
