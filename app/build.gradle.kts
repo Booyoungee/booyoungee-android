@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -13,7 +15,7 @@ android {
     defaultConfig {
         applicationId = "com.eoyeongbooyeong.booyoungee"
         minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = 34
+        targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = libs.versions.versionCode.get().toInt()
         versionName = libs.versions.versionName.get()
 
@@ -83,6 +85,7 @@ dependencies {
     implementation(libs.hilt.android.testing)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.hilt.core)
+    ksp(libs.hilt.android.compiler)
 
     //Timber
     implementation(libs.timber)

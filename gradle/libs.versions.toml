@@ -17,10 +17,14 @@ composeBom = "2024.04.01"
 jetbrainsKotlinJvm = "1.9.0"
 appcompat = "1.7.0"
 material = "1.12.0"
+kotlinParcelize = "1.8.20"
 
 # hilt
 hilt = "2.51.1"
 hiltNavigationCompose = "1.2.0"
+
+## Kotlin Symbol Processing
+ksp = "1.9.0-1.0.12"
 
 ## Kakao
 kakao = "2.20.2"
@@ -61,3 +65,5 @@ jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = 
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+ksp = {id = "com.google.devtools.ksp", version.ref = "ksp"}
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlinParcelize" }
