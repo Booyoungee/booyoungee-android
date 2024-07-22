@@ -29,6 +29,8 @@ ksp = "1.9.0-1.0.12"
 ## Kakao
 kakao = "2.20.2"
 kakao-map = "2.9.5"
+animationAndroid = "1.6.8"
+foundationAndroid = "1.6.8"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -58,6 +60,8 @@ timber = { group = "com.jakewharton.timber", name = "timber", version = "5.0.1" 
 
 kakao-user = { group = "com.kakao.sdk", name = "v2-user", version.ref="kakao"}
 kakao-map = { group = "com.kakao.maps.open", name = "android", version.ref="kakao-map"}
+androidx-animation-android = { group = "androidx.compose.animation", name = "animation-android", version.ref = "animationAndroid" }
+androidx-foundation-android = { group = "androidx.compose.foundation", name = "foundation-android", version.ref = "foundationAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
