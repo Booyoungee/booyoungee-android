@@ -84,7 +84,7 @@ fun BooLargeButton(
 fun BooMiniButton(
     text: String,
     modifier: Modifier = Modifier,
-    paddingValues: PaddingValues = PaddingValues(horizontal = 22.dp, vertical = 17.dp),
+    paddingValues: PaddingValues = PaddingValues(horizontal = 16.dp, vertical = 14.dp),
     backgroundColor: Color = Blue400,
     textColor: Color = White,
     textStyle: TextStyle = TextStyle.Default,
