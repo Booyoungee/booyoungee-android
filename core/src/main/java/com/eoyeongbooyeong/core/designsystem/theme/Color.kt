@@ -11,6 +11,7 @@ val Black = Color(0xFF1A1A1B)
 val White = Color(0xFFFFFFFF)
 
 // Main Color
+val Red = Color(0xFFFF5252)
 val Purple = Color(0xFF7729D1)
 val Blue100 = Color(0xFFE5F1FF)
 val Blue200 = Color(0xFF91B7FD)
