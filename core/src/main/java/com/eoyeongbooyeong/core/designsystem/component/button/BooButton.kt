@@ -1,6 +1,10 @@
 package com.eoyeongbooyeong.core.designsystem.component.button
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -8,6 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -18,7 +24,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.eoyeongbooyeong.core.designsystem.theme.Blue400
 import com.eoyeongbooyeong.core.designsystem.theme.White
-import com.eoyeongbooyeong.core.extension.noRippleClickable
 
 @Composable
 fun BooBaseButton(
@@ -30,13 +35,18 @@ fun BooBaseButton(
     backgroundGradient: Brush? = null,
     textColor: Color = White,
     textStyle: TextStyle = TextStyle.Default,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onClick: () -> Unit = {},
 ) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
             .run {
-                if (enabled) noRippleClickable(onClick = onClick)
+                if (enabled) clickable(
+                    interactionSource = interactionSource,
+                    indication = null,
+                    onClick = onClick
+                )
                 else this
             }
             .clip(RoundedCornerShape(10.dp))
@@ -45,7 +55,6 @@ fun BooBaseButton(
                 else this.background(backgroundColor)
             }
             .padding(paddingValues)
-
     ) {
         Text(
             text = text,
@@ -67,15 +76,24 @@ fun BooLargeButton(
     textStyle: TextStyle = TextStyle.Default,
     onClick: () -> Unit = {},
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+
+    val color by animateColorAsState(
+        if (isPressed) backgroundColor.copy(alpha = 0.8f) else backgroundColor,
+        label = ""
+    )
+
     BooBaseButton(
         text = text,
         modifier = modifier,
         enabled = enabled,
         paddingValues = paddingValues,
-        backgroundColor = backgroundColor,
+        backgroundColor = color,
         backgroundGradient = backgroundGradient,
         textColor = textColor,
         textStyle = textStyle,
+        interactionSource = interactionSource,
         onClick = onClick
     )
 }
