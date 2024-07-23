@@ -25,8 +25,8 @@ import com.eoyeongbooyeong.core.designsystem.theme.White
 
 @Composable
 fun BooDialog(
-    negativeButtonTitle: String,
-    positiveButtonTitle: String,
+    negativeButtonContext: String,
+    positiveButtonContext: String,
     onNegativeButtonClicked: () -> Unit,
     onPositiveButtonClicked: () -> Unit,
     title: String? = null,
@@ -65,7 +65,7 @@ fun BooDialog(
 
                 Row {
                     BooMiniButton(
-                        text = negativeButtonTitle,
+                        text = negativeButtonContext,
                         modifier = Modifier.weight(1f),
                         onClick = onNegativeButtonClicked,
                         backgroundColor = Blue100,
@@ -73,7 +73,7 @@ fun BooDialog(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     BooMiniButton(
-                        text = positiveButtonTitle,
+                        text = positiveButtonContext,
                         modifier = Modifier.weight(1f),
                         onClick = onPositiveButtonClicked,
                         backgroundColor = Blue300,
@@ -89,8 +89,8 @@ fun BooDialog(
 @Composable
 fun BooDialogPreview() {
     BooDialog(
-        negativeButtonTitle = "취소",
-        positiveButtonTitle = "확인",
+        negativeButtonContext = "취소",
+        positiveButtonContext = "확인",
         onNegativeButtonClicked = {},
         onPositiveButtonClicked = {},
         title = "Title",
