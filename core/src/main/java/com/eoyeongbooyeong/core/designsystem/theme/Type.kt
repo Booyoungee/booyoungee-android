@@ -55,7 +55,7 @@ class BooTypography internal constructor(
     var caption4: TextStyle by mutableStateOf(caption4)
         private set
 
-    // 필요 속성 변경 시 사용
+    // Used when changing required properties
     fun copy(
         head1: TextStyle = this.head1,
         head2: TextStyle = this.head2,
@@ -82,7 +82,7 @@ class BooTypography internal constructor(
         caption4
     )
 
-    // 여러 속성 업데이트 시 사용
+    // Used when updating multiple properties
     fun update(other: BooTypography) {
         head1 = other.head1
         head2 = other.head2
