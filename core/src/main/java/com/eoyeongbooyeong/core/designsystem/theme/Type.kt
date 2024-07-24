@@ -100,7 +100,7 @@ class BooTypography internal constructor(
 
 fun booTextStyle(
     fontFamily: FontFamily,
-    fontWeight: FontWeight = FontWeight.Normal, // TODO : Weight?
+    fontWeight: FontWeight = FontWeight.Normal,
     fontSize: TextUnit,
     lineHeight: TextUnit,
 ): TextStyle = TextStyle(

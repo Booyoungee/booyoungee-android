@@ -18,7 +18,6 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
 
-private val DarkColorScheme = lightColorScheme() // TODO: 다크 모드 논의 필요
 private val LightColorScheme = lightColorScheme()
 
 private val LocalBooTypography = staticCompositionLocalOf<BooTypography> {
@@ -48,16 +47,10 @@ fun ProvideBooTypography(typography: BooTypography, content: @Composable () -> U
 
 @Composable
 fun BooTheme(
-    isDarkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit,
 ) {
-    val colorScheme = if (isDarkTheme) {
-        DarkColorScheme
-    } else {
-        LightColorScheme
-    }
+    val colorScheme = LightColorScheme
     val typography = booTypography()
 
     // set status bar & navigation bar color
