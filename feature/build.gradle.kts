@@ -75,6 +75,9 @@ dependencies {
     implementation(libs.kakao.user)
     implementation(libs.kakao.map)
 
+    //google play service
+    implementation(libs.google.play.services.location)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
