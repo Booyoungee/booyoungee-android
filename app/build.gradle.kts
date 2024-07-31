@@ -31,6 +31,14 @@ android {
         )
         manifestPlaceholders["KAKAO_NATIVE_APP_KEY"] =
             gradleLocalProperties(rootDir, providers).getProperty("kakao.native.app.key") ?: ""
+
+        // 애뮬레이터에서 KakaoMap을 사용하기 위한 설정
+        ndk {
+            abiFilters.add("arm64-v8a")
+            abiFilters.add("armeabi-v7a")
+            abiFilters.add("x86")
+            abiFilters.add("x86_64")
+        }
     }
 
     buildTypes {
