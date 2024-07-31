@@ -46,6 +46,9 @@ composeFlowRow = "0.30.0"
 # ui
 uiTooling = "1.6.8"
 
+# third party
+googleLocation = "21.3.0"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -89,6 +92,8 @@ androidx-foundation-android = { group = "androidx.compose.foundation", name = "f
 
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
+
+google-play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "googleLocation" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

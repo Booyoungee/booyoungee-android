@@ -79,6 +79,9 @@ dependencies {
     implementation(libs.kakao.user)
     implementation(libs.kakao.map)
 
+    //google play service
+    implementation(libs.google.play.services.location)
+
     // Navigation
     implementation(libs.androidx.compose.navigation)
 
