@@ -1,7 +1,9 @@
 package com.eoyeongbooyeong.home
 
 import android.content.Context
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,8 +12,10 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.eoyeongbooyeong.core.R
@@ -28,7 +32,10 @@ import com.kakao.vectormap.label.LabelStyle
 import com.kakao.vectormap.label.LabelStyles
 
 @Composable
-internal fun HomeScreen() {
+internal fun HomeScreen(
+    onClickReposition: () -> Unit,
+    onClickBookmark: () -> Unit
+) {
     val context = LocalContext.current
     val mapView = rememberMapView(context = context)
 
@@ -57,6 +64,27 @@ internal fun HomeScreen() {
                         mapView
                     },
                 )
+
+                Column(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                ) {
+                    Image(
+                        modifier = Modifier
+                            .padding(end = 24.dp, bottom = 12.dp)
+                            .clickable { onClickReposition() },
+                        painter = painterResource(id = R.drawable.ic_location),
+                        contentDescription = "reposition user location"
+                    )
+
+                    Image(
+                        modifier = Modifier
+                            .padding(end = 24.dp, bottom = 24.dp)
+                            .clickable { onClickBookmark() },
+                        painter = painterResource(id = R.drawable.ic_bookmark_default),
+                        contentDescription = "reposition user location"
+                    )
+                }
             }
         }
     }
@@ -107,7 +135,8 @@ fun rememberMapView(
 
                         map.setOnLabelClickListener { _, _, label ->
                             val currentStyle = markerStateMap[label] ?: false
-                            val newStyleResId = if (currentStyle) R.drawable.ic_marker_36 else R.drawable.ic_marker_72
+                            val newStyleResId =
+                                if (currentStyle) R.drawable.ic_marker_36 else R.drawable.ic_marker_72
 
                             label.changeStyles(
                                 LabelStyles.from(LabelStyle.from(newStyleResId))
