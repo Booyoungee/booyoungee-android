@@ -144,13 +144,7 @@ internal fun HomeScreen(
                             Modifier
                                 .padding(end = 24.dp, bottom = 24.dp),
                         onClick = {
-                            requestPermissionAndMoveToCurrentLocation(
-                                locationPermissionGranted,
-                                fusedLocationClient,
-                                kakaoMap,
-                                requestLocationPermissionLauncher,
-                                context,
-                            )
+                            onClickBookmark()
                         },
                         buttonState = FloatingButton(isBookmarkButton = true),
                     )
