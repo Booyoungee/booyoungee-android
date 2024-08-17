@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -15,18 +14,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import com.eoyeongbooyeong.core.R
 import com.eoyeongbooyeong.core.designsystem.component.textfield.BooSearchTextField
 import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.kakao.vectormap.KakaoMap
 import com.kakao.vectormap.KakaoMapReadyCallback
+import com.kakao.vectormap.LatLng
 import com.kakao.vectormap.MapLifeCycleCallback
 import com.kakao.vectormap.MapView
+import com.kakao.vectormap.label.Label
+import com.kakao.vectormap.label.LabelOptions
+import com.kakao.vectormap.label.LabelStyle
+import com.kakao.vectormap.label.LabelStyles
 
 @Composable
-internal fun HomeScreen(
-    searchText: String?,
-) {
-
+internal fun HomeScreen() {
     val context = LocalContext.current
     val mapView = rememberMapView(context = context)
 
@@ -41,8 +43,9 @@ internal fun HomeScreen(
                 .background(color = White)
         ) {
             BooSearchTextField(
-                text = searchText ?: "",
-                modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp)
+                modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp),
+                isActive = false,
+                onClick = {}, // navigate to search screen
             )
             Box(
                 modifier = Modifier
@@ -59,6 +62,7 @@ internal fun HomeScreen(
     }
 }
 
+
 @Composable
 fun rememberMapView(
     context: Context,
@@ -73,11 +77,30 @@ fun rememberMapView(
                 },
 
                 object : KakaoMapReadyCallback() {
-                    override fun onMapReady(map: KakaoMap) = Unit
+                    override fun onMapReady(map: KakaoMap) {
+
+                        // 마커 위치 더미 데이터
+                        val markerLocations = listOf(
+                            LatLng.from(37.5665, 126.9780),
+                            LatLng.from(37.5700, 126.9768),
+                            LatLng.from(37.5625, 126.9823)
+                        )
+
+                        markerLocations.map { setMapMarker(map, it) }
+                    }
+
+                    private fun setMapMarker(
+                        map: KakaoMap,
+                        location: LatLng,
+                    ): Label {
+                        val styles = LabelStyles.from(LabelStyle.from(R.drawable.ic_marker_36))
+                        val labelOptions = LabelOptions.from(location).setStyles(styles)
+                        return map.labelManager?.layer?.addLabel(labelOptions)
+                            ?: error("Label creation failed")
+                    }
                 }
             )
         }
     }
-
     return mapView
 }
