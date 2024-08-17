@@ -87,16 +87,36 @@ fun rememberMapView(
                         )
 
                         markerLocations.map { setMapMarker(map, it) }
+                        markerClickListener(map)
+
                     }
 
                     private fun setMapMarker(
                         map: KakaoMap,
                         location: LatLng,
                     ): Label {
+                        val label = map.labelManager?.layer
                         val styles = LabelStyles.from(LabelStyle.from(R.drawable.ic_marker_36))
                         val labelOptions = LabelOptions.from(location).setStyles(styles)
-                        return map.labelManager?.layer?.addLabel(labelOptions)
-                            ?: error("Label creation failed")
+
+                        return label?.addLabel(labelOptions) ?: error("Label creation failed")
+                    }
+
+                    private fun markerClickListener(map: KakaoMap) {
+                        val markerStateMap = mutableMapOf<Label, Boolean>()
+
+                        map.setOnLabelClickListener { _, _, label ->
+                            val currentStyle = markerStateMap[label] ?: false
+                            val newStyleResId = if (currentStyle) R.drawable.ic_marker_36 else R.drawable.ic_marker_72
+
+                            label.changeStyles(
+                                LabelStyles.from(LabelStyle.from(newStyleResId))
+                            )
+
+                            markerStateMap[label] = !currentStyle
+
+                            true
+                        }
                     }
                 }
             )
