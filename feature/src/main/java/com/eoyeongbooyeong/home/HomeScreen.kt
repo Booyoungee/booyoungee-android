@@ -7,7 +7,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.provider.Settings
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -52,6 +51,7 @@ import com.kakao.vectormap.label.Label
 import com.kakao.vectormap.label.LabelOptions
 import com.kakao.vectormap.label.LabelStyle
 import com.kakao.vectormap.label.LabelStyles
+
 @Composable
 internal fun HomeScreen(
     onClickReposition: () -> Unit = {},
@@ -60,9 +60,10 @@ internal fun HomeScreen(
     val context = LocalContext.current
     // MutableState를 통해 KakaoMap 객체를 관리합니다.
     val kakaoMap = remember { mutableStateOf<KakaoMap?>(null) }
-    val mapView = rememberMapView(context = context, onMapReady = { map ->
-        kakaoMap.value = map
-    })
+    val mapView =
+        rememberMapView(context = context, onMapReady = { map ->
+            kakaoMap.value = map
+        })
 
     val locationPermissionGranted = remember { mutableStateOf(false) }
     val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
@@ -92,15 +93,15 @@ internal fun HomeScreen(
 
     Scaffold(
         modifier =
-        Modifier
-            .fillMaxSize()
-            .systemBarsPadding(),
+            Modifier
+                .fillMaxSize()
+                .systemBarsPadding(),
     ) { paddingValue ->
         Column(
             modifier =
-            Modifier
-                .fillMaxSize()
-                .background(color = White),
+                Modifier
+                    .fillMaxSize()
+                    .background(color = White),
         ) {
             BooSearchTextField(
                 modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp),
@@ -109,9 +110,9 @@ internal fun HomeScreen(
             )
             Box(
                 modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(paddingValue),
+                    Modifier
+                        .fillMaxSize()
+                        .padding(paddingValue),
             ) {
                 AndroidView(
                     factory = {
@@ -121,13 +122,13 @@ internal fun HomeScreen(
 
                 Column(
                     modifier =
-                    Modifier
-                        .align(Alignment.BottomEnd),
+                        Modifier
+                            .align(Alignment.BottomEnd),
                 ) {
                     MyLocationButton(
                         modifier =
-                        Modifier
-                            .padding(end = 24.dp, bottom = 12.dp),
+                            Modifier
+                                .padding(end = 24.dp, bottom = 12.dp),
                         onClick = {
                             requestPermissionAndMoveToCurrentLocation(
                                 locationPermissionGranted,
@@ -141,9 +142,9 @@ internal fun HomeScreen(
 
                     Image(
                         modifier =
-                        Modifier
-                            .padding(end = 24.dp, bottom = 24.dp)
-                            .clickable { onClickBookmark() },
+                            Modifier
+                                .padding(end = 24.dp, bottom = 24.dp)
+                                .clickable { onClickBookmark() },
                         painter = painterResource(id = R.drawable.ic_bookmark_default),
                         contentDescription = "reposition user location",
                     )
@@ -154,68 +155,72 @@ internal fun HomeScreen(
 }
 
 @Composable
-fun rememberMapView(context: Context, onMapReady: (KakaoMap) -> Unit): MapView {
-    val mapView = remember {
-        MapView(context).also { mapView ->
-            mapView.start(
-                object : MapLifeCycleCallback() {
-                    override fun onMapDestroy() = Unit
+fun rememberMapView(
+    context: Context,
+    onMapReady: (KakaoMap) -> Unit,
+): MapView {
+    val mapView =
+        remember {
+            MapView(context).also { mapView ->
+                mapView.start(
+                    object : MapLifeCycleCallback() {
+                        override fun onMapDestroy() = Unit
 
-                    override fun onMapError(e: Exception?) = Unit
+                        override fun onMapError(e: Exception?) = Unit
 
-                    override fun onMapResumed() = Unit
-                },
-                object : KakaoMapReadyCallback() {
-                    override fun getPosition(): LatLng = LatLng.from(35.16001944, 129.1658083)
+                        override fun onMapResumed() = Unit
+                    },
+                    object : KakaoMapReadyCallback() {
+                        override fun getPosition(): LatLng = LatLng.from(35.16001944, 129.1658083)
 
-                    override fun getZoomLevel(): Int = 11
+                        override fun getZoomLevel(): Int = 11
 
-                    override fun onMapReady(map: KakaoMap) {
-                        onMapReady(map) // KakaoMap 객체를 상태로 업데이트합니다.
-                        // TODO : 마커 위치 더미 데이터
-                        val markerLocations =
-                            listOf(
-                                LatLng.from(35.16001944, 129.1658083),
-                                LatLng.from(35.16801944, 129.258083),
-                                LatLng.from(35.15001944, 129.1858083),
-                            )
+                        override fun onMapReady(map: KakaoMap) {
+                            onMapReady(map) // KakaoMap 객체를 상태로 업데이트합니다.
+                            // TODO : 마커 위치 더미 데이터
+                            val markerLocations =
+                                listOf(
+                                    LatLng.from(35.16001944, 129.1658083),
+                                    LatLng.from(35.16801944, 129.258083),
+                                    LatLng.from(35.15001944, 129.1858083),
+                                )
 
-                        markerLocations.map { setMapMarker(map, it) }
-                        markerClickListener(map)
-                    }
-
-                    private fun setMapMarker(
-                        map: KakaoMap,
-                        location: LatLng,
-                    ): Label {
-                        val label = map.labelManager?.layer
-                        val styles = LabelStyles.from(LabelStyle.from(R.drawable.ic_marker_36))
-                        val labelOptions = LabelOptions.from(location).setStyles(styles)
-
-                        return label?.addLabel(labelOptions) ?: error("Label creation failed")
-                    }
-
-                    private fun markerClickListener(map: KakaoMap) {
-                        val markerStateMap = mutableMapOf<Label, Boolean>()
-
-                        map.setOnLabelClickListener { _, _, label ->
-                            val currentStyle = markerStateMap[label] ?: false
-                            val newStyleResId =
-                                if (currentStyle) R.drawable.ic_marker_36 else R.drawable.ic_marker_72
-
-                            label.changeStyles(
-                                LabelStyles.from(LabelStyle.from(newStyleResId)),
-                            )
-
-                            markerStateMap[label] = !currentStyle
-
-                            true
+                            markerLocations.map { setMapMarker(map, it) }
+                            markerClickListener(map)
                         }
-                    }
-                },
-            )
+
+                        private fun setMapMarker(
+                            map: KakaoMap,
+                            location: LatLng,
+                        ): Label {
+                            val label = map.labelManager?.layer
+                            val styles = LabelStyles.from(LabelStyle.from(R.drawable.ic_marker_36))
+                            val labelOptions = LabelOptions.from(location).setStyles(styles)
+
+                            return label?.addLabel(labelOptions) ?: error("Label creation failed")
+                        }
+
+                        private fun markerClickListener(map: KakaoMap) {
+                            val markerStateMap = mutableMapOf<Label, Boolean>()
+
+                            map.setOnLabelClickListener { _, _, label ->
+                                val currentStyle = markerStateMap[label] ?: false
+                                val newStyleResId =
+                                    if (currentStyle) R.drawable.ic_marker_36 else R.drawable.ic_marker_72
+
+                                label.changeStyles(
+                                    LabelStyles.from(LabelStyle.from(newStyleResId)),
+                                )
+
+                                markerStateMap[label] = !currentStyle
+
+                                true
+                            }
+                        }
+                    },
+                )
+            }
         }
-    }
     return mapView
 }
 
@@ -244,13 +249,7 @@ private fun requestPermissionAndMoveToCurrentLocation(
                 Priority.PRIORITY_HIGH_ACCURACY,
                 null,
             ).addOnSuccessListener { location ->
-                Log.d("HomeScreen1", "kakaoMap.value: ${kakaoMap.value}")
-                Log.d("HomeScreen1", "Location: ${location?.latitude}, ${location?.longitude}")
-
                 if (location != null) {
-                    Log.d("HomeScreen2", "kakaoMap.value: ${kakaoMap.value}")
-                    Log.d("HomeScreen2", "Location: ${location?.latitude}, ${location?.longitude}")
-
                     val cameraUpdate =
                         CameraUpdateFactory.newCenterPosition(
                             LatLng.from(
@@ -293,4 +292,3 @@ private fun setGPSPermissionDialog(context: Context) {
         create().show()
     }
 }
-
