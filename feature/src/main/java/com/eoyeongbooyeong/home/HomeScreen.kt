@@ -173,7 +173,7 @@ fun rememberMapView(
                     object : KakaoMapReadyCallback() {
                         override fun getPosition(): LatLng = LatLng.from(35.16001944, 129.1658083)
 
-                        override fun getZoomLevel(): Int = 11
+                        override fun getZoomLevel(): Int = 13
 
                         override fun onMapReady(map: KakaoMap) {
                             onMapReady(map) // KakaoMap 객체를 상태로 업데이트합니다.
@@ -213,7 +213,6 @@ fun rememberMapView(
                                 )
 
                                 markerStateMap[label] = !currentStyle
-
                                 true
                             }
                         }
@@ -257,6 +256,7 @@ private fun requestPermissionAndMoveToCurrentLocation(
                                 location.longitude,
                             ),
                         )
+                    CameraUpdateFactory.zoomTo(17)
                     kakaoMap.value?.moveCamera(cameraUpdate, CameraAnimation.from(500, true, true))
                 } else {
                     // 위치 정보가 null인 경우 (GPS가 꺼져있는 경우)
