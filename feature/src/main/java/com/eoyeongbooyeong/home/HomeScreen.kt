@@ -146,6 +146,15 @@ fun rememberMapView(
                 },
 
                 object : KakaoMapReadyCallback() {
+
+                    override fun getPosition(): LatLng {
+                        return LatLng.from(35.16001944, 129.1658083)
+                    }
+
+                    override fun getZoomLevel(): Int {
+                        return 11
+                    }
+
                     override fun onMapReady(map: KakaoMap) {
 
                         // 마커 위치 더미 데이터
