@@ -55,7 +55,6 @@ internal fun HomeScreen(
     onClickBookmark: () -> Unit = {},
 ) {
     val context = LocalContext.current
-    // MutableState를 통해 KakaoMap 객체를 관리합니다.
     val kakaoMap = remember { mutableStateOf<KakaoMap?>(null) }
     val mapView =
         rememberMapView(context = context, onMapReady = { map ->
