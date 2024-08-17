@@ -22,7 +22,6 @@ import com.eoyeongbooyeong.feature.R
 
 @Composable
 fun MyLocationButton(
-    height: Dp,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
 ) {
@@ -40,6 +39,5 @@ fun MyLocationButton(
                 contentDescription = "reposition user location"
             )
         }
-        Spacer(modifier = Modifier.height(height))
     }
 }
