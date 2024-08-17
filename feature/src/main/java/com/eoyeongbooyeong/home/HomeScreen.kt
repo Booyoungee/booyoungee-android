@@ -52,7 +52,6 @@ import com.kakao.vectormap.label.LabelStyles
 
 @Composable
 internal fun HomeScreen(
-    onClickReposition: () -> Unit = {},
     onClickBookmark: () -> Unit = {},
 ) {
     val context = LocalContext.current
