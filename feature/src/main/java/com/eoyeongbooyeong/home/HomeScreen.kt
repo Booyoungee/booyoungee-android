@@ -1,6 +1,10 @@
 package com.eoyeongbooyeong.home
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -11,6 +15,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,9 +24,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.content.ContextCompat
 import com.eoyeongbooyeong.core.R
 import com.eoyeongbooyeong.core.designsystem.component.textfield.BooSearchTextField
 import com.eoyeongbooyeong.core.designsystem.theme.White
+import com.google.android.gms.location.LocationServices
 import com.kakao.vectormap.KakaoMap
 import com.kakao.vectormap.KakaoMapReadyCallback
 import com.kakao.vectormap.LatLng
@@ -33,11 +41,33 @@ import com.kakao.vectormap.label.LabelStyles
 
 @Composable
 internal fun HomeScreen(
-    onClickReposition: () -> Unit,
-    onClickBookmark: () -> Unit
+    onClickReposition: () -> Unit = {},
+    onClickBookmark: () -> Unit = {},
 ) {
     val context = LocalContext.current
     val mapView = rememberMapView(context = context)
+
+    val locationPermissionGranted = remember { mutableStateOf(false) }
+
+    val requestLocationPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        locationPermissionGranted.value =
+            permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true
+    }
+
+    LaunchedEffect(Unit) {
+        val hasFineLocationPermission = ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+        val hasCoarseLocationPermission = ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+
+        locationPermissionGranted.value = hasFineLocationPermission && hasCoarseLocationPermission
+    }
 
     Scaffold(
         modifier = Modifier
@@ -72,7 +102,18 @@ internal fun HomeScreen(
                     Image(
                         modifier = Modifier
                             .padding(end = 24.dp, bottom = 12.dp)
-                            .clickable { onClickReposition() },
+                            .clickable {
+                                if (locationPermissionGranted.value) {
+                                    onClickReposition()
+                                } else {
+                                    requestLocationPermissionLauncher.launch(
+                                        arrayOf(
+                                            Manifest.permission.ACCESS_FINE_LOCATION,
+                                            Manifest.permission.ACCESS_COARSE_LOCATION
+                                        )
+                                    )
+                                }
+                            },
                         painter = painterResource(id = R.drawable.ic_location),
                         contentDescription = "reposition user location"
                     )
@@ -152,4 +193,8 @@ fun rememberMapView(
         }
     }
     return mapView
+}
+
+private fun onClickReposition() {
+
 }
