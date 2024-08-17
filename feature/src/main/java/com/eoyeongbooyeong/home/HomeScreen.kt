@@ -11,9 +11,7 @@ import android.widget.Toast
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,7 +26,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.app.ActivityCompat
@@ -36,7 +33,8 @@ import androidx.core.content.ContextCompat
 import com.eoyeongbooyeong.core.R
 import com.eoyeongbooyeong.core.designsystem.component.textfield.BooSearchTextField
 import com.eoyeongbooyeong.core.designsystem.theme.White
-import com.eoyeongbooyeong.home.component.MyLocationButton
+import com.eoyeongbooyeong.home.component.FloatingButton
+import com.eoyeongbooyeong.home.component.HomeFloatingButton
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
@@ -125,7 +123,7 @@ internal fun HomeScreen(
                         Modifier
                             .align(Alignment.BottomEnd),
                 ) {
-                    MyLocationButton(
+                    HomeFloatingButton(
                         modifier =
                             Modifier
                                 .padding(end = 24.dp, bottom = 12.dp),
@@ -138,15 +136,23 @@ internal fun HomeScreen(
                                 context,
                             )
                         },
+                        buttonState = FloatingButton(isMyLocationButton = true),
                     )
 
-                    Image(
+                    HomeFloatingButton(
                         modifier =
                             Modifier
-                                .padding(end = 24.dp, bottom = 24.dp)
-                                .clickable { onClickBookmark() },
-                        painter = painterResource(id = R.drawable.ic_bookmark_default),
-                        contentDescription = "reposition user location",
+                                .padding(end = 24.dp, bottom = 24.dp),
+                        onClick = {
+                            requestPermissionAndMoveToCurrentLocation(
+                                locationPermissionGranted,
+                                fusedLocationClient,
+                                kakaoMap,
+                                requestLocationPermissionLauncher,
+                                context,
+                            )
+                        },
+                        buttonState = FloatingButton(isBookmarkButton = true),
                     )
                 }
             }
