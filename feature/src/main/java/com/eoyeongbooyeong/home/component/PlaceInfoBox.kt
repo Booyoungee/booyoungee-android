@@ -118,7 +118,7 @@ internal fun PlaceInfoBox(
                                         .decoderFactory(SvgDecoder.Factory())
                                         .build(),
                             ),
-                        contentDescription = "",
+                        contentDescription = "liked icon",
                         modifier = Modifier.size(12.dp),
                     )
                     Text(
@@ -141,7 +141,7 @@ internal fun PlaceInfoBox(
                                         .decoderFactory(SvgDecoder.Factory())
                                         .build(),
                             ),
-                        contentDescription = "",
+                        contentDescription = "camera icon",
                         modifier = Modifier.size(20.dp).padding(end = 8.dp),
                     )
                     Text(
