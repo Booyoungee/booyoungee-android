@@ -48,6 +48,9 @@ uiTooling = "1.6.8"
 
 # third party
 googleLocation = "21.3.0"
+timber = "5.0.1"
+coilCompose = "2.7.0"
+coilSvg = "2.7.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -83,7 +86,9 @@ hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testi
 hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 
-timber = { group = "com.jakewharton.timber", name = "timber", version = "5.0.1" }
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
+compose-coil = { group = "io.coil-kt", name = "coil-compose", version.ref = "coilCompose" }
+coil-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coilSvg" }
 
 kakao-user = { group = "com.kakao.sdk", name = "v2-user", version.ref="kakao"}
 kakao-map = { group = "com.kakao.maps.open", name = "android", version.ref="kakao-map"}
