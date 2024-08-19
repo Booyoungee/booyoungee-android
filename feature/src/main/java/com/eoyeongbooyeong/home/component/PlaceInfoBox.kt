@@ -3,7 +3,6 @@ package com.eoyeongbooyeong.home.component
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,7 +28,6 @@ import coil.decode.SvgDecoder
 import coil.request.ImageRequest
 import com.eoyeongbooyeong.core.designsystem.theme.Black
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
-import com.eoyeongbooyeong.core.designsystem.theme.Gray100
 import com.eoyeongbooyeong.core.designsystem.theme.Gray200
 import com.eoyeongbooyeong.core.designsystem.theme.Gray400
 import com.eoyeongbooyeong.core.designsystem.theme.White
@@ -93,7 +91,6 @@ internal fun PlaceInfoBox(
                     modifier = Modifier.weight(1f, false),
                 )
                 Row(verticalAlignment = Alignment.CenterVertically) {
-
                     ReviewStar(place.star)
 
                     Text(
@@ -156,45 +153,6 @@ internal fun PlaceInfoBox(
                     )
                 }
             }
-        }
-    }
-}
-
-@Composable
-fun ReviewStar(star: Float) {
-    val filledStars = star.toInt()
-    val maxStars = 5
-
-    Row {
-        repeat(filledStars) {
-            Image(
-                painter =
-                    rememberAsyncImagePainter(
-                        model =
-                            ImageRequest
-                                .Builder(LocalContext.current)
-                                .data(com.eoyeongbooyeong.core.R.drawable.ic_filled_star)
-                                .decoderFactory(SvgDecoder.Factory())
-                                .build(),
-                    ),
-                contentDescription = "",
-                modifier = Modifier.size(12.dp),
-            )
-        }
-        repeat(maxStars - filledStars) {
-            Image(
-                painter =
-                    rememberAsyncImagePainter(
-                        model =
-                            ImageRequest
-                                .Builder(LocalContext.current)
-                                .data(com.eoyeongbooyeong.core.R.drawable.ic_empty_star)
-                                .decoderFactory(SvgDecoder.Factory())
-                                .build(),
-                    ),
-                contentDescription = "",
-                modifier = Modifier.size(12.dp),
-            )
         }
     }
 }
