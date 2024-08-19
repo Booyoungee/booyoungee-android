@@ -71,6 +71,10 @@ dependencies {
     //Timber
     implementation(libs.timber)
 
+    // Coil
+    implementation(libs.compose.coil)
+    implementation(libs.coil.svg)
+
     //Kakao SDK
     implementation(libs.kakao.user)
     implementation(libs.kakao.map)
