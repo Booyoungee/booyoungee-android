@@ -33,6 +33,7 @@ import com.eoyeongbooyeong.core.designsystem.theme.Gray100
 import com.eoyeongbooyeong.core.designsystem.theme.Gray200
 import com.eoyeongbooyeong.core.designsystem.theme.Gray400
 import com.eoyeongbooyeong.core.designsystem.theme.White
+import com.eoyeongbooyeong.core.extension.noRippleClickable
 import com.eoyeongbooyeong.domain.Place
 import com.eoyeongbooyeong.feature.R
 
@@ -45,7 +46,7 @@ internal fun PlaceInfoBox(
     Box(
         modifier =
             modifier
-                .clickable(onClick = onClick)
+                .noRippleClickable(onClick = onClick)
                 .border(
                     width = 1.dp,
                     color = Gray200,
