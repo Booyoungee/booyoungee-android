@@ -5,4 +5,5 @@
     <string name="dialogGPSTitle">GPS 설정 필요</string>
     <string name="dialogGPSMessage">위치 정보가 비활성화되어 있습니다. 설정에서 GPS를 활성화해 주세요.</string>
     <string name="dialogGPSOk">설정으로 이동</string>
+    <string name="placeReviewAndPoint">"(%1$s) • "</string>
 </resources>
