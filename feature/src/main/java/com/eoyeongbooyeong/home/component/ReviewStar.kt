@@ -28,7 +28,7 @@ fun ReviewStar(star: Float) {
                                 .decoderFactory(SvgDecoder.Factory())
                                 .build(),
                     ),
-                contentDescription = "",
+                contentDescription = "filled star(review) icon",
                 modifier = Modifier.size(12.dp),
             )
         }
@@ -43,7 +43,7 @@ fun ReviewStar(star: Float) {
                                 .decoderFactory(SvgDecoder.Factory())
                                 .build(),
                     ),
-                contentDescription = "",
+                contentDescription = "empty star(review) icon",
                 modifier = Modifier.size(12.dp),
             )
         }

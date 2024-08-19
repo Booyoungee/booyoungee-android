@@ -15,6 +15,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Scaffold
@@ -33,8 +34,10 @@ import androidx.core.content.ContextCompat
 import com.eoyeongbooyeong.core.R
 import com.eoyeongbooyeong.core.designsystem.component.textfield.BooSearchTextField
 import com.eoyeongbooyeong.core.designsystem.theme.White
+import com.eoyeongbooyeong.domain.Place
 import com.eoyeongbooyeong.home.component.FloatingButton
 import com.eoyeongbooyeong.home.component.HomeFloatingButton
+import com.eoyeongbooyeong.home.component.PlaceInfoBox
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
@@ -51,9 +54,7 @@ import com.kakao.vectormap.label.LabelStyle
 import com.kakao.vectormap.label.LabelStyles
 
 @Composable
-internal fun HomeScreen(
-    onClickBookmark: () -> Unit = {},
-) {
+internal fun HomeScreen(onClickBookmark: () -> Unit = {}) {
     val context = LocalContext.current
     val kakaoMap = remember { mutableStateOf<KakaoMap?>(null) }
     val mapView =
@@ -87,17 +88,21 @@ internal fun HomeScreen(
         locationPermissionGranted.value = hasFineLocationPermission && hasCoarseLocationPermission
     }
 
+    // PlaceInfoBox 에 대한 State
+    val showPlaceInfoBox = remember { mutableStateOf(false) }
+    val selectedPlace = remember { mutableStateOf<Place?>(null) }
+
     Scaffold(
         modifier =
-            Modifier
-                .fillMaxSize()
-                .systemBarsPadding(),
+        Modifier
+            .fillMaxSize()
+            .systemBarsPadding(),
     ) { paddingValue ->
         Column(
             modifier =
-                Modifier
-                    .fillMaxSize()
-                    .background(color = White),
+            Modifier
+                .fillMaxSize()
+                .background(color = White),
         ) {
             BooSearchTextField(
                 modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp),
@@ -106,9 +111,9 @@ internal fun HomeScreen(
             )
             Box(
                 modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .padding(paddingValue),
+                Modifier
+                    .fillMaxSize()
+                    .padding(paddingValue),
             ) {
                 AndroidView(
                     factory = {
@@ -118,13 +123,13 @@ internal fun HomeScreen(
 
                 Column(
                     modifier =
-                        Modifier
-                            .align(Alignment.BottomEnd),
+                    Modifier
+                        .align(Alignment.BottomEnd),
                 ) {
                     HomeFloatingButton(
                         modifier =
-                            Modifier
-                                .padding(end = 24.dp, bottom = 12.dp),
+                        Modifier
+                            .padding(end = 24.dp, bottom = 12.dp),
                         onClick = {
                             requestPermissionAndMoveToCurrentLocation(
                                 locationPermissionGranted,
@@ -139,12 +144,39 @@ internal fun HomeScreen(
 
                     HomeFloatingButton(
                         modifier =
-                            Modifier
-                                .padding(end = 24.dp, bottom = 24.dp),
+                        Modifier
+                            .padding(end = 24.dp, bottom = 24.dp),
                         onClick = {
-                            onClickBookmark()
+                            // Toggle PlaceInfoBox visibility
+                            selectedPlace.value =
+                                Place(
+                                    name = "Example Place",
+                                    address = "123 Example Street 123 Example Street 123 Example Street 123 Example Street",
+                                    star = 4.5f,
+                                    reviewCount = 42,
+                                    likedCount = 15,
+                                    movieNameList =
+                                    listOf(
+                                        "Movie A",
+                                        "Movie B",
+                                        "Movie B",
+                                        "Movie B",
+                                    ),
+                                    imageUrl = "https://example.com/image.jpg", // Provide a valid image URL
+                                )
+                            showPlaceInfoBox.value = !showPlaceInfoBox.value
                         },
                         buttonState = FloatingButton(isBookmarkButton = true),
+                    )
+                }
+
+                if (showPlaceInfoBox.value && selectedPlace.value != null) {
+                    PlaceInfoBox(
+                        place = selectedPlace.value!!,
+                        modifier =
+                        Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth(),
                     )
                 }
             }
