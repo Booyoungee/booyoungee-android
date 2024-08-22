@@ -31,6 +31,7 @@ import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Gray200
 import com.eoyeongbooyeong.core.designsystem.theme.Gray400
 import com.eoyeongbooyeong.core.designsystem.theme.White
+import com.eoyeongbooyeong.core.extension.listToBracketedString
 import com.eoyeongbooyeong.core.extension.noRippleClickable
 import com.eoyeongbooyeong.domain.Place
 import com.eoyeongbooyeong.feature.R
@@ -145,7 +146,7 @@ internal fun PlaceInfoBox(
                         modifier = Modifier.size(20.dp).padding(end = 8.dp),
                     )
                     Text(
-                        text = place.movieNameList.joinToString(", ") { "<$it>" },
+                        text = place.movieNameList.listToBracketedString(),
                         style = BooTheme.typography.caption1,
                         color = Black,
                         maxLines = 1,
