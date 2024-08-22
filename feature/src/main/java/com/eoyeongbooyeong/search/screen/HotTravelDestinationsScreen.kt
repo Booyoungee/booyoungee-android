@@ -77,7 +77,7 @@ fun HotTravelDestinationsScreen(
                             text = "${index + 1}",
                             textAlign = TextAlign.Center,
                             style = BooTheme.typography.body1,
-                            color = if (index < 4) Blue300 else Black,
+                            color = if (index < 3) Blue300 else Black,
                         )
                     }
 
