@@ -110,15 +110,7 @@ internal fun PlaceInfoBox(
                                 .padding(start = 4.dp),
                     )
                     Image(
-                        painter =
-                            rememberAsyncImagePainter(
-                                model =
-                                    ImageRequest
-                                        .Builder(LocalContext.current)
-                                        .data(com.eoyeongbooyeong.core.R.drawable.ic_like)
-                                        .decoderFactory(SvgDecoder.Factory())
-                                        .build(),
-                            ),
+                        painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_like),
                         contentDescription = "liked icon",
                         modifier = Modifier.size(12.dp),
                     )
@@ -133,15 +125,7 @@ internal fun PlaceInfoBox(
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Image(
-                        painter =
-                            rememberAsyncImagePainter(
-                                model =
-                                    ImageRequest
-                                        .Builder(LocalContext.current)
-                                        .data(com.eoyeongbooyeong.core.R.drawable.ic_camera)
-                                        .decoderFactory(SvgDecoder.Factory())
-                                        .build(),
-                            ),
+                        painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_camera),
                         contentDescription = "camera icon",
                         modifier = Modifier.size(20.dp).padding(end = 8.dp),
                     )
