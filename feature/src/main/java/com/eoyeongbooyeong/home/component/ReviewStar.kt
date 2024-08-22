@@ -5,11 +5,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberAsyncImagePainter
-import coil.decode.SvgDecoder
-import coil.request.ImageRequest
 
 @Composable
 fun ReviewStar(star: Float) {
@@ -19,33 +17,23 @@ fun ReviewStar(star: Float) {
     Row {
         repeat(filledStars) {
             Image(
-                painter =
-                    rememberAsyncImagePainter(
-                        model =
-                            ImageRequest
-                                .Builder(LocalContext.current)
-                                .data(com.eoyeongbooyeong.core.R.drawable.ic_filled_star)
-                                .decoderFactory(SvgDecoder.Factory())
-                                .build(),
-                    ),
+                painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_filled_star),
                 contentDescription = "filled star(review) icon",
                 modifier = Modifier.size(12.dp),
             )
         }
         repeat(maxStars - filledStars) {
             Image(
-                painter =
-                    rememberAsyncImagePainter(
-                        model =
-                            ImageRequest
-                                .Builder(LocalContext.current)
-                                .data(com.eoyeongbooyeong.core.R.drawable.ic_empty_star)
-                                .decoderFactory(SvgDecoder.Factory())
-                                .build(),
-                    ),
-                contentDescription = "empty star(review) icon",
+                painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_empty_star),
+                contentDescription = "empty star (review) icon",
                 modifier = Modifier.size(12.dp),
             )
         }
     }
+}
+
+@Composable
+@Preview
+fun ReviewStarPreview() {
+    ReviewStar(4.5f)
 }
