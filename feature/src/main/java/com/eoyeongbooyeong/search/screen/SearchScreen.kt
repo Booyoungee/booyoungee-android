@@ -59,15 +59,6 @@ fun SearchScreen(
                 modifier = Modifier.weight(1f),
             )
         }
-//        HotTravelDestinationsScreen(
-//            modifier = Modifier.fillMaxSize().padding(top = 12.dp, end = 24.dp, start = 24.dp),
-//            searchResultTime = searchResultTime,
-//            hotTravelDestinations = hotTravelDestinations,
-//        )
-        SearchResultScreen(
-            resultCount = resultCount,
-            searchResultList = searchResultList,
-        )
     }
 }
 
