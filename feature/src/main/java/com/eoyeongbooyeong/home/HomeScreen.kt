@@ -94,15 +94,15 @@ internal fun HomeScreen(onClickBookmark: () -> Unit = {}) {
 
     Scaffold(
         modifier =
-        Modifier
-            .fillMaxSize()
-            .systemBarsPadding(),
+            Modifier
+                .fillMaxSize()
+                .systemBarsPadding(),
     ) { paddingValue ->
         Column(
             modifier =
-            Modifier
-                .fillMaxSize()
-                .background(color = White),
+                Modifier
+                    .fillMaxSize()
+                    .background(color = White),
         ) {
             BooSearchTextField(
                 modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp),
@@ -111,9 +111,9 @@ internal fun HomeScreen(onClickBookmark: () -> Unit = {}) {
             )
             Box(
                 modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(paddingValue),
+                    Modifier
+                        .fillMaxSize()
+                        .padding(paddingValue),
             ) {
                 AndroidView(
                     factory = {
@@ -123,13 +123,13 @@ internal fun HomeScreen(onClickBookmark: () -> Unit = {}) {
 
                 Column(
                     modifier =
-                    Modifier
-                        .align(Alignment.BottomEnd),
+                        Modifier
+                            .align(Alignment.BottomEnd),
                 ) {
                     HomeFloatingButton(
                         modifier =
-                        Modifier
-                            .padding(end = 24.dp, bottom = 12.dp),
+                            Modifier
+                                .padding(end = 24.dp, bottom = 12.dp),
                         onClick = {
                             requestPermissionAndMoveToCurrentLocation(
                                 locationPermissionGranted,
@@ -144,8 +144,8 @@ internal fun HomeScreen(onClickBookmark: () -> Unit = {}) {
 
                     HomeFloatingButton(
                         modifier =
-                        Modifier
-                            .padding(end = 24.dp, bottom = 24.dp),
+                            Modifier
+                                .padding(end = 24.dp, bottom = 24.dp),
                         onClick = {
                             // Toggle PlaceInfoBox visibility
                             selectedPlace.value =
@@ -156,12 +156,12 @@ internal fun HomeScreen(onClickBookmark: () -> Unit = {}) {
                                     reviewCount = 42,
                                     likedCount = 15,
                                     movieNameList =
-                                    listOf(
-                                        "Movie A",
-                                        "Movie B",
-                                        "Movie B",
-                                        "Movie B",
-                                    ),
+                                        listOf(
+                                            "Movie A",
+                                            "Movie B",
+                                            "Movie B",
+                                            "Movie B",
+                                        ),
                                     imageUrl = "https://example.com/image.jpg", // Provide a valid image URL
                                 )
                             showPlaceInfoBox.value = !showPlaceInfoBox.value
@@ -174,9 +174,9 @@ internal fun HomeScreen(onClickBookmark: () -> Unit = {}) {
                     PlaceInfoBox(
                         place = selectedPlace.value!!,
                         modifier =
-                        Modifier
-                            .padding(16.dp)
-                            .fillMaxWidth(),
+                            Modifier
+                                .padding(16.dp)
+                                .fillMaxWidth(),
                     )
                 }
             }
@@ -279,15 +279,10 @@ private fun requestPermissionAndMoveToCurrentLocation(
                 null,
             ).addOnSuccessListener { location ->
                 if (location != null) {
-                    val cameraUpdate =
-                        CameraUpdateFactory.newCenterPosition(
-                            LatLng.from(
-                                location.latitude,
-                                location.longitude,
-                            ),
-                        )
-                    CameraUpdateFactory.zoomTo(17)
-                    kakaoMap.value?.moveCamera(cameraUpdate, CameraAnimation.from(500, true, true))
+                    kakaoMap.value?.moveCameraToLocation(
+                        location.latitude,
+                        location.longitude,
+                    )
                 } else {
                     // 위치 정보가 null인 경우 (GPS가 꺼져있는 경우)
                     setGPSPermissionDialog(context)
@@ -321,4 +316,18 @@ private fun setGPSPermissionDialog(context: Context) {
         }
         create().show()
     }
+}
+
+// 화면 이동 확장함수
+fun KakaoMap.moveCameraToLocation(
+    latitude: Double,
+    longitude: Double,
+    zoomLevel: Int = 17,
+    animationDuration: Int = 500,
+) {
+    val cameraUpdate = CameraUpdateFactory.newCenterPosition(LatLng.from(latitude, longitude))
+    val zoomUpdate = CameraUpdateFactory.zoomTo(zoomLevel)
+
+    moveCamera(cameraUpdate, CameraAnimation.from(animationDuration, true, true))
+    moveCamera(zoomUpdate, CameraAnimation.from(animationDuration, true, true))
 }
