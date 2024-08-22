@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.eoyeongbooyeong.core.designsystem.component.textfield.BooSearchTextField
 import com.eoyeongbooyeong.core.designsystem.theme.White
+import com.eoyeongbooyeong.domain.Place
 
 @Composable
 fun SearchScreen(
@@ -27,13 +28,17 @@ fun SearchScreen(
     onActiveChange: (Boolean) -> Unit = {},
     searchResultTime: String = "",
     hotTravelDestinations: List<String> = emptyList(),
+    resultCount: Int = 0,
+    searchResultList: List<Place> = emptyList(),
 ) {
-    Column() {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+    ) {
         Row(
             modifier =
                 modifier
                     .fillMaxWidth()
-                    .padding(start = 24.dp, end = 24.dp, top = 24.dp, bottom = 12.dp)
+                    .padding(start = 24.dp, end = 24.dp, top = 43.dp, bottom = 12.dp)
                     .align(Alignment.CenterHorizontally),
         ) {
             Image(
@@ -59,7 +64,10 @@ fun SearchScreen(
 //            searchResultTime = searchResultTime,
 //            hotTravelDestinations = hotTravelDestinations,
 //        )
-        //SearchResultScreen()
+        SearchResultScreen(
+            resultCount = resultCount,
+            searchResultList = searchResultList,
+        )
     }
 }
 
