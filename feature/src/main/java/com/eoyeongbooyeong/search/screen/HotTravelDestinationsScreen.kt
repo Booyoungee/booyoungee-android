@@ -32,7 +32,7 @@ fun HotTravelDestinationsScreen(
     hotTravelDestinations: List<String> = listOf(),
 ) {
     Column(
-        modifier = modifier,
+        modifier = modifier.padding(top = 16.dp),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
