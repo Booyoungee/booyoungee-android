@@ -5,10 +5,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,9 +28,13 @@ fun SearchScreen(
     searchResultTime: String = "",
     hotTravelDestinations: List<String> = emptyList(),
 ) {
-    Column {
+    Column() {
         Row(
-            modifier = modifier.fillMaxWidth().padding(start = 24.dp, end = 24.dp, top = 43.dp,bottom = 16.dp),
+            modifier =
+                modifier
+                    .fillMaxWidth()
+                    .padding(start = 24.dp, end = 24.dp, top = 24.dp, bottom = 12.dp)
+                    .align(Alignment.CenterHorizontally),
         ) {
             Image(
                 painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_left),
@@ -37,7 +42,9 @@ fun SearchScreen(
                 modifier =
                     Modifier
                         .padding(6.dp)
-                        .clickable(onClick = onBackClick),
+                        .clickable(onClick = onBackClick)
+                        .size(24.dp)
+                        .align(Alignment.CenterVertically),
             )
             BooSearchTextField(
                 text = query,
@@ -47,11 +54,12 @@ fun SearchScreen(
                 modifier = Modifier.weight(1f),
             )
         }
-        HotTravelDestinationsScreen(
-            modifier = Modifier.fillMaxSize().padding(top = 12.dp, end = 24.dp, start = 24.dp),
-            searchResultTime = searchResultTime,
-            hotTravelDestinations = hotTravelDestinations,
-        )
+//        HotTravelDestinationsScreen(
+//            modifier = Modifier.fillMaxSize().padding(top = 12.dp, end = 24.dp, start = 24.dp),
+//            searchResultTime = searchResultTime,
+//            hotTravelDestinations = hotTravelDestinations,
+//        )
+        //SearchResultScreen()
     }
 }
 
