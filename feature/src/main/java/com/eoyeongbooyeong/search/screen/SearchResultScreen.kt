@@ -83,7 +83,7 @@ fun SearchResultScreen(
                 }
             }
         }
-        searchResultList(
+        SearchResultList(
             searchResultList = searchResultList,
             resultCount = resultCount,
         )
@@ -91,7 +91,7 @@ fun SearchResultScreen(
 }
 
 @Composable
-fun searchResultList(
+fun SearchResultList(
     modifier: Modifier = Modifier,
     searchResultList: List<Place>,
     resultCount: Int,
@@ -144,7 +144,13 @@ fun searchResultList(
 
             items(searchResultList) { place ->
                 PlaceInfoListItem(
-                    place = place,
+                    placeName = place.name,
+                    address = place.address,
+                    star = place.star,
+                    reviewCount = place.reviewCount,
+                    likedCount = place.likedCount,
+                    movieNameList = place.movieNameList,
+                    placeImageUrl = place.imageUrl,
                     onClick = { /* Handle item click */ },
                     modifier = Modifier.padding(bottom = 16.dp, start = 24.dp, end = 24.dp),
                 )

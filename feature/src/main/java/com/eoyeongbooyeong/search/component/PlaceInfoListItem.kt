@@ -1,6 +1,7 @@
 package com.eoyeongbooyeong.search.component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,15 +25,21 @@ import coil.compose.AsyncImage
 import com.eoyeongbooyeong.core.designsystem.theme.Black
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Gray400
+import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.core.extension.listToBracketedString
 import com.eoyeongbooyeong.core.extension.noRippleClickable
-import com.eoyeongbooyeong.domain.Place
 import com.eoyeongbooyeong.feature.R
 import com.eoyeongbooyeong.home.component.ReviewStar
 
 @Composable
 internal fun PlaceInfoListItem(
-    place: Place,
+    placeName: String,
+    address: String,
+    star: Float,
+    reviewCount: Int,
+    likedCount: Int,
+    movieNameList: List<String>,
+    placeImageUrl: String,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
 ) {
@@ -47,7 +54,7 @@ internal fun PlaceInfoListItem(
                     .padding(end = 10.dp),
         ) {
             AsyncImage(
-                model = place.imageUrl,
+                model = placeImageUrl,
                 contentDescription = null,
                 modifier =
                     Modifier
@@ -60,32 +67,32 @@ internal fun PlaceInfoListItem(
                 modifier = Modifier.padding(start = 10.dp),
             ) {
                 Text(
-                    text = place.name,
+                    text = placeName,
                     style = BooTheme.typography.body3,
                     color = Black,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1f, false),
+                    modifier = Modifier.padding(end = 8.dp),
                 )
                 Text(
-                    text = place.address,
+                    text = address,
                     style = BooTheme.typography.caption2,
                     color = Black,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1f, false),
+                    modifier = Modifier.padding(end = 8.dp),
                 )
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    ReviewStar(place.star)
+                    ReviewStar(star)
 
                     Text(
-                        text = place.star.toString(),
+                        text = star.toString(),
                         style = BooTheme.typography.caption1,
                         color = Black,
                         modifier = Modifier.weight(1f, false).padding(start = 4.dp),
                     )
                     Text(
-                        text = stringResource(R.string.placeReviewAndPoint, place.reviewCount),
+                        text = stringResource(R.string.placeReviewAndPoint, reviewCount),
                         style = BooTheme.typography.caption2,
                         color = Gray400,
                         modifier =
@@ -99,7 +106,7 @@ internal fun PlaceInfoListItem(
                         modifier = Modifier.size(12.dp),
                     )
                     Text(
-                        text = place.likedCount.toString(),
+                        text = likedCount.toString(),
                         style = BooTheme.typography.caption1,
                         color = Black,
                         maxLines = 1,
@@ -111,14 +118,14 @@ internal fun PlaceInfoListItem(
                     Image(
                         painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_camera),
                         contentDescription = "camera icon",
-                        modifier = Modifier.size(20.dp).padding(end = 8.dp),
+                        modifier = Modifier.size(20.dp),
                     )
                     Text(
-                        text = place.movieNameList.listToBracketedString(),
+                        text = movieNameList.listToBracketedString(),
                         style = BooTheme.typography.caption1,
                         color = Black,
                         maxLines = 1,
-                        modifier = Modifier.padding(start = 4.dp),
+                        modifier = Modifier.padding(start = 8.dp).align(Alignment.CenterVertically),
                     )
                 }
             }
@@ -131,15 +138,14 @@ internal fun PlaceInfoListItem(
 fun PlaceInfoResultListPreview() {
     BooTheme {
         PlaceInfoListItem(
-            place =
-                Place(
-                    name = "Place Name",
-                    address = "Address",
-                    star = 4.5f,
-                    reviewCount = 100,
-                    likedCount = 100,
-                    movieNameList = listOf("Movie 1", "Movie 2"),
-                ),
+            placeName = "Place Name",
+            placeImageUrl = "https://placeimg.com/100/100/any",
+            address = "Address",
+            star = 4.5f,
+            reviewCount = 100,
+            likedCount = 100,
+            movieNameList = listOf("Movie 1", "Movie 2"),
+            modifier = Modifier.background(White),
         )
     }
 }

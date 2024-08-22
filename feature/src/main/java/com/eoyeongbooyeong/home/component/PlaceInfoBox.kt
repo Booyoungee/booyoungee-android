@@ -123,14 +123,14 @@ internal fun PlaceInfoBox(
                     Image(
                         painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_camera),
                         contentDescription = "camera icon",
-                        modifier = Modifier.size(20.dp).padding(end = 8.dp),
+                        modifier = Modifier.size(20.dp)
                     )
                     Text(
                         text = place.movieNameList.listToBracketedString(),
                         style = BooTheme.typography.caption1,
                         color = Black,
                         maxLines = 1,
-                        modifier = Modifier.padding(start = 4.dp),
+                        modifier = Modifier.padding(start = 8.dp),
                     )
                 }
             }
