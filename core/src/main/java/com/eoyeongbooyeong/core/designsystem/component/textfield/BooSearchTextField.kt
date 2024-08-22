@@ -25,6 +25,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.eoyeongbooyeong.core.R
+import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Gray300
 import com.eoyeongbooyeong.core.designsystem.theme.Purple
 import com.eoyeongbooyeong.core.designsystem.theme.White
@@ -65,6 +66,7 @@ fun BooSearchTextField(
                                 Text(
                                     text = stringResource(R.string.movieSearchBarHint),
                                     color = Gray300,
+                                    style = BooTheme.typography.caption2,
                                 )
                             }
                         }
