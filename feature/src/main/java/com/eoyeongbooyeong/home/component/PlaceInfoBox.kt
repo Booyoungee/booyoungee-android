@@ -38,8 +38,8 @@ import com.eoyeongbooyeong.feature.R
 
 @Composable
 internal fun PlaceInfoBox(
-    modifier: Modifier = Modifier,
     place: Place,
+    modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
 ) {
     Box(
