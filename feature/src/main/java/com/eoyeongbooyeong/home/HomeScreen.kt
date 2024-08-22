@@ -15,6 +15,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Scaffold
@@ -33,8 +34,10 @@ import androidx.core.content.ContextCompat
 import com.eoyeongbooyeong.core.R
 import com.eoyeongbooyeong.core.designsystem.component.textfield.BooSearchTextField
 import com.eoyeongbooyeong.core.designsystem.theme.White
+import com.eoyeongbooyeong.domain.Place
 import com.eoyeongbooyeong.home.component.FloatingButton
 import com.eoyeongbooyeong.home.component.HomeFloatingButton
+import com.eoyeongbooyeong.home.component.PlaceInfoBox
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
@@ -51,9 +54,7 @@ import com.kakao.vectormap.label.LabelStyle
 import com.kakao.vectormap.label.LabelStyles
 
 @Composable
-internal fun HomeScreen(
-    onClickBookmark: () -> Unit = {},
-) {
+internal fun HomeScreen(onClickBookmark: () -> Unit = {}) {
     val context = LocalContext.current
     val kakaoMap = remember { mutableStateOf<KakaoMap?>(null) }
     val mapView =
@@ -86,6 +87,10 @@ internal fun HomeScreen(
 
         locationPermissionGranted.value = hasFineLocationPermission && hasCoarseLocationPermission
     }
+
+    // PlaceInfoBox 에 대한 State
+    val showPlaceInfoBox = remember { mutableStateOf(false) }
+    val selectedPlace = remember { mutableStateOf<Place?>(null) }
 
     Scaffold(
         modifier =
@@ -142,9 +147,36 @@ internal fun HomeScreen(
                             Modifier
                                 .padding(end = 24.dp, bottom = 24.dp),
                         onClick = {
-                            onClickBookmark()
+                            // Toggle PlaceInfoBox visibility
+                            selectedPlace.value =
+                                Place(
+                                    name = "Example Place",
+                                    address = "123 Example Street 123 Example Street 123 Example Street 123 Example Street",
+                                    star = 4.5f,
+                                    reviewCount = 42,
+                                    likedCount = 15,
+                                    movieNameList =
+                                        listOf(
+                                            "Movie A",
+                                            "Movie B",
+                                            "Movie B",
+                                            "Movie B",
+                                        ),
+                                    imageUrl = "https://example.com/image.jpg", // Provide a valid image URL
+                                )
+                            showPlaceInfoBox.value = !showPlaceInfoBox.value
                         },
                         buttonState = FloatingButton(isBookmarkButton = true),
+                    )
+                }
+
+                if (showPlaceInfoBox.value && selectedPlace.value != null) {
+                    PlaceInfoBox(
+                        place = selectedPlace.value!!,
+                        modifier =
+                            Modifier
+                                .padding(16.dp)
+                                .fillMaxWidth(),
                     )
                 }
             }
@@ -247,15 +279,10 @@ private fun requestPermissionAndMoveToCurrentLocation(
                 null,
             ).addOnSuccessListener { location ->
                 if (location != null) {
-                    val cameraUpdate =
-                        CameraUpdateFactory.newCenterPosition(
-                            LatLng.from(
-                                location.latitude,
-                                location.longitude,
-                            ),
-                        )
-                    CameraUpdateFactory.zoomTo(17)
-                    kakaoMap.value?.moveCamera(cameraUpdate, CameraAnimation.from(500, true, true))
+                    kakaoMap.value?.moveCameraToLocation(
+                        location.latitude,
+                        location.longitude,
+                    )
                 } else {
                     // 위치 정보가 null인 경우 (GPS가 꺼져있는 경우)
                     setGPSPermissionDialog(context)
@@ -289,4 +316,18 @@ private fun setGPSPermissionDialog(context: Context) {
         }
         create().show()
     }
+}
+
+// 화면 이동 확장함수
+fun KakaoMap.moveCameraToLocation(
+    latitude: Double,
+    longitude: Double,
+    zoomLevel: Int = 17,
+    animationDuration: Int = 500,
+) {
+    val cameraUpdate = CameraUpdateFactory.newCenterPosition(LatLng.from(latitude, longitude))
+    val zoomUpdate = CameraUpdateFactory.zoomTo(zoomLevel)
+
+    moveCamera(cameraUpdate, CameraAnimation.from(animationDuration, true, true))
+    moveCamera(zoomUpdate, CameraAnimation.from(animationDuration, true, true))
 }
