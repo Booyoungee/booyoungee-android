@@ -1,5 +1,7 @@
 package com.eoyeongbooyeong.mypage
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -20,10 +22,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.eoyeongbooyeong.core.constant.PrivacyPolicy
+import com.eoyeongbooyeong.core.constant.TermsOfService
 import com.eoyeongbooyeong.core.designsystem.component.topbar.BooTextTopAppBar
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Gray100
@@ -37,6 +42,8 @@ internal fun MyPageRoute() {
 
 @Composable
 internal fun MyPageScreen() {
+    val context = LocalContext.current
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -118,12 +125,12 @@ internal fun MyPageScreen() {
             MyPageOptionItem(
                 text = "서비스 이용약관"
             ) {
-
+                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(TermsOfService)))
             }
             MyPageOptionItem(
                 text = "개인정보 처리방침"
             ) {
-
+                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(PrivacyPolicy)))
             }
             MyPageOptionItem(
                 text = "로그아웃"
