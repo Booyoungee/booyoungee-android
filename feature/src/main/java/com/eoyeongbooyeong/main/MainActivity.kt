@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.main.ui.theme.BooyoungeeTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -20,13 +21,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            BooyoungeeTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Main",
-                        modifier = Modifier.padding(innerPadding),
-                    )
-                }
+            val navigator: MainNavigator = rememberMainNavigator()
+            BooTheme {
+                MainScreen(navigator = navigator)
             }
         }
     }
