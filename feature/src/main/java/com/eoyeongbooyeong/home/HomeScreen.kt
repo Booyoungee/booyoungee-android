@@ -17,8 +17,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -92,93 +90,85 @@ internal fun HomeScreen(onClickBookmark: () -> Unit = {}) {
     val showPlaceInfoBox = remember { mutableStateOf(false) }
     val selectedPlace = remember { mutableStateOf<Place?>(null) }
 
-    Scaffold(
+    Column(
         modifier =
             Modifier
                 .fillMaxSize()
-                .systemBarsPadding(),
-    ) { paddingValue ->
-        Column(
+                .background(color = White),
+    ) {
+        BooSearchTextField(
+            modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp),
+            isActive = false,
+            onClick = {}, // navigate to search screen
+        )
+        Box(
             modifier =
                 Modifier
-                    .fillMaxSize()
-                    .background(color = White),
+                    .fillMaxSize(),
         ) {
-            BooSearchTextField(
-                modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp),
-                isActive = false,
-                onClick = {}, // navigate to search screen
+            AndroidView(
+                factory = {
+                    mapView
+                },
             )
-            Box(
+
+            Column(
                 modifier =
                     Modifier
-                        .fillMaxSize()
-                        .padding(paddingValue),
+                        .align(Alignment.BottomEnd),
             ) {
-                AndroidView(
-                    factory = {
-                        mapView
-                    },
-                )
-
-                Column(
+                HomeFloatingButton(
                     modifier =
                         Modifier
-                            .align(Alignment.BottomEnd),
-                ) {
-                    HomeFloatingButton(
-                        modifier =
-                            Modifier
-                                .padding(end = 24.dp, bottom = 12.dp),
-                        onClick = {
-                            requestPermissionAndMoveToCurrentLocation(
-                                locationPermissionGranted,
-                                fusedLocationClient,
-                                kakaoMap,
-                                requestLocationPermissionLauncher,
-                                context,
+                            .padding(end = 24.dp, bottom = 12.dp),
+                    onClick = {
+                        requestPermissionAndMoveToCurrentLocation(
+                            locationPermissionGranted,
+                            fusedLocationClient,
+                            kakaoMap,
+                            requestLocationPermissionLauncher,
+                            context,
+                        )
+                    },
+                    buttonState = FloatingButton(isMyLocationButton = true),
+                )
+
+                HomeFloatingButton(
+                    modifier =
+                        Modifier
+                            .padding(end = 24.dp, bottom = 24.dp),
+                    onClick = {
+                        // Toggle PlaceInfoBox visibility
+                        selectedPlace.value =
+                            Place(
+                                name = "Example Place",
+                                address = "123 Example Street 123 Example Street 123 Example Street 123 Example Street",
+                                star = 4.5f,
+                                reviewCount = 42,
+                                likedCount = 15,
+                                movieNameList =
+                                    listOf(
+                                        "Movie A",
+                                        "Movie B",
+                                        "Movie B",
+                                        "Movie B",
+                                    ),
+                                imageUrl = "https://example.com/image.jpg", // Provide a valid image URL
                             )
-                        },
-                        buttonState = FloatingButton(isMyLocationButton = true),
-                    )
+                        showPlaceInfoBox.value = !showPlaceInfoBox.value
+                    },
+                    buttonState = FloatingButton(isBookmarkButton = true),
+                )
+            }
 
-                    HomeFloatingButton(
-                        modifier =
-                            Modifier
-                                .padding(end = 24.dp, bottom = 24.dp),
-                        onClick = {
-                            // Toggle PlaceInfoBox visibility
-                            selectedPlace.value =
-                                Place(
-                                    name = "Example Place",
-                                    address = "123 Example Street 123 Example Street 123 Example Street 123 Example Street",
-                                    star = 4.5f,
-                                    reviewCount = 42,
-                                    likedCount = 15,
-                                    movieNameList =
-                                        listOf(
-                                            "Movie A",
-                                            "Movie B",
-                                            "Movie B",
-                                            "Movie B",
-                                        ),
-                                    imageUrl = "https://example.com/image.jpg", // Provide a valid image URL
-                                )
-                            showPlaceInfoBox.value = !showPlaceInfoBox.value
-                        },
-                        buttonState = FloatingButton(isBookmarkButton = true),
-                    )
-                }
-
-                if (showPlaceInfoBox.value && selectedPlace.value != null) {
-                    PlaceInfoBox(
-                        place = selectedPlace.value!!,
-                        modifier =
-                            Modifier
-                                .padding(16.dp)
-                                .fillMaxWidth(),
-                    )
-                }
+            if (showPlaceInfoBox.value && selectedPlace.value != null) {
+                PlaceInfoBox(
+                    place = selectedPlace.value!!,
+                    modifier =
+                        Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth(),
+                )
             }
         }
     }
