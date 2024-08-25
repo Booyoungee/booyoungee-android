@@ -1,5 +1,6 @@
 package com.eoyeongbooyeong.core.designsystem.component.textfield
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -27,6 +28,7 @@ import com.eoyeongbooyeong.core.R
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Gray300
 import com.eoyeongbooyeong.core.designsystem.theme.Purple
+import com.eoyeongbooyeong.core.designsystem.theme.White
 
 @Composable
 fun BooSearchTextField(
@@ -51,7 +53,8 @@ fun BooSearchTextField(
                         ),
                     shape = RoundedCornerShape(10.dp),
                 ).clip(RoundedCornerShape(10.dp))
-                .padding(horizontal = 20.dp, vertical = 11.dp),
+                .padding(horizontal = 20.dp, vertical = 11.dp)
+                .background(White),
     ) {
         if (isActive) {
             BasicTextField(
