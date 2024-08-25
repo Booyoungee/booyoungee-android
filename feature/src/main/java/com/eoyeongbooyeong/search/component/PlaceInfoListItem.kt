@@ -44,11 +44,14 @@ internal fun PlaceInfoListItem(
     onClick: () -> Unit = {},
 ) {
     Box(
-        modifier = modifier.noRippleClickable(onClick = onClick).fillMaxSize(),
+        modifier =
+            modifier
+                .noRippleClickable(onClick = onClick)
+                .fillMaxSize(),
     ) {
         Row(
             modifier =
-                Modifier
+                modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
                     .padding(end = 10.dp),
@@ -57,14 +60,14 @@ internal fun PlaceInfoListItem(
                 model = placeImageUrl,
                 contentDescription = null,
                 modifier =
-                    Modifier
+                    modifier
                         .size(100.dp)
                         .clip(RoundedCornerShape(5.dp)),
                 placeholder = painterResource(id = com.eoyeongbooyeong.core.R.drawable.img_default_5),
                 error = painterResource(id = com.eoyeongbooyeong.core.R.drawable.img_default_5),
             )
             Column(
-                modifier = Modifier.padding(start = 10.dp),
+                modifier = modifier.padding(start = 10.dp),
             ) {
                 Text(
                     text = placeName,
@@ -72,7 +75,7 @@ internal fun PlaceInfoListItem(
                     color = Black,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.padding(end = 8.dp),
+                    modifier = modifier.padding(end = 8.dp),
                 )
                 Text(
                     text = address,
@@ -89,14 +92,17 @@ internal fun PlaceInfoListItem(
                         text = star.toString(),
                         style = BooTheme.typography.caption1,
                         color = Black,
-                        modifier = Modifier.weight(1f, false).padding(start = 4.dp),
+                        modifier =
+                            modifier
+                                .weight(1f, false)
+                                .padding(start = 4.dp),
                     )
                     Text(
                         text = stringResource(R.string.placeReviewAndPoint, reviewCount),
                         style = BooTheme.typography.caption2,
                         color = Gray400,
                         modifier =
-                            Modifier
+                            modifier
                                 .weight(1f, false)
                                 .padding(start = 4.dp),
                     )
@@ -111,21 +117,27 @@ internal fun PlaceInfoListItem(
                         color = Black,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.weight(1f, false).padding(start = 4.dp),
+                        modifier =
+                            modifier
+                                .weight(1f, false)
+                                .padding(start = 4.dp),
                     )
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Image(
                         painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_camera),
                         contentDescription = "camera icon",
-                        modifier = Modifier.size(20.dp),
+                        modifier = modifier.size(20.dp),
                     )
                     Text(
                         text = movieNameList.listToBracketedString(),
                         style = BooTheme.typography.caption1,
                         color = Black,
                         maxLines = 1,
-                        modifier = Modifier.padding(start = 8.dp).align(Alignment.CenterVertically),
+                        modifier =
+                            modifier
+                                .padding(start = 8.dp)
+                                .align(Alignment.CenterVertically),
                     )
                 }
             }
