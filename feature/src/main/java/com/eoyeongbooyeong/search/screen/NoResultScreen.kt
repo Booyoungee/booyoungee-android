@@ -28,6 +28,24 @@ import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.feature.R
 
 @Composable
+fun NoResultRoute(
+    onBackClick: () -> Unit = {},
+    onQueryChange: (String) -> Unit = {},
+    onActiveChange: (Boolean) -> Unit = {},
+    query: String = "",
+    active: Boolean = false,
+) {
+    NoResultScreen(
+        modifier = Modifier,
+        onBackClick = onBackClick,
+        onQueryChange = onQueryChange,
+        onActiveChange = onActiveChange,
+        query = query,
+        active = active,
+    )
+}
+
+@Composable
 fun NoResultScreen(
     modifier: Modifier,
     searchKeyWord: String = "영화",
@@ -37,11 +55,15 @@ fun NoResultScreen(
     query: String,
     active: Boolean,
 ) {
-    Column(modifier = modifier.fillMaxSize().background(White),) {
+    Column(modifier = modifier
+        .fillMaxSize()
+        .background(White)) {
         Spacer(modifier = Modifier.padding(12.dp))
 
         Box(
-            modifier = modifier.fillMaxWidth().padding(horizontal = 24.dp),
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
             contentAlignment = Alignment.TopCenter,
         ) {
             Row(
@@ -53,11 +75,11 @@ fun NoResultScreen(
                     painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_left),
                     contentDescription = "back button",
                     modifier =
-                        Modifier
-                            .padding(6.dp)
-                            .clickable(onClick = onBackClick)
-                            .size(24.dp)
-                            .align(Alignment.CenterVertically),
+                    Modifier
+                        .padding(6.dp)
+                        .clickable(onClick = onBackClick)
+                        .size(24.dp)
+                        .align(Alignment.CenterVertically),
                 )
                 BooSearchTextField(
                     text = query,
@@ -73,9 +95,9 @@ fun NoResultScreen(
 
         Box(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .background(White),
+            Modifier
+                .fillMaxWidth()
+                .background(White),
             contentAlignment = Alignment.Center,
         ) {
             Column(
@@ -85,9 +107,9 @@ fun NoResultScreen(
                     painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_alert_circle),
                     contentDescription = "no result icon",
                     modifier =
-                        Modifier
-                            .size(100.dp)
-                            .padding(bottom = 12.dp),
+                    Modifier
+                        .size(100.dp)
+                        .padding(bottom = 12.dp),
                 )
 
                 Text(
@@ -95,9 +117,9 @@ fun NoResultScreen(
                     style = BooTheme.typography.body1,
                     color = Black,
                     modifier =
-                        Modifier
-                            .padding(bottom = 12.dp)
-                            .align(Alignment.CenterHorizontally),
+                    Modifier
+                        .padding(bottom = 12.dp)
+                        .align(Alignment.CenterHorizontally),
                     textAlign = TextAlign.Center,
                 )
 
@@ -116,14 +138,6 @@ fun NoResultScreen(
 @Preview
 fun NoResultScreenPreview() {
     BooTheme {
-        NoResultScreen(
-            modifier = Modifier,
-            searchKeyWord = "영화",
-            onBackClick = {},
-            onQueryChange = {},
-            onActiveChange = {},
-            query = "",
-            active = false,
-        )
+        NoResultRoute()
     }
 }
