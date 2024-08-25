@@ -48,37 +48,40 @@ internal class MainNavigator(
 
             MainTab.PLACE ->
                 navController.navigateToPlace(
+                    // TODO : navOptions 수정
                     navOptions {
                         popUpTo<Home> {
                             inclusive = false
                             saveState = true
                         }
                         launchSingleTop = true
-                        restoreState = true
+                        restoreState = false
                     },
                 )
 
             MainTab.STAMP ->
                 navController.navigateToStamp(
+                    // TODO : navOptions 수정
                     navOptions {
                         popUpTo<Home> {
                             inclusive = false
                             saveState = true
                         }
                         launchSingleTop = true
-                        restoreState = true
+                        restoreState = false
                     },
                 )
 
             MainTab.MYPAGE ->
                 navController.navigateToMypage(
+                    // TODO : navOptions 수정
                     navOptions {
                         popUpTo<Home> {
                             inclusive = false
                             saveState = true
                         }
                         launchSingleTop = true
-                        restoreState = true
+                        restoreState = false
                     },
                 )
         }
