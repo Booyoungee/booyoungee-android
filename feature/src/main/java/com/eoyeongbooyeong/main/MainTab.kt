@@ -9,35 +9,28 @@ import com.eoyeongbooyeong.place_recommend.Place
 import com.eoyeongbooyeong.stamp.Stamp
 
 internal enum class MainTab(
-    val selectedIconResource: Int,
-    val unselectedIconResource: Int,
+    val defaultIconResource: Int,
     internal val contentDescription: String,
     val route: MainTabRoute,
     val showBottomSheet: Boolean = true,
 ) {
     HOME(
-        selectedIconResource = com.eoyeongbooyeong.core.R.drawable.ic_home_selected,
-        unselectedIconResource = com.eoyeongbooyeong.core.R.drawable.ic_home_default,
+        defaultIconResource = com.eoyeongbooyeong.core.R.drawable.ic_home_default,
         contentDescription = "홈",
         route = Home,
     ),
     PLACE(
-        selectedIconResource = com.eoyeongbooyeong.core.R.drawable.ic_place_selected,
-        unselectedIconResource = com.eoyeongbooyeong.core.R.drawable.ic_place_default,
+        defaultIconResource = com.eoyeongbooyeong.core.R.drawable.ic_place_default,
         contentDescription = "장소 추천",
         route = Place,
-        false,
     ),
     STAMP(
-        selectedIconResource = com.eoyeongbooyeong.core.R.drawable.ic_place_selected,
-        unselectedIconResource = com.eoyeongbooyeong.core.R.drawable.ic_place_default,
+        defaultIconResource = com.eoyeongbooyeong.core.R.drawable.ic_stamp_default,
         contentDescription = "스탬프",
         route = Stamp,
-        false,
     ),
     MYPAGE(
-        selectedIconResource = com.eoyeongbooyeong.core.R.drawable.ic_mypage_selected,
-        unselectedIconResource = com.eoyeongbooyeong.core.R.drawable.ic_mypage_default,
+        defaultIconResource = com.eoyeongbooyeong.core.R.drawable.ic_mypage_default,
         contentDescription = "마이페이지",
         route = Mypage,
     ),
