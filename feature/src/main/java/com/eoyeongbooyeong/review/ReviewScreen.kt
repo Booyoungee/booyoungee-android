@@ -28,25 +28,41 @@ import com.eoyeongbooyeong.core.designsystem.theme.Red
 import com.eoyeongbooyeong.core.designsystem.theme.White
 
 @Composable
+fun ReviewRoute(
+    onValueChange: (String) -> Unit,
+    onReviewSubmitClick: () -> Unit,
+    isWarning: Boolean,
+    reviewText: String,
+) {
+    ReviewScreen(
+        onValueChange = onValueChange,
+        isWarning = isWarning,
+        reviewText = reviewText,
+        onReviewSubmitClick = onReviewSubmitClick,
+    )
+}
+
+@Composable
 fun ReviewScreen(
     onValueChange: (String) -> Unit,
+    onReviewSubmitClick: () -> Unit,
     isWarning: Boolean,
     reviewText: String,
 ) {
     Column(
         modifier =
-        Modifier
-            .fillMaxSize()
-            .background(color = White),
+            Modifier
+                .fillMaxSize()
+                .background(color = White),
     ) {
         Spacer(modifier = Modifier.padding(top = 10.dp))
         // TODO: Tob Bar
 
         Spacer(
             modifier =
-            Modifier
-                .padding(top = 30.dp)
-                .fillMaxWidth(),
+                Modifier
+                    .padding(top = 30.dp)
+                    .fillMaxWidth(),
         )
         Text(
             text = "방문 후기를 알려주세요!",
@@ -72,20 +88,20 @@ fun ReviewScreen(
             value = reviewText,
             onValueChange = onValueChange,
             modifier =
-            Modifier
-                .sizeIn(minHeight = 310.dp)
-                .clip(RoundedCornerShape(10.dp))
-                .fillMaxWidth()
-                .align(Alignment.CenterHorizontally)
-                .padding(bottom = 8.dp, start = 24.dp, end = 24.dp)
-                .background(color = Gray100, shape = RoundedCornerShape(10.dp)),
+                Modifier
+                    .sizeIn(minHeight = 310.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally)
+                    .padding(bottom = 8.dp, start = 24.dp, end = 24.dp)
+                    .background(color = Gray100, shape = RoundedCornerShape(10.dp)),
             textStyle = BooTheme.typography.body4,
             decorationBox = { innerTextField ->
                 Box(
                     modifier =
-                    Modifier
-                        .padding(horizontal = 10.dp, vertical = 16.dp)
-                        .weight(1f),
+                        Modifier
+                            .padding(horizontal = 10.dp, vertical = 16.dp)
+                            .weight(1f),
                 ) {
                     innerTextField()
                     if (reviewText.isEmpty()) {
@@ -105,21 +121,22 @@ fun ReviewScreen(
                 style = BooTheme.typography.caption2,
                 color = Red,
                 textAlign = TextAlign.Start,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp),
             )
         }
-
 
         Spacer(modifier = Modifier.weight(5f))
         Box(contentAlignment = Alignment.BottomCenter) {
             BooLargeButton(
                 text = "등록하기",
-                onClick = {},
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp),
+                onClick = onReviewSubmitClick,
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp),
             )
         }
         Spacer(modifier = Modifier.weight(1f))
@@ -134,6 +151,7 @@ fun ReviewScreenPreview() {
             onValueChange = {},
             isWarning = true,
             reviewText = "ㅇㅇㅇㅇㅇㅇㅇㅇ",
+            onReviewSubmitClick = {},
         )
     }
 }
