@@ -1,14 +1,18 @@
 package com.eoyeongbooyeong.search.screen
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,9 +20,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.eoyeongbooyeong.core.designsystem.component.textfield.BooSearchTextField
 import com.eoyeongbooyeong.core.designsystem.theme.Black
 import com.eoyeongbooyeong.core.designsystem.theme.Blue300
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
@@ -26,14 +32,73 @@ import com.eoyeongbooyeong.core.designsystem.theme.Gray300
 import com.eoyeongbooyeong.core.designsystem.theme.White
 
 @Composable
-fun HotTravelDestinationsScreen(
+fun HotTravelDestinationsRoute(
+    onBackClick: () -> Unit = {},
+    onQueryChange: (String) -> Unit = {},
+    onActiveChange: (Boolean) -> Unit = {},
     modifier: Modifier = Modifier,
+    query: String = "",
+    active: Boolean = false,
+    searchResultTime: String = "",
+    hotTravelDestinations: List<String> = emptyList(),
+) {
+    HotTravelDestinationsScreen(
+        modifier = modifier,
+        onBackClick = onBackClick,
+        query = query,
+        onQueryChange = onQueryChange,
+        active = active,
+        onActiveChange = onActiveChange,
+        searchResultTime = searchResultTime,
+        hotTravelDestinations = hotTravelDestinations,
+    )
+}
+
+@Composable
+fun HotTravelDestinationsScreen(
+    modifier: Modifier,
     searchResultTime: String,
-    hotTravelDestinations: List<String> = listOf(),
+    hotTravelDestinations: List<String>,
+    onBackClick: () -> Unit,
+    query: String,
+    onQueryChange: (String) -> Unit,
+    active: Boolean,
+    onActiveChange: (Boolean) -> Unit,
 ) {
     Column(
-        modifier = modifier.padding(top = 16.dp),
+        modifier =
+            modifier
+                .padding(top = 35.dp, start = 24.dp, end = 24.dp)
+                .background(White)
+                .fillMaxSize(),
     ) {
+        Row(
+            modifier =
+                modifier
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally),
+        ) {
+            Image(
+                painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_left),
+                contentDescription = "back button",
+                modifier =
+                    Modifier
+                        .padding(6.dp)
+                        .clickable(onClick = onBackClick)
+                        .size(24.dp)
+                        .align(Alignment.CenterVertically),
+            )
+            BooSearchTextField(
+                text = query,
+                onValueChange = onQueryChange,
+                isActive = active,
+                onClick = { onActiveChange(true) },
+                modifier = Modifier.weight(1f),
+            )
+        }
+
+        Spacer(modifier = Modifier.height(40.dp))
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -98,7 +163,7 @@ fun HotTravelDestinationsScreen(
 @Preview
 fun HotTravelDestinationsScreenPreview() {
     BooTheme {
-        HotTravelDestinationsScreen(
+        HotTravelDestinationsRoute(
             modifier =
                 Modifier
                     .fillMaxWidth()
