@@ -37,7 +37,7 @@ fun NoResultScreen(
     query: String,
     active: Boolean,
 ) {
-    Column(modifier = modifier.fillMaxSize()) {
+    Column(modifier = modifier.fillMaxSize().background(White),) {
         Spacer(modifier = Modifier.padding(12.dp))
 
         Box(
@@ -117,7 +117,7 @@ fun NoResultScreen(
 fun NoResultScreenPreview() {
     BooTheme {
         NoResultScreen(
-            modifier = Modifier.background(White),
+            modifier = Modifier,
             searchKeyWord = "영화",
             onBackClick = {},
             onQueryChange = {},
