@@ -75,6 +75,9 @@ dependencies {
     implementation(libs.kakao.user)
     implementation(libs.kakao.map)
 
+    // Navigation
+    implementation(libs.androidx.compose.navigation)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
