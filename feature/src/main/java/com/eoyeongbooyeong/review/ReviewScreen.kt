@@ -31,7 +31,7 @@ import com.eoyeongbooyeong.core.designsystem.theme.White
 fun ReviewScreen(
     onValueChange: (String) -> Unit,
     isWarning: Boolean,
-    value: String,
+    reviewText: String,
 ) {
     Column(
         modifier =
@@ -69,7 +69,7 @@ fun ReviewScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
         BasicTextField(
-            value = value,
+            value = reviewText,
             onValueChange = onValueChange,
             modifier =
             Modifier
@@ -88,7 +88,7 @@ fun ReviewScreen(
                         .weight(1f),
                 ) {
                     innerTextField()
-                    if (value.isEmpty()) {
+                    if (reviewText.isEmpty()) {
                         Text(
                             text = "장소에 대한 후기를 작성해 주세요.",
                             style = BooTheme.typography.body4,
@@ -133,7 +133,7 @@ fun ReviewScreenPreview() {
         ReviewScreen(
             onValueChange = {},
             isWarning = true,
-            value = "",
+            reviewText = "ㅇㅇㅇㅇㅇㅇㅇㅇ",
         )
     }
 }
