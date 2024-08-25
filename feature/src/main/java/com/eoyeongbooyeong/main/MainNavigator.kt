@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -11,10 +12,13 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.eoyeongbooyeong.home.Home
 import com.eoyeongbooyeong.home.navigateToHome
+import com.eoyeongbooyeong.mypage.Mypage
 import com.eoyeongbooyeong.mypage.navigateToMypage
 import com.eoyeongbooyeong.navigation.Route
+import com.eoyeongbooyeong.place_recommend.Place
 import com.eoyeongbooyeong.place_recommend.navigateToPlace
 import com.eoyeongbooyeong.splash.Splash
+import com.eoyeongbooyeong.stamp.Stamp
 import com.eoyeongbooyeong.stamp.navigateToStamp
 
 internal class MainNavigator(
@@ -32,58 +36,23 @@ internal class MainNavigator(
             }
 
     fun navigate(tab: MainTab) {
+        val navOptions =
+            navOptions {
+                popUpTo(navController.graph.findStartDestination().id) {
+                    inclusive = false
+                    saveState = true
+                }
+                launchSingleTop = true
+                restoreState = true
+            }
         when (tab) {
-            MainTab.HOME ->
-                navController.navigateToHome(
-                    navOptions =
-                        navOptions {
-                            popUpTo<Home> {
-                                inclusive = false
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
-                        },
-                )
+            MainTab.HOME -> navController.navigateToHome(navOptions = navOptions)
 
-            MainTab.PLACE ->
-                navController.navigateToPlace(
-                    // TODO : navOptions 수정
-                    navOptions {
-                        popUpTo<Home> {
-                            inclusive = false
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = false
-                    },
-                )
+            MainTab.PLACE -> navController.navigateToPlace(navOptions = navOptions)
 
-            MainTab.STAMP ->
-                navController.navigateToStamp(
-                    // TODO : navOptions 수정
-                    navOptions {
-                        popUpTo<Home> {
-                            inclusive = false
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = false
-                    },
-                )
+            MainTab.STAMP -> navController.navigateToStamp(navOptions = navOptions)
 
-            MainTab.MYPAGE ->
-                navController.navigateToMypage(
-                    // TODO : navOptions 수정
-                    navOptions {
-                        popUpTo<Home> {
-                            inclusive = false
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = false
-                    },
-                )
+            MainTab.MYPAGE -> navController.navigateToMypage(navOptions = navOptions)
         }
     }
 
