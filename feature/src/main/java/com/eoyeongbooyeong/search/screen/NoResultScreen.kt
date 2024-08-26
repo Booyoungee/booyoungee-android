@@ -29,26 +29,29 @@ import com.eoyeongbooyeong.feature.R
 
 @Composable
 fun NoResultRoute(
+    modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {},
     onQueryChange: (String) -> Unit = {},
     onActiveChange: (Boolean) -> Unit = {},
     query: String = "",
     active: Boolean = false,
+    searchKeyWord: String = "영화",
 ) {
     NoResultScreen(
-        modifier = Modifier,
+        modifier = modifier,
         onBackClick = onBackClick,
         onQueryChange = onQueryChange,
         onActiveChange = onActiveChange,
         query = query,
         active = active,
+        searchKeyWord = searchKeyWord,
     )
 }
 
 @Composable
 fun NoResultScreen(
     modifier: Modifier,
-    searchKeyWord: String = "영화",
+    searchKeyWord: String,
     onBackClick: () -> Unit,
     onQueryChange: (String) -> Unit,
     onActiveChange: (Boolean) -> Unit,

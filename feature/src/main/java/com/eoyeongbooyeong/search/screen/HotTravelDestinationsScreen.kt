@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,10 +34,10 @@ import com.eoyeongbooyeong.core.designsystem.theme.White
 
 @Composable
 fun HotTravelDestinationsRoute(
+    modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {},
     onQueryChange: (String) -> Unit = {},
     onActiveChange: (Boolean) -> Unit = {},
-    modifier: Modifier = Modifier,
     query: String = "",
     active: Boolean = false,
     searchResultTime: String = "",
@@ -68,14 +69,15 @@ fun HotTravelDestinationsScreen(
     Column(
         modifier =
             modifier
-                .padding(top = 35.dp, start = 24.dp, end = 24.dp)
                 .background(White)
                 .fillMaxSize(),
     ) {
+        Spacer(modifier = Modifier.height(35.dp))
         Row(
             modifier =
                 modifier
                     .fillMaxWidth()
+                    .padding(horizontal = 24.dp)
                     .align(Alignment.CenterHorizontally),
         ) {
             Image(
@@ -100,7 +102,7 @@ fun HotTravelDestinationsScreen(
         Spacer(modifier = Modifier.height(40.dp))
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(
@@ -120,9 +122,9 @@ fun HotTravelDestinationsScreen(
         Spacer(modifier = Modifier.height(20.dp))
 
         LazyColumn(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
         ) {
-            items(hotTravelDestinations.size) { index ->
+            itemsIndexed(hotTravelDestinations) { index, _ ->
                 Row(
                     modifier =
                         Modifier
@@ -164,24 +166,9 @@ fun HotTravelDestinationsScreen(
 fun HotTravelDestinationsScreenPreview() {
     BooTheme {
         HotTravelDestinationsRoute(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .background(White),
-            searchResultTime = "2024년 7월 6일 00:00기준",
-            hotTravelDestinations =
-                listOf(
-                    "제주도",
-                    "부산",
-                    "강릉",
-                    "경주",
-                    "전주",
-                    "여수",
-                    "포항",
-                    "대구",
-                    "서울",
-                    "인천",
-                ),
+            query = "제주도",
+            searchResultTime = "2021.10.01",
+            hotTravelDestinations = listOf("제주도", "부산", "강릉", "경주", "제주도", "부산", "강릉", "경주"),
         )
     }
 }
