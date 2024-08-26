@@ -33,7 +33,7 @@ import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.core.extension.listToBracketedString
 import com.eoyeongbooyeong.core.extension.noRippleClickable
 import com.eoyeongbooyeong.feature.R
-import com.eoyeongbooyeong.home.component.ReviewStar
+import com.eoyeongbooyeong.core.designsystem.component.star.ReviewStar
 
 @Composable
 internal fun PlaceInfoListItem(
