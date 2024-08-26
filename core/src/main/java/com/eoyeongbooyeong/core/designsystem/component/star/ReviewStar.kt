@@ -1,4 +1,4 @@
-package com.eoyeongbooyeong.home.component
+package com.eoyeongbooyeong.core.designsystem.component.star
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
