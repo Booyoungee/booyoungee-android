@@ -25,6 +25,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.eoyeongbooyeong.core.R
+import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Gray300
 import com.eoyeongbooyeong.core.designsystem.theme.Purple
 import com.eoyeongbooyeong.core.designsystem.theme.White
@@ -38,20 +39,22 @@ fun BooSearchTextField(
     onClick: () -> Unit = {},
 ) {
     Row(
-        modifier = modifier
-            .border(
-                width = 1.dp,
-                brush = Brush.linearGradient(
-                    colorStops = arrayOf(
-                        0.0f to Purple,
-                        1f to Color(0xFF4067E5)
-                    )
-                ),
-                shape = RoundedCornerShape(10.dp)
-            )
-            .clip(RoundedCornerShape(10.dp))
-            .background(White)
-            .padding(horizontal = 20.dp, vertical = 11.dp)
+        modifier =
+            modifier
+                .border(
+                    width = 1.dp,
+                    brush =
+                        Brush.linearGradient(
+                            colorStops =
+                                arrayOf(
+                                    0.0f to Purple,
+                                    1f to Color(0xFF4067E5),
+                                ),
+                        ),
+                    shape = RoundedCornerShape(10.dp),
+                ).clip(RoundedCornerShape(10.dp))
+                .padding(horizontal = 20.dp, vertical = 11.dp)
+                .background(White),
     ) {
         if (isActive) {
             BasicTextField(
@@ -65,34 +68,38 @@ fun BooSearchTextField(
                                 Text(
                                     text = stringResource(R.string.movieSearchBarHint),
                                     color = Gray300,
+                                    style = BooTheme.typography.caption2,
                                 )
                             }
                         }
                         Icon(
                             imageVector = ImageVector.vectorResource(id = R.drawable.ic_search),
-                            contentDescription = null
+                            contentDescription = null,
                         )
                     }
-                }
+                },
             )
         } else {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Box(modifier = Modifier
-                    .weight(1f)
-                    .clickable(onClick = onClick)) {
+                Box(
+                    modifier =
+                        Modifier
+                            .weight(1f)
+                            .clickable(onClick = onClick),
+                ) {
                     if (text?.isEmpty() == true || text == null) {
                         Text(
                             text = stringResource(R.string.movieSearchBarHint),
                             color = Gray300,
+                            style = BooTheme.typography.caption2,
                         )
                     }
                 }
                 Icon(
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_search),
-                    contentDescription = null
+                    contentDescription = null,
                 )
             }
-
         }
     }
 }
