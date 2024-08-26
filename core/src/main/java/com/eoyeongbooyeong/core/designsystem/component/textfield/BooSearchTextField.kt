@@ -2,6 +2,7 @@ package com.eoyeongbooyeong.core.designsystem.component.textfield
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,57 +20,87 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.eoyeongbooyeong.core.R
+import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Gray300
 import com.eoyeongbooyeong.core.designsystem.theme.Purple
 import com.eoyeongbooyeong.core.designsystem.theme.White
 
 @Composable
 fun BooSearchTextField(
-    text: String,
+    text: String? = null,
     modifier: Modifier = Modifier,
     onValueChange: (String) -> Unit = {},
+    isActive: Boolean = true,
+    onClick: () -> Unit = {},
 ) {
     Row(
-        modifier = modifier
-            .border(
-                width = 1.dp,
-                brush = Brush.linearGradient(
-                    colorStops = arrayOf(
-                        0.0f to Purple,
-                        1f to Color(0xFF4067E5)
-                    )
-                ),
-                shape = RoundedCornerShape(10.dp)
-            )
-            .clip(RoundedCornerShape(10.dp))
-            .background(White)
-            .padding(horizontal = 20.dp, vertical = 11.dp)
+        modifier =
+            modifier
+                .border(
+                    width = 1.dp,
+                    brush =
+                        Brush.linearGradient(
+                            colorStops =
+                                arrayOf(
+                                    0.0f to Purple,
+                                    1f to Color(0xFF4067E5),
+                                ),
+                        ),
+                    shape = RoundedCornerShape(10.dp),
+                ).clip(RoundedCornerShape(10.dp))
+                .padding(horizontal = 20.dp, vertical = 11.dp)
+                .background(White),
     ) {
-        BasicTextField(
-            value = text,
-            onValueChange = onValueChange,
-            decorationBox = { innerTextField ->
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Box(modifier = Modifier.weight(1f)) {
-                        innerTextField()
-                        if (text.isEmpty()) {
-                            Text(
-                                text = "영화 제목으로 위치를 검색해보세요!",
-                                color = Gray300,
-                            )
+        if (isActive) {
+            BasicTextField(
+                value = text ?: "",
+                onValueChange = onValueChange,
+                decorationBox = { innerTextField ->
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Box(modifier = Modifier.weight(1f)) {
+                            innerTextField()
+                            if (text?.isEmpty() == true || text == null) {
+                                Text(
+                                    text = stringResource(R.string.movieSearchBarHint),
+                                    color = Gray300,
+                                    style = BooTheme.typography.caption2,
+                                )
+                            }
                         }
+                        Icon(
+                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_search),
+                            contentDescription = null,
+                        )
                     }
-                    Icon(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_search),
-                        contentDescription = null
-                    )
+                },
+            )
+        } else {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Box(
+                    modifier =
+                        Modifier
+                            .weight(1f)
+                            .clickable(onClick = onClick),
+                ) {
+                    if (text?.isEmpty() == true || text == null) {
+                        Text(
+                            text = stringResource(R.string.movieSearchBarHint),
+                            color = Gray300,
+                            style = BooTheme.typography.caption2,
+                        )
+                    }
                 }
+                Icon(
+                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_search),
+                    contentDescription = null,
+                )
             }
-        )
+        }
     }
 }
 
@@ -77,7 +108,7 @@ fun BooSearchTextField(
 @Composable
 fun BooSearchTextFieldPreview() {
     Column {
-        BooSearchTextField(text = "")
+        BooSearchTextField()
         Spacer(modifier = Modifier.height(20.dp))
         BooSearchTextField(text = "Search")
     }

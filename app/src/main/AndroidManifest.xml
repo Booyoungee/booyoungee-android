@@ -28,6 +28,10 @@
             </intent-filter>
         </activity>
 
+        <meta-data
+            android:name="com.kakao.vectormap.APP_KEY"
+            android:value="kakao${KAKAO_NATIVE_APP_KEY}"/>
+
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">
