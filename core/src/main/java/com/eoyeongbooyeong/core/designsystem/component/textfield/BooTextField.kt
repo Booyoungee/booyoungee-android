@@ -43,7 +43,7 @@ fun BooTextField(
         modifier = modifier
             .clip(RoundedCornerShape(10.dp))
             .background(Gray100)
-            .padding(12.dp)
+            .padding(horizontal = 10.dp, vertical = 16.dp)
             .focusRequester(focusRequester)
             .onFocusChanged { focusState ->
                 onFocusChanged(focusState.isFocused)
