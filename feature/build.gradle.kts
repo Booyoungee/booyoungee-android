@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.kotlinx.serialization)
 }
 
 android {
@@ -52,6 +53,9 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":domain"))
 
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.kotlinx.collections.immutable)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -74,6 +78,9 @@ dependencies {
     //Kakao SDK
     implementation(libs.kakao.user)
     implementation(libs.kakao.map)
+
+    // Navigation
+    implementation(libs.androidx.compose.navigation)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

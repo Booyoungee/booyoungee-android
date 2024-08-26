@@ -18,6 +18,9 @@ appcompat = "1.7.0"
 material = "1.12.0"
 kotlinParcelize = "1.8.20"
 kotlinCompilerExtensionVersion = "1.5.1"
+kotlinxSerialization = "1.9.0"
+kotlinxSerializationJson = "1.6.3"
+kotlinxCollectionsImmutable = "0.3.7"
 
 # hilt
 hilt = "2.51.1"
@@ -36,7 +39,7 @@ foundationAndroid = "1.6.8"
 androidxComposeBom = "2024.04.01"
 androidxComposeCompiler = "1.5.14"
 androidxComposeMaterial3 = "1.2.1"
-composeNavigation = "2.8.0-beta04"
+composeNavigation = "2.8.0-alpha08"
 composeSavable = "1.4.3"
 composeFlowRow = "0.30.0"
 
@@ -84,6 +87,9 @@ kakao-map = { group = "com.kakao.maps.open", name = "android", version.ref="kaka
 androidx-animation-android = { group = "androidx.compose.animation", name = "animation-android", version.ref = "animationAndroid" }
 androidx-foundation-android = { group = "androidx.compose.foundation", name = "foundation-android", version.ref = "foundationAndroid" }
 
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
@@ -92,3 +98,4 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = {id = "com.google.devtools.ksp", version.ref = "ksp"}
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlinParcelize" }
+kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinxSerialization" }
