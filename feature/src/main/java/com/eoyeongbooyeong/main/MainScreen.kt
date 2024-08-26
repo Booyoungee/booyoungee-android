@@ -122,7 +122,6 @@ private fun MainBottomBar(
                         .fillMaxWidth()
                         .wrapContentHeight()
                         .navigationBarsPadding()
-                        .fillMaxWidth()
                         .height(86.dp),
                 verticalAlignment = Alignment.Bottom,
                 horizontalArrangement = Arrangement.SpaceEvenly,
