@@ -1,7 +1,6 @@
 package com.eoyeongbooyeong.core.designsystem.component.star
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -14,12 +13,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.extension.noRippleClickable
 
 @Composable
-fun ReviewStar(star: Float) {
+fun ReviewStar(
+    star: Float,
+    starSize: Dp = 12.dp,
+) {
     val filledStars = star.toInt()
     val maxStars = 5
 
@@ -28,14 +31,14 @@ fun ReviewStar(star: Float) {
             Image(
                 painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_filled_star),
                 contentDescription = "filled star(review) icon",
-                modifier = Modifier.size(12.dp),
+                modifier = Modifier.size(starSize),
             )
         }
         repeat(maxStars - filledStars) {
             Image(
                 painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_empty_star),
                 contentDescription = "empty star (review) icon",
-                modifier = Modifier.size(12.dp),
+                modifier = Modifier.size(starSize),
             )
         }
     }
@@ -44,7 +47,7 @@ fun ReviewStar(star: Float) {
 @Composable
 fun ClickableReviewStar(
     modifier: Modifier = Modifier,
-    onClickReviewScore: (Int) -> Unit
+    onClickReviewScore: (Int) -> Unit,
 ) {
     val maxStar = 5
     val selectedStarIndex = remember { mutableStateOf(0) }
