@@ -18,6 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.eoyeongbooyeong.core.R
+import com.eoyeongbooyeong.core.designsystem.component.menu.ReviewDropdownMenu
 import com.eoyeongbooyeong.core.designsystem.theme.Black
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.White
@@ -61,13 +62,9 @@ fun Review(
             Column(
                 horizontalAlignment = Alignment.End,
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_menu),
-                    contentDescription = "menu icon",
-                    modifier = Modifier.size(12.dp).clickable {
-
-                    },
-                )
+                ReviewDropdownMenu {
+                    Text(text = "신고하기", style = BooTheme.typography.body4)
+                }
                 Spacer(modifier = Modifier.size(3.dp))
                 Text(text = reviewDate, style = BooTheme.typography.caption4, color = Black)
             }
