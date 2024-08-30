@@ -40,7 +40,7 @@ internal fun HomeFloatingButton(
 
                 buttonState.isBookmarkButton ->
                     Image(
-                        painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_bookmark_default),
+                        painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_bookmark_default_24),
                         contentDescription = "bookmark location",
                     )
             }

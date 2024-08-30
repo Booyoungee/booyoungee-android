@@ -27,27 +27,28 @@ fun BooTopAppBar(
     trailingIcon: @Composable () -> Unit = {},
 ) {
     Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(White)
-            .padding(horizontal = 24.dp)
-            .padding(top = 17.dp, bottom = 24.dp),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .background(White)
+                .padding(horizontal = 24.dp)
+                .padding(top = 17.dp, bottom = 24.dp),
     ) {
         Box(
             modifier = Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.CenterStart
+            contentAlignment = Alignment.CenterStart,
         ) {
             leadingIcon()
         }
         Box(
             modifier = Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             content()
         }
         Box(
             modifier = Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.CenterEnd
+            contentAlignment = Alignment.CenterEnd,
         ) {
             trailingIcon()
         }
@@ -59,13 +60,15 @@ fun BooTextTopAppBar(
     text: String,
     modifier: Modifier = Modifier,
     leadingIcon: @Composable () -> Unit = {},
+    trailingIcon: @Composable () -> Unit = {},
 ) {
     BooTopAppBar(
         modifier = modifier,
         leadingIcon = leadingIcon,
         content = {
             Text(text = text, style = BooTheme.typography.body1)
-        }
+        },
+        trailingIcon = trailingIcon,
     )
 }
 
@@ -78,7 +81,7 @@ fun BooTopAppBarPreview() {
                 leadingIcon = {
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_left),
-                        contentDescription = "left"
+                        contentDescription = "left",
                     )
                 },
                 text = "닉네임 변경",
@@ -90,6 +93,16 @@ fun BooTopAppBarPreview() {
                 text = "마이페이지",
             )
 
+            HorizontalDivider()
+            BooTextTopAppBar(
+                trailingIcon = {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_cancel),
+                        contentDescription = "left",
+                    )
+                },
+                text = "닉네임 변경",
+            )
         }
     }
 }

@@ -26,6 +26,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.eoyeongbooyeong.core.designsystem.component.star.ReviewStar
 import com.eoyeongbooyeong.core.designsystem.theme.Black
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Gray400
@@ -33,7 +34,6 @@ import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.core.extension.listToBracketedString
 import com.eoyeongbooyeong.core.extension.noRippleClickable
 import com.eoyeongbooyeong.feature.R
-import com.eoyeongbooyeong.home.component.ReviewStar
 
 @Composable
 internal fun PlaceInfoListItem(
@@ -149,12 +149,50 @@ internal fun PlaceInfoListItem(
                             modifier
                                 .padding(start = 8.dp)
                                 .align(Alignment.CenterVertically),
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
                     )
                 }
             }
             Spacer(modifier = modifier.width(8.dp))
         }
+    }
+}
+
+@Composable
+fun PlaceReviewAndLikedCount(
+    modifier: Modifier = Modifier,
+    star: Float = 0f,
+    reviewCount: Int = 0,
+    likedCount: Int = 0,
+) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        ReviewStar(star)
+
+        Text(
+            text = star.toString(),
+            style = BooTheme.typography.caption1,
+            color = Black,
+            modifier = Modifier.weight(1f, false).padding(start = 4.dp),
+        )
+        Text(
+            text = stringResource(R.string.placeReviewAndPoint, reviewCount),
+            style = BooTheme.typography.caption2,
+            color = Gray400,
+            modifier = Modifier.weight(1f, false).padding(start = 4.dp),
+        )
+        Image(
+            painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_like),
+            contentDescription = "liked icon",
+            modifier = Modifier.size(12.dp),
+        )
+        Text(
+            text = likedCount.toString(),
+            style = BooTheme.typography.caption1,
+            color = Black,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.weight(1f, false).padding(start = 4.dp),
+        )
     }
 }
 
