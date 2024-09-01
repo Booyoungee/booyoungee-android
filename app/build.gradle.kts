@@ -1,4 +1,5 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
@@ -42,12 +43,24 @@ android {
     }
 
     buildTypes {
+        val properties = Properties().apply {
+            load(rootProject.file("local.properties").inputStream())
+        }
+
+        debug {
+            val devUrl = properties["booDevUrl"] as? String ?: ""
+            buildConfigField("String", "BASE_URL", devUrl)
+        }
+
         release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            val prodUrl = properties["booProdUrl"] as? String ?: ""
+            buildConfigField("String", "BASE_URL", prodUrl)
         }
     }
     compileOptions {
@@ -77,6 +90,7 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":data"))
     implementation(project(":feature"))
+    implementation(project(":core"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -101,6 +115,16 @@ dependencies {
     //Kakao SDK
     implementation(libs.kakao.user)
     implementation(libs.kakao.map)
+
+    // network
+    implementation(platform(libs.okhttp.bom))
+    implementation(libs.bundles.okhttp)
+
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.kotlin.serialization)
+
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.timber)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
