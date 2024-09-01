@@ -95,7 +95,7 @@ internal fun MainScreen(navigator: MainNavigator = rememberMainNavigator()) {
         },
         bottomBar = {
             MainBottomBar(
-                isVisible = true,
+                isVisible = navigator.shouldShowBottomBar(),
                 tabs = MainTab.entries.toPersistentList(),
                 currentTab = navigator.currentTab ?: MainTab.HOME,
                 onTabSelected = navigator::navigate,
@@ -118,11 +118,11 @@ private fun MainBottomBar(
             HorizontalDivider(color = Gray100)
             Row(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight()
-                        .navigationBarsPadding()
-                        .height(86.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .navigationBarsPadding()
+                    .height(86.dp),
                 verticalAlignment = Alignment.Bottom,
                 horizontalArrangement = Arrangement.SpaceEvenly,
             ) {
