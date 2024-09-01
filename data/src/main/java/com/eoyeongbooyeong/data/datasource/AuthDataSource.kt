@@ -3,7 +3,11 @@ package com.eoyeongbooyeong.data.datasource
 import com.eoyeongbooyeong.domain.model.TokenModel
 
 interface AuthDataSource {
-    suspend fun reissueTokens(
+    suspend fun postReissueTokens(
         refreshToken: String
-    ): Result<TokenModel>
+    ): TokenModel
+
+    suspend fun postLogin(
+        accessToken: String
+    ): TokenModel
 }

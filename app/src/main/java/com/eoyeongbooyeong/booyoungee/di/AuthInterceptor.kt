@@ -39,7 +39,7 @@ class AuthInterceptor @Inject constructor(
             CODE_TOKEN_EXPIRED -> {
                 try {
                     runBlocking {
-                        authDataSource.reissueTokens(
+                        authDataSource.postReissueTokens(
                             dataStore.refreshToken
                         )
                     }.onSuccess { data ->

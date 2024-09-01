@@ -7,6 +7,10 @@ interface AuthRepository {
         refreshToken: String,
     ): Result<TokenModel>
 
+    suspend fun login(
+        accessToken: String,
+    ): Result<TokenModel>
+
     suspend fun isAlreadyLogin(): Boolean
     suspend fun setTokens(
         accessToken: String,
