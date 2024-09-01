@@ -5,8 +5,8 @@ import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import com.eoyeongbooyeong.core.extension.toast
+import com.eoyeongbooyeong.data.datasource.AuthDataSource
 import com.eoyeongbooyeong.data.datastore.BooDataStore
-import com.eoyeongbooyeong.domain.repository.TokenReissueRepository
 import com.eoyeongbooyeong.main.MainActivity
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.runBlocking
@@ -17,7 +17,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class AuthInterceptor @Inject constructor(
-    private val tokenReissueRepository: TokenReissueRepository,
+    private val authDataSource: AuthDataSource,
     private val dataStore: BooDataStore,
     @ApplicationContext private val context: Context,
 ) : Interceptor {
@@ -39,7 +39,7 @@ class AuthInterceptor @Inject constructor(
             CODE_TOKEN_EXPIRED -> {
                 try {
                     runBlocking {
-                        tokenReissueRepository.reissueTokens(
+                        authDataSource.reissueTokens(
                             dataStore.refreshToken
                         )
                     }.onSuccess { data ->
