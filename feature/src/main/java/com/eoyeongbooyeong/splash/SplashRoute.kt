@@ -1,5 +1,6 @@
 package com.eoyeongbooyeong.splash
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
@@ -10,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
+import com.eoyeongbooyeong.core.designsystem.theme.White
 
 @Composable
 fun SplashRoute(
@@ -40,7 +42,9 @@ fun SplashRoute(
 fun SplashScreen(
 ) {
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(White),
         contentAlignment = Alignment.Center,
     ) {
         Text(text = "Splash Screen")
