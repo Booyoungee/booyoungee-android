@@ -15,8 +15,8 @@ fun SplashScreen(
     navigateToLogIn: () -> Unit,
 ) {
     LaunchedEffect(key1 = Unit) {
-        delay(2000L)
-        navigateToHome(true)
+        delay(1500L)
+        navigateToLogIn()
     }
 
     Box(

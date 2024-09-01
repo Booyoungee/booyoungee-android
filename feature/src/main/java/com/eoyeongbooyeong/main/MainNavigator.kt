@@ -10,6 +10,8 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.eoyeongbooyeong.auth.login.Login
+import com.eoyeongbooyeong.auth.signup.SignUp
 import com.eoyeongbooyeong.home.Home
 import com.eoyeongbooyeong.home.navigateToHome
 import com.eoyeongbooyeong.mypage.Mypage
@@ -58,6 +60,14 @@ internal class MainNavigator(
 
     private fun navigateUp() {
         navController.navigateUp()
+    }
+
+    fun navigateToLogin(navOptions: NavOptions) {
+        navController.navigate(Login, navOptions)
+    }
+
+    fun navigateToSignUp(navOptions: NavOptions) {
+        navController.navigate(SignUp, navOptions)
     }
 
     fun navigateToHome(navOptions: NavOptions) {
