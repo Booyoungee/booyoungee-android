@@ -4,12 +4,14 @@ import com.eoyeongbooyeong.domain.model.TokenModel
 
 interface AuthRepository {
     suspend fun reissueTokens(
-        refreshToken: String
+        refreshToken: String,
     ): Result<TokenModel>
 
     suspend fun isAlreadyLogin(): Boolean
     suspend fun setTokens(
         accessToken: String,
-        refreshToken: String
+        refreshToken: String,
     )
+
+    suspend fun clearInfo()
 }

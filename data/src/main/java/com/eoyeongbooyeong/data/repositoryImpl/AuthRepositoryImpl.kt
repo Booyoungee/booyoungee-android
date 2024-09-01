@@ -16,4 +16,5 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun isAlreadyLogin(): Boolean = booDataStore.isAlreadyLogin()
     override suspend fun setTokens(accessToken: String, refreshToken: String) = booDataStore.setTokens(accessToken, refreshToken)
+    override suspend fun clearInfo() = booDataStore.clearInfo()
 }
