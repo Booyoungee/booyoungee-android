@@ -5,4 +5,5 @@ interface BooDataStore {
     var refreshToken: String
     fun clearInfo()
     fun setTokens(accessToken: String, refreshToken: String)
+    fun isAlreadyLogin(): Boolean
 }

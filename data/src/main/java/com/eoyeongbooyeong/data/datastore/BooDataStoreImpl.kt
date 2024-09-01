@@ -26,6 +26,8 @@ class BooDataStoreImpl @Inject constructor(
         }
     }
 
+    override fun isAlreadyLogin(): Boolean = accessToken.isNotEmpty() && refreshToken.isNotEmpty()
+
     companion object {
         private const val ACCESS_TOKEN = "ACCESS_TOKEN"
         private const val REFRESH_TOKEN = "REFRESH_TOKEN"

@@ -9,11 +9,11 @@ import kotlinx.serialization.Serializable
 data object Splash : Route
 
 fun NavGraphBuilder.splashNavGraph(
-    navigateToHome: (Boolean) -> Unit,
+    navigateToHome: () -> Unit,
     navigateToLogIn: () -> Unit,
 ) {
     composable<Splash> {
-        SplashScreen(
+        SplashRoute(
             navigateToHome = navigateToHome,
             navigateToLogIn = navigateToLogIn,
         )
