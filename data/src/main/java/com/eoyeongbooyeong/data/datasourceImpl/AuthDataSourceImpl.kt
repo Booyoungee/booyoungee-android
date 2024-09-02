@@ -24,7 +24,7 @@ class AuthDataSourceImpl @Inject constructor(
         accessToken: String,
         refreshToken: String,
         nickname: String,
-    ): TokenDto = authService.postSignup(
+    ): BaseResponse<TokenDto> = authService.postSignup(
         accessToken = accessToken,
         refreshToken = refreshToken,
         nickname = nickname
