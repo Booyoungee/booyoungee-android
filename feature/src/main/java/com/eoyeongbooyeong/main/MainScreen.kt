@@ -1,6 +1,5 @@
 package com.eoyeongbooyeong.main
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -32,9 +31,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
+import com.eoyeongbooyeong.auth.login.Login
+import com.eoyeongbooyeong.auth.login.loginNavGraph
+import com.eoyeongbooyeong.auth.signup.SignUp
+import com.eoyeongbooyeong.auth.signup.signUpNavGraph
 import com.eoyeongbooyeong.core.designsystem.theme.Black
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Gray100
@@ -43,15 +45,16 @@ import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.home.homeNavGraph
 import com.eoyeongbooyeong.mypage.mypageNavGraph
 import com.eoyeongbooyeong.place_recommend.placeNavGraph
+import com.eoyeongbooyeong.splash.Splash
 import com.eoyeongbooyeong.splash.splashNavGraph
 import com.eoyeongbooyeong.stamp.stampNavGraph
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
-internal fun MainScreen(navigator: MainNavigator = rememberMainNavigator()) {
-    Log.d("MainScreen", "MainScreen")
-
+internal fun MainScreen(
+    navigator: MainNavigator = rememberMainNavigator(),
+) {
     Scaffold(
         content = { paddingValue ->
             Box(
@@ -69,11 +72,7 @@ internal fun MainScreen(navigator: MainNavigator = rememberMainNavigator()) {
                         navigateToHome = {
                             val navOptions =
                                 navOptions {
-                                    popUpTo(
-                                        navigator.navController.graph
-                                            .findStartDestination()
-                                            .id,
-                                    ) {
+                                    popUpTo<Splash> {
                                         inclusive = true
                                     }
                                     launchSingleTop = true
@@ -81,7 +80,45 @@ internal fun MainScreen(navigator: MainNavigator = rememberMainNavigator()) {
                             navigator.navigateToHome(navOptions = navOptions)
                         },
                         navigateToLogIn = {
-                            // TODO: navigate to login
+                            val navOptions =
+                                navOptions {
+                                    popUpTo<Splash> {
+                                        inclusive = true
+                                    }
+                                    launchSingleTop = true
+                                }
+                            navigator.navigateToLogin(navOptions = navOptions)
+                        },
+                    )
+                    loginNavGraph(
+                        navigateToHome = {
+                            val navOptions =
+                                navOptions {
+                                    popUpTo<Login> {
+                                        inclusive = true
+                                    }
+                                    launchSingleTop = true
+                                }
+                            navigator.navigateToHome(navOptions = navOptions)
+                        },
+                        navigateToSignUp = {
+                            val navOptions =
+                                navOptions {
+                                    launchSingleTop = true
+                                }
+                            navigator.navigateToSignUp(navOptions = navOptions)
+                        }
+                    )
+                    signUpNavGraph(
+                        navigateToHome = {
+                            val navOptions =
+                                navOptions {
+                                    popUpTo<SignUp> {
+                                        inclusive = true
+                                    }
+                                    launchSingleTop = true
+                                }
+                            navigator.navigateToHome(navOptions = navOptions)
                         },
                     )
                     homeNavGraph(
@@ -95,7 +132,7 @@ internal fun MainScreen(navigator: MainNavigator = rememberMainNavigator()) {
         },
         bottomBar = {
             MainBottomBar(
-                isVisible = true,
+                isVisible = navigator.shouldShowBottomBar(),
                 tabs = MainTab.entries.toPersistentList(),
                 currentTab = navigator.currentTab ?: MainTab.HOME,
                 onTabSelected = navigator::navigate,
@@ -118,11 +155,11 @@ private fun MainBottomBar(
             HorizontalDivider(color = Gray100)
             Row(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight()
-                        .navigationBarsPadding()
-                        .height(86.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .navigationBarsPadding()
+                    .height(86.dp),
                 verticalAlignment = Alignment.Bottom,
                 horizontalArrangement = Arrangement.SpaceEvenly,
             ) {
@@ -146,22 +183,24 @@ private fun MainBottomBarItem(
 ) {
     Box(
         modifier =
-            Modifier
-                .fillMaxHeight()
-                .selectable(
-                    selected = isSelected,
-                    indication = null,
-                    role = null,
-                    interactionSource = remember { MutableInteractionSource() },
-                    onClick = onClick,
-                ),
+        Modifier
+            .fillMaxHeight()
+            .selectable(
+                selected = isSelected,
+                indication = null,
+                role = null,
+                interactionSource = remember { MutableInteractionSource() },
+                onClick = onClick,
+            ),
         contentAlignment = Alignment.Center,
     ) {
         Column {
             Icon(
                 painter = painterResource(id = tab.defaultIconResource),
                 contentDescription = tab.contentDescription,
-                modifier = Modifier.size(24.dp).align(Alignment.CenterHorizontally),
+                modifier = Modifier
+                    .size(24.dp)
+                    .align(Alignment.CenterHorizontally),
                 tint = if (isSelected) Black else Gray400,
             )
             Spacer(modifier = Modifier.height(6.dp))

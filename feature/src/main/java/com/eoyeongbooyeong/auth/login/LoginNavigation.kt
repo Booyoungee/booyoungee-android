@@ -1,4 +1,4 @@
-package com.eoyeongbooyeong.splash
+package com.eoyeongbooyeong.auth.login
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -6,16 +6,16 @@ import com.eoyeongbooyeong.navigation.Route
 import kotlinx.serialization.Serializable
 
 @Serializable
-data object Splash : Route
+data object Login : Route
 
-fun NavGraphBuilder.splashNavGraph(
+fun NavGraphBuilder.loginNavGraph(
     navigateToHome: () -> Unit,
-    navigateToLogIn: () -> Unit,
+    navigateToSignUp: () -> Unit,
 ) {
-    composable<Splash> {
-        SplashRoute(
+    composable<Login> {
+        LoginRoute(
             navigateToHome = navigateToHome,
-            navigateToLogIn = navigateToLogIn,
+            navigateToSignUp = navigateToSignUp,
         )
     }
 }
