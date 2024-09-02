@@ -21,6 +21,8 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.eoyeongbooyeong.core.designsystem.theme.Black
+import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Gray100
 import com.eoyeongbooyeong.core.designsystem.theme.Gray300
 
@@ -58,7 +60,7 @@ fun BooTextField(
                 focusManager.clearFocus()
             }
         ),
-        // textStyle = HankkiTheme.typography.body1.copy(color = textColor) // typography 설정 후 copy를 통해 글자 색 설정
+        textStyle = BooTheme.typography.body1.copy(color = Black),
         decorationBox = { innerTextField ->
             Box {
                 innerTextField()

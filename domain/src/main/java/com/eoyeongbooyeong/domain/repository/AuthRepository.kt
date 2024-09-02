@@ -12,6 +12,12 @@ interface AuthRepository {
         refreshToken: String,
     ): Result<TokenEntity>
 
+    suspend fun signup(
+        accessToken: String,
+        refreshToken: String,
+        nickname: String,
+    ): Result<TokenEntity>
+
     suspend fun isAlreadyLogin(): Boolean
     suspend fun setTokens(
         accessToken: String,

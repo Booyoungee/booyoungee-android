@@ -1,5 +1,6 @@
 package com.eoyeongbooyeong.data.datasource
 
+import com.eoyeongbooyeong.data.dto.response.BaseResponse
 import com.eoyeongbooyeong.data.dto.response.TokenDto
 
 interface AuthDataSource {
@@ -10,5 +11,11 @@ interface AuthDataSource {
     suspend fun postLogin(
         accessToken: String,
         refreshToken: String,
-    ): TokenDto
+    ): BaseResponse<TokenDto>
+
+    suspend fun postSignup(
+        accessToken: String,
+        refreshToken: String,
+        nickname: String,
+    ): BaseResponse<TokenDto>
 }

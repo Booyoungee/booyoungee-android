@@ -12,11 +12,16 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.eoyeongbooyeong.auth.login.LoginViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.eoyeongbooyeong.core.designsystem.component.button.BooEnabledButton
 import com.eoyeongbooyeong.core.designsystem.component.textfield.BooTextField
 import com.eoyeongbooyeong.core.designsystem.component.topbar.BooTextTopAppBar
@@ -24,20 +29,55 @@ import com.eoyeongbooyeong.core.designsystem.theme.Blue300
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Red
 import com.eoyeongbooyeong.core.designsystem.theme.White
+import com.eoyeongbooyeong.core.extension.addFocusCleaner
+import timber.log.Timber
 
 @Composable
 internal fun SignUpRoute(
     navigateToHome: () -> Unit,
-    viewModel: LoginViewModel = hiltViewModel(),
+    viewModel: SignUpViewModel = hiltViewModel(),
 ) {
-    SignUpScreen()
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(viewModel.sideEffects, lifecycleOwner) {
+        viewModel.sideEffects.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    is SignUpSideEffect.NavigateToHome -> navigateToHome()
+                    is SignUpSideEffect.SignUpError -> {
+                        Timber.e(sideEffect.errorMessage)
+                    }
+                }
+            }
+    }
+
+    SignUpScreen(
+        name = state.name,
+        isAvailable = state.isAvailable,
+        isError = state.isError,
+        onTextChanged = viewModel::updateName,
+        isAvailableNickname = viewModel::isAvailableNickname,
+        signUp = viewModel::signUp,
+    )
 }
 
 @Composable
-internal fun SignUpScreen() {
+internal fun SignUpScreen(
+    name: String,
+    isAvailable: Boolean,
+    isError: Boolean,
+    onTextChanged: (String) -> Unit,
+    isAvailableNickname: () -> Unit,
+    signUp: () -> Unit,
+) {
+    val focusManager = LocalFocusManager.current
+
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .addFocusCleaner(focusManager)
             .background(White)
             .statusBarsPadding(),
     ) {
@@ -48,7 +88,7 @@ internal fun SignUpScreen() {
                 .fillMaxSize()
                 .padding(horizontal = 24.dp),
         ) {
-            Spacer(modifier = Modifier.weight(64f/494f))
+            Spacer(modifier = Modifier.weight(64f / 494f))
 
             Text(
                 text = "반가워요!\n앞으로 어떻게 불러드릴까요?",
@@ -62,50 +102,41 @@ internal fun SignUpScreen() {
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     BooTextField(
-                        value = "",
+                        value = name,
                         placeholder = "닉네임을 입력해 주세요",
-                        onTextChanged = {},
+                        onTextChanged = onTextChanged,
                         onFocusChanged = {},
+                        modifier = Modifier.weight(1f),
                     )
 
                     Spacer(modifier = Modifier.width(8.dp))
 
                     BooEnabledButton(
                         text = "중복 확인",
-                        enabled = false, // BooTextField is NotEmpty
-                    ) {
-
-                    }
+                        enabled = name.isNotBlank(),
+                        onClick = isAvailableNickname
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                if (true) { // state : isError
-                    Text(
-                        text = "이미 사용 중인 닉네임입니다.",
-                        style = BooTheme.typography.caption2,
-                        color = Red
-                    )
-                }
-
-                if (false) { // state : isAvailable
-                    Text(
-                        text = "사용 가능한 닉네임입니다!",
-                        style = BooTheme.typography.caption2,
-                        color = Blue300
-                    )
-                }
+                Text(
+                    text = if (isError) "이미 사용 중인 닉네임입니다." else if (isAvailable) "사용 가능한 닉네임입니다!" else " ",
+                    style = BooTheme.typography.caption2,
+                    color = if (isError) Red else Blue300
+                )
             }
 
-            Spacer(modifier = Modifier.weight(326f/494f))
+            Spacer(modifier = Modifier.weight(326f / 494f))
 
             BooEnabledButton(
                 text = "회원가입 완료하기",
                 modifier = Modifier.fillMaxWidth(),
-                enabled = true // state : isAvailable
+                enabled = isAvailable,
+                onClick = signUp,
             )
 
-            Spacer(modifier = Modifier.weight(104f/494f))
+            Spacer(modifier = Modifier.weight(104f / 494f))
         }
     }
 }

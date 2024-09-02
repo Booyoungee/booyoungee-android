@@ -6,9 +6,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class TokenDto(
-    @SerialName("access_token")
+    @SerialName("accessToken")
     val accessToken: String,
-    @SerialName("refresh_token")
+    @SerialName("refreshToken")
     val refreshToken: String,
 ) {
     fun toEntity() = TokenEntity(
@@ -16,8 +16,3 @@ data class TokenDto(
         refreshToken = refreshToken
     )
 }
-
-fun TokenEntity.toDto() = TokenDto(
-    accessToken = accessToken,
-    refreshToken = refreshToken
-)
