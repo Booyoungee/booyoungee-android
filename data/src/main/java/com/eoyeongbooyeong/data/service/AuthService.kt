@@ -1,7 +1,9 @@
 package com.eoyeongbooyeong.data.service
 
 import com.eoyeongbooyeong.data.dto.response.BaseResponse
+import com.eoyeongbooyeong.data.dto.response.NicknameDto
 import com.eoyeongbooyeong.data.dto.response.TokenDto
+import com.eoyeongbooyeong.data.dto.response.TokenWithNicknameDto
 import com.eoyeongbooyeong.domain.entity.TokenEntity
 import retrofit2.http.Body
 import retrofit2.http.Header
@@ -23,6 +25,6 @@ interface AuthService {
     suspend fun postSignup(
         @Header("X-Kakao-Access-Token") accessToken: String,
         @Header("X-Kakao-Refresh-Token") refreshToken: String,
-        @Body nickname: String,
-    ): BaseResponse<TokenDto>
+        @Body nickname: NicknameDto,
+    ): BaseResponse<TokenWithNicknameDto>
 }

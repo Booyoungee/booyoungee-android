@@ -2,6 +2,7 @@ package com.eoyeongbooyeong.data.repositoryImpl
 
 import com.eoyeongbooyeong.data.datasource.AuthDataSource
 import com.eoyeongbooyeong.data.datastore.BooDataStore
+import com.eoyeongbooyeong.data.dto.response.NicknameDto
 import com.eoyeongbooyeong.domain.entity.TokenEntity
 import com.eoyeongbooyeong.domain.repository.AuthRepository
 import javax.inject.Inject
@@ -24,7 +25,7 @@ class AuthRepositoryImpl @Inject constructor(
         refreshToken: String,
         nickname: String,
     ): Result<TokenEntity> = runCatching {
-        authDataSource.postSignup(accessToken, refreshToken, nickname).data.toEntity()
+        authDataSource.postSignup(accessToken, refreshToken, NicknameDto(nickname)).data.toEntity()
     }
 
     override suspend fun isAlreadyLogin(): Boolean = booDataStore.isAlreadyLogin()

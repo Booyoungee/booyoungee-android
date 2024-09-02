@@ -8,7 +8,6 @@ import retrofit2.http.Query
 interface UserService {
     @GET("api/v1/user/nickname")
     suspend fun getIsAvailableNickname(
-        @Query("nickname") nickname: NicknameDto,
-    ): BaseResponse<String>
-
+        @Query("nickname") nickname: String,
+    ): BaseResponse<NicknameDto>
 }

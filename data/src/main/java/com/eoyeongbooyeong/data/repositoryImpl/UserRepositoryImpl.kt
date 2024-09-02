@@ -8,6 +8,6 @@ class UserRepositoryImpl @Inject constructor(
     private val userDataSource: UserDataSource,
 ) : UserRepository {
     override suspend fun isAvailableNickname(nickname: String): Result<String> = runCatching {
-        userDataSource.getIsAvailableNickname(nickname)
+        userDataSource.getIsAvailableNickname(nickname).nickname
     }
 }

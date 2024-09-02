@@ -1,14 +1,10 @@
 package com.eoyeongbooyeong.auth.signup
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.eoyeongbooyeong.auth.login.LoginSideEffect
 import com.eoyeongbooyeong.domain.repository.AuthRepository
 import com.eoyeongbooyeong.domain.repository.UserRepository
-import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.auth.TokenManagerProvider
-import com.kakao.sdk.user.UserApiClient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -45,6 +41,7 @@ class SignUpViewModel @Inject constructor(
                 .onSuccess {
                     _state.value = _state.value.copy(
                         isAvailable = true,
+                        isError = false
                     )
                 }
                 .onFailure {

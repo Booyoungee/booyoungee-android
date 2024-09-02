@@ -1,7 +1,9 @@
 package com.eoyeongbooyeong.data.datasource
 
 import com.eoyeongbooyeong.data.dto.response.BaseResponse
+import com.eoyeongbooyeong.data.dto.response.NicknameDto
 import com.eoyeongbooyeong.data.dto.response.TokenDto
+import com.eoyeongbooyeong.data.dto.response.TokenWithNicknameDto
 
 interface AuthDataSource {
     suspend fun postReissueTokens(
@@ -16,6 +18,6 @@ interface AuthDataSource {
     suspend fun postSignup(
         accessToken: String,
         refreshToken: String,
-        nickname: String,
-    ): BaseResponse<TokenDto>
+        nickname: NicknameDto,
+    ): BaseResponse<TokenWithNicknameDto>
 }
