@@ -4,7 +4,6 @@ import com.eoyeongbooyeong.data.datasource.AuthDataSource
 import com.eoyeongbooyeong.data.dto.response.BaseResponse
 import com.eoyeongbooyeong.data.dto.response.NicknameDto
 import com.eoyeongbooyeong.data.dto.response.TokenDto
-import com.eoyeongbooyeong.data.dto.response.TokenWithNicknameDto
 import com.eoyeongbooyeong.data.service.AuthService
 import javax.inject.Inject
 
@@ -26,7 +25,7 @@ class AuthDataSourceImpl @Inject constructor(
         accessToken: String,
         refreshToken: String,
         nickname: NicknameDto,
-    ): BaseResponse<TokenWithNicknameDto> = authService.postSignup(
+    ): BaseResponse<TokenDto> = authService.postSignup(
         accessToken = accessToken,
         refreshToken = refreshToken,
         nickname = nickname

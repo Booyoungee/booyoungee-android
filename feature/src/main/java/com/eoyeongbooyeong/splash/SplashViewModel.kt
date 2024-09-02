@@ -20,7 +20,6 @@ class SplashViewModel @Inject constructor(
 
     fun showSplash() {
         viewModelScope.launch {
-            authRepository.clearInfo()
             delay(SPLASH_DURATION)
 
             if (authRepository.isAlreadyLogin()) {
