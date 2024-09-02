@@ -1,15 +1,16 @@
 package com.eoyeongbooyeong.domain.repository
 
-import com.eoyeongbooyeong.domain.model.TokenModel
+import com.eoyeongbooyeong.domain.entity.TokenEntity
 
 interface AuthRepository {
     suspend fun reissueTokens(
         refreshToken: String,
-    ): Result<TokenModel>
+    ): Result<TokenEntity>
 
     suspend fun login(
         accessToken: String,
-    ): Result<TokenModel>
+        refreshToken: String,
+    ): Result<TokenEntity>
 
     suspend fun isAlreadyLogin(): Boolean
     suspend fun setTokens(

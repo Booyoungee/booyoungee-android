@@ -1,6 +1,8 @@
 package com.eoyeongbooyeong.data.service
 
-import com.eoyeongbooyeong.domain.model.TokenModel
+import com.eoyeongbooyeong.data.dto.response.TokenDto
+import com.eoyeongbooyeong.domain.entity.TokenEntity
+import retrofit2.http.Body
 import retrofit2.http.Header
 import retrofit2.http.POST
 
@@ -8,10 +10,11 @@ interface AuthService {
     @POST("token/reissue")
     suspend fun postReissueTokens(
         @Header("Authorization") refreshToken: String,
-    ): TokenModel
+    ): TokenDto
 
     @POST("api/v1/oauth")
     suspend fun postLogin(
-        @Header("Authorization") accessToken: String,
-    ): TokenModel
+        @Header("X-Kakao-Access-Token") accessToken: String,
+        @Header("X-Kakao-Refresh-Token") refreshToken: String,
+    ): TokenDto
 }
