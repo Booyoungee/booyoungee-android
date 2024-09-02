@@ -31,11 +31,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
 import com.eoyeongbooyeong.auth.login.Login
 import com.eoyeongbooyeong.auth.login.loginNavGraph
+import com.eoyeongbooyeong.auth.signup.SignUp
 import com.eoyeongbooyeong.auth.signup.signUpNavGraph
 import com.eoyeongbooyeong.core.designsystem.theme.Black
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
@@ -45,6 +45,7 @@ import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.home.homeNavGraph
 import com.eoyeongbooyeong.mypage.mypageNavGraph
 import com.eoyeongbooyeong.place_recommend.placeNavGraph
+import com.eoyeongbooyeong.splash.Splash
 import com.eoyeongbooyeong.splash.splashNavGraph
 import com.eoyeongbooyeong.stamp.stampNavGraph
 import kotlinx.collections.immutable.ImmutableList
@@ -71,11 +72,7 @@ internal fun MainScreen(
                         navigateToHome = {
                             val navOptions =
                                 navOptions {
-                                    popUpTo(
-                                        navigator.navController.graph
-                                            .findStartDestination()
-                                            .id,
-                                    ) {
+                                    popUpTo<Splash> {
                                         inclusive = true
                                     }
                                     launchSingleTop = true
@@ -85,11 +82,7 @@ internal fun MainScreen(
                         navigateToLogIn = {
                             val navOptions =
                                 navOptions {
-                                    popUpTo(
-                                        navigator.navController.graph
-                                            .findStartDestination()
-                                            .id,
-                                    ) {
+                                    popUpTo<Splash> {
                                         inclusive = true
                                     }
                                     launchSingleTop = true
@@ -101,11 +94,7 @@ internal fun MainScreen(
                         navigateToHome = {
                             val navOptions =
                                 navOptions {
-                                    popUpTo(
-                                        navigator.navController.graph
-                                            .findStartDestination()
-                                            .id,
-                                    ) {
+                                    popUpTo<Login> {
                                         inclusive = true
                                     }
                                     launchSingleTop = true
@@ -115,9 +104,6 @@ internal fun MainScreen(
                         navigateToSignUp = {
                             val navOptions =
                                 navOptions {
-                                    popUpTo<Login> {
-                                        inclusive = true
-                                    }
                                     launchSingleTop = true
                                 }
                             navigator.navigateToSignUp(navOptions = navOptions)
@@ -127,11 +113,7 @@ internal fun MainScreen(
                         navigateToHome = {
                             val navOptions =
                                 navOptions {
-                                    popUpTo(
-                                        navigator.navController.graph
-                                            .findStartDestination()
-                                            .id,
-                                    ) {
+                                    popUpTo<SignUp> {
                                         inclusive = true
                                     }
                                     launchSingleTop = true

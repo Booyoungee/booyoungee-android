@@ -21,6 +21,6 @@ object DataStoreModule {
 
     @Provides
     @Singleton
-    fun provideGoingDataStore(dataStoreImpl: BooDataStoreImpl): BooDataStore =
+    fun provideBooDataStore(dataStoreImpl: BooDataStoreImpl): BooDataStore =
         dataStoreImpl
 }
