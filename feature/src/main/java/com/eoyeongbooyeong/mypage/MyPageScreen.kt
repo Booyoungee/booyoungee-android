@@ -30,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.eoyeongbooyeong.core.constant.PrivacyPolicy
 import com.eoyeongbooyeong.core.constant.TermsOfService
@@ -49,6 +50,8 @@ internal fun MyPageRoute(
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
+    val state = viewModel.state.collectAsStateWithLifecycle()
+
     LaunchedEffect(viewModel.sideEffects, lifecycleOwner) {
         viewModel.sideEffects.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
             .collect { sideEffect ->
@@ -63,6 +66,7 @@ internal fun MyPageRoute(
 
     MyPageScreen(
         paddingValues = paddingValues,
+        nickname = state.value.nickname,
         navigateToWebView = viewModel::navigateToWebView,
         withDraw = viewModel::cancelAuth,
         logout = viewModel::logout
@@ -72,6 +76,7 @@ internal fun MyPageRoute(
 @Composable
 internal fun MyPageScreen(
     paddingValues: PaddingValues,
+    nickname: String,
     navigateToWebView: (String) -> Unit = {},
     withDraw: () -> Unit = {},
     logout: () -> Unit = {},
@@ -101,7 +106,7 @@ internal fun MyPageScreen(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Row {
-                    Text(text = "닉네임")
+                    Text(text = nickname, style = BooTheme.typography.head3)
                     Spacer(modifier = Modifier.width(2.dp))
                     Icon(
                         imageVector = ImageVector.vectorResource(id = com.eoyeongbooyeong.core.R.drawable.ic_right),
@@ -219,6 +224,9 @@ fun MyPageOptionItem(
 @Composable
 fun MyPageScreenPreview() {
     BooTheme {
-        MyPageScreen(PaddingValues(10.dp))
+        MyPageScreen(
+            PaddingValues(10.dp),
+            "닉네임",
+        )
     }
 }

@@ -10,4 +10,8 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun isAvailableNickname(nickname: String): Result<String> = runCatching {
         userDataSource.getIsAvailableNickname(nickname).nickname
     }
+
+    override suspend fun getUserNickName(): Result<String> = runCatching {
+        userDataSource.getUserNickname().nickname
+    }
 }
