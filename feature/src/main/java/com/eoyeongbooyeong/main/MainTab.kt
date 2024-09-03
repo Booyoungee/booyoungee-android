@@ -2,7 +2,7 @@ package com.eoyeongbooyeong.main
 
 import androidx.compose.runtime.Composable
 import com.eoyeongbooyeong.home.Home
-import com.eoyeongbooyeong.mypage.Mypage
+import com.eoyeongbooyeong.mypage.MyPage
 import com.eoyeongbooyeong.navigation.MainTabRoute
 import com.eoyeongbooyeong.navigation.Route
 import com.eoyeongbooyeong.place_recommend.Place
@@ -32,7 +32,7 @@ internal enum class MainTab(
     MYPAGE(
         defaultIconResource = com.eoyeongbooyeong.core.R.drawable.ic_mypage_default,
         contentDescription = "마이페이지",
-        route = Mypage,
+        route = MyPage,
     ),
     ;
 

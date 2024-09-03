@@ -14,13 +14,10 @@ import com.eoyeongbooyeong.auth.login.Login
 import com.eoyeongbooyeong.auth.signup.SignUp
 import com.eoyeongbooyeong.home.Home
 import com.eoyeongbooyeong.home.navigateToHome
-import com.eoyeongbooyeong.mypage.Mypage
-import com.eoyeongbooyeong.mypage.navigateToMypage
+import com.eoyeongbooyeong.mypage.navigateToMyPage
 import com.eoyeongbooyeong.navigation.Route
-import com.eoyeongbooyeong.place_recommend.Place
 import com.eoyeongbooyeong.place_recommend.navigateToPlace
 import com.eoyeongbooyeong.splash.Splash
-import com.eoyeongbooyeong.stamp.Stamp
 import com.eoyeongbooyeong.stamp.navigateToStamp
 
 internal class MainNavigator(
@@ -54,7 +51,7 @@ internal class MainNavigator(
 
             MainTab.STAMP -> navController.navigateToStamp(navOptions = navOptions)
 
-            MainTab.MYPAGE -> navController.navigateToMypage(navOptions = navOptions)
+            MainTab.MYPAGE -> navController.navigateToMyPage(navOptions = navOptions)
         }
     }
 

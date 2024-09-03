@@ -43,7 +43,7 @@ import com.eoyeongbooyeong.core.designsystem.theme.Gray100
 import com.eoyeongbooyeong.core.designsystem.theme.Gray400
 import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.home.homeNavGraph
-import com.eoyeongbooyeong.mypage.mypageNavGraph
+import com.eoyeongbooyeong.mypage.myPageNavGraph
 import com.eoyeongbooyeong.place_recommend.placeNavGraph
 import com.eoyeongbooyeong.splash.Splash
 import com.eoyeongbooyeong.splash.splashNavGraph
@@ -126,7 +126,7 @@ internal fun MainScreen(
                     )
                     placeNavGraph()
                     stampNavGraph()
-                    mypageNavGraph()
+                    myPageNavGraph()
                 }
             }
         },

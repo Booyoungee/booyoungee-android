@@ -4,9 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.eoyeongbooyeong.mypage.Mypage
 import com.eoyeongbooyeong.navigation.MainTabRoute
-import com.eoyeongbooyeong.place_recommend.Place
 import kotlinx.serialization.Serializable
 
 @Serializable

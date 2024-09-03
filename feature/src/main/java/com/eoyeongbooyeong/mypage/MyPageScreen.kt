@@ -4,7 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,6 +27,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.flowWithLifecycle
 import com.eoyeongbooyeong.core.constant.PrivacyPolicy
 import com.eoyeongbooyeong.core.constant.TermsOfService
 import com.eoyeongbooyeong.core.designsystem.component.topbar.BooTextTopAppBar
@@ -34,16 +37,39 @@ import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Gray100
 import com.eoyeongbooyeong.core.designsystem.theme.Gray400
 import com.eoyeongbooyeong.core.designsystem.theme.White
+import com.eoyeongbooyeong.core.extension.noRippleClickable
+import com.jakewharton.processphoenix.ProcessPhoenix
 
 @Composable
-internal fun MyPageRoute() {
-    MyPageScreen()
+internal fun MyPageRoute(
+    viewModel: MyPageViewModel = hiltViewModel(),
+) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val context = LocalContext.current
+
+    LaunchedEffect(viewModel.sideEffects, lifecycleOwner) {
+        viewModel.sideEffects.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    MyPageSideEffect.RestartApp -> ProcessPhoenix.triggerRebirth(context)
+                    is MyPageSideEffect.NavigateToWebView -> {
+                        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(sideEffect.url)))
+                    }
+                }
+            }
+    }
+
+    MyPageScreen(
+        navigateToWebView = viewModel::navigateToWebView,
+        withDraw = viewModel::cancelAuth
+    )
 }
 
 @Composable
-internal fun MyPageScreen() {
-    val context = LocalContext.current
-
+internal fun MyPageScreen(
+    navigateToWebView: (String) -> Unit = {},
+    withDraw: () -> Unit = {},
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -123,25 +149,22 @@ internal fun MyPageScreen() {
             Spacer(modifier = Modifier.height(24.dp))
 
             MyPageOptionItem(
-                text = "서비스 이용약관"
-            ) {
-                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(TermsOfService)))
-            }
+                text = "서비스 이용약관",
+                onClick = { navigateToWebView(TermsOfService) }
+            )
             MyPageOptionItem(
-                text = "개인정보 처리방침"
-            ) {
-                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(PrivacyPolicy)))
-            }
+                text = "개인정보 처리방침",
+                onClick = { navigateToWebView(PrivacyPolicy) }
+            )
             MyPageOptionItem(
                 text = "로그아웃"
             ) {
 
             }
             MyPageOptionItem(
-                text = "탈퇴하기"
-            ) {
-
-            }
+                text = "탈퇴하기",
+                onClick = withDraw
+            )
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -171,7 +194,7 @@ fun MyPageOptionItem(
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 20.dp)
-            .clickable(onClick = onClick),
+            .noRippleClickable(onClick = onClick),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(

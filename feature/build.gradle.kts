@@ -93,6 +93,9 @@ dependencies {
     // Navigation
     implementation(libs.androidx.compose.navigation)
 
+    // Phoenix
+    implementation(libs.jakewharton.process.phoenix)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

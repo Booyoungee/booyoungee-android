@@ -4,14 +4,15 @@ import com.eoyeongbooyeong.data.datasource.AuthDataSource
 import com.eoyeongbooyeong.data.dto.response.BaseResponse
 import com.eoyeongbooyeong.data.dto.response.NicknameDto
 import com.eoyeongbooyeong.data.dto.response.TokenDto
+import com.eoyeongbooyeong.data.dto.response.UserIdDto
 import com.eoyeongbooyeong.data.service.AuthService
 import javax.inject.Inject
 
 class AuthDataSourceImpl @Inject constructor(
     private val authService: AuthService,
 ) : AuthDataSource {
-    override suspend fun postReissueTokens(refreshToken: String): TokenDto =
-        authService.postReissueTokens(refreshToken)
+    override suspend fun postReissueTokens(refreshToken: String): BaseResponse<TokenDto> =
+        authService.postReissueTokens(BEARER + refreshToken)
 
     override suspend fun postLogin(
         accessToken: String,
@@ -20,6 +21,9 @@ class AuthDataSourceImpl @Inject constructor(
         accessToken = accessToken,
         refreshToken = refreshToken
     )
+
+    override suspend fun deleteWithDraw(accessToken: String): BaseResponse<UserIdDto> =
+        authService.deleteWithDraw(BEARER + accessToken)
 
     override suspend fun postSignup(
         accessToken: String,
@@ -30,4 +34,8 @@ class AuthDataSourceImpl @Inject constructor(
         refreshToken = refreshToken,
         nickname = nickname
     )
+
+    companion object {
+        const val BEARER = "Bearer "
+    }
 }

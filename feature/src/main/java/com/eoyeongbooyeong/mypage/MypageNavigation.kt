@@ -8,14 +8,14 @@ import com.eoyeongbooyeong.navigation.MainTabRoute
 import kotlinx.serialization.Serializable
 
 @Serializable
-data object Mypage : MainTabRoute
+data object MyPage : MainTabRoute
 
-fun NavController.navigateToMypage(navOptions: NavOptions) {
-    navigate(Mypage, navOptions)
+fun NavController.navigateToMyPage(navOptions: NavOptions) {
+    navigate(MyPage, navOptions)
 }
 
-fun NavGraphBuilder.mypageNavGraph() {
-    composable<Mypage> {
-        MyPageScreen()
+fun NavGraphBuilder.myPageNavGraph() {
+    composable<MyPage> {
+        MyPageRoute()
     }
 }
