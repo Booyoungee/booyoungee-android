@@ -1,4 +1,4 @@
-package com.eoyeongbooyeong.mypage.Review
+package com.eoyeongbooyeong.mypage.review
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

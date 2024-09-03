@@ -9,4 +9,8 @@ interface UserDataSource {
     ): NicknameDto
 
     suspend fun getUserNickname(): UserDto
+
+    suspend fun putNewNickname(
+        nickname: String,
+    ): NicknameDto
 }

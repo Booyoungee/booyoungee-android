@@ -14,6 +14,8 @@ import com.eoyeongbooyeong.auth.login.Login
 import com.eoyeongbooyeong.auth.signup.SignUp
 import com.eoyeongbooyeong.home.Home
 import com.eoyeongbooyeong.home.navigateToHome
+import com.eoyeongbooyeong.mypage.MyPage
+import com.eoyeongbooyeong.mypage.MyPageEditNickname
 import com.eoyeongbooyeong.mypage.navigateToMyPage
 import com.eoyeongbooyeong.navigation.Route
 import com.eoyeongbooyeong.place_recommend.navigateToPlace
@@ -59,6 +61,12 @@ internal class MainNavigator(
         navController.navigateUp()
     }
 
+    fun navigateUpIfNotHome() {
+        if (!isSameCurrentDestination<Home>()) {
+            navigateUp()
+        }
+    }
+
     fun navigateToLogin(navOptions: NavOptions) {
         navController.navigate(Login, navOptions)
     }
@@ -69,6 +77,10 @@ internal class MainNavigator(
 
     fun navigateToHome(navOptions: NavOptions) {
         navController.navigate(Home, navOptions)
+    }
+
+    fun navigateToMyPageEditNickname() {
+        navController.navigate(MyPageEditNickname)
     }
 
     private inline fun <reified T : Route> isSameCurrentDestination(): Boolean = navController.currentDestination?.hasRoute<T>() == true

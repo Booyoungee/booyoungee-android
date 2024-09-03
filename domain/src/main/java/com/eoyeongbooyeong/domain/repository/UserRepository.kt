@@ -5,5 +5,9 @@ interface UserRepository {
         nickname: String,
     ): Result<String>
 
-    suspend fun getUserNickName(): Result<String>
+    suspend fun getUserNickname(): Result<String>
+
+    suspend fun setUserNickname(
+        nickname: String,
+    ): Result<Unit>
 }

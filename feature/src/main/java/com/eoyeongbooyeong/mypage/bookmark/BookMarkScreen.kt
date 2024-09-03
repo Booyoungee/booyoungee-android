@@ -1,4 +1,4 @@
-package com.eoyeongbooyeong.mypage.BookMark
+package com.eoyeongbooyeong.mypage.bookmark
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

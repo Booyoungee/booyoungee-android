@@ -28,13 +28,15 @@ class MyPageViewModel @Inject constructor(
     val sideEffects: SharedFlow<MyPageSideEffect>
         get() = _sideEffects.asSharedFlow()
 
-    init {
-        getUserNickname()
-    }
-
     fun navigateToWebView(url: String) {
         viewModelScope.launch {
             _sideEffects.emit(MyPageSideEffect.NavigateToWebView(url))
+        }
+    }
+
+    fun navigateToEditNickname() {
+        viewModelScope.launch {
+            _sideEffects.emit(MyPageSideEffect.NavigateToEditNickname)
         }
     }
 
@@ -60,9 +62,9 @@ class MyPageViewModel @Inject constructor(
         }
     }
 
-    private fun getUserNickname() {
+    fun getUserNickname() {
         viewModelScope.launch {
-            userRepository.getUserNickName()
+            userRepository.getUserNickname()
                 .onSuccess {
                     _state.value = _state.value.copy(nickname = it)
                 }.onFailure(Timber::e)

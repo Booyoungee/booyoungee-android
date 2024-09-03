@@ -45,6 +45,7 @@ import com.jakewharton.processphoenix.ProcessPhoenix
 @Composable
 internal fun MyPageRoute(
     paddingValues: PaddingValues,
+    navigateToEditNickname: () -> Unit,
     viewModel: MyPageViewModel = hiltViewModel(),
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -60,14 +61,21 @@ internal fun MyPageRoute(
                     is MyPageSideEffect.NavigateToWebView -> {
                         context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(sideEffect.url)))
                     }
+
+                    MyPageSideEffect.NavigateToEditNickname -> navigateToEditNickname()
                 }
             }
+    }
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.getUserNickname()
     }
 
     MyPageScreen(
         paddingValues = paddingValues,
         nickname = state.value.nickname,
         navigateToWebView = viewModel::navigateToWebView,
+        navigateToEditNickname = viewModel::navigateToEditNickname,
         withDraw = viewModel::cancelAuth,
         logout = viewModel::logout
     )
@@ -78,6 +86,7 @@ internal fun MyPageScreen(
     paddingValues: PaddingValues,
     nickname: String,
     navigateToWebView: (String) -> Unit = {},
+    navigateToEditNickname: () -> Unit = {},
     withDraw: () -> Unit = {},
     logout: () -> Unit = {},
 ) {
@@ -105,7 +114,9 @@ internal fun MyPageScreen(
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                Row {
+                Row(
+                    modifier = Modifier.noRippleClickable(navigateToEditNickname)
+                ) {
                     Text(text = nickname, style = BooTheme.typography.head3)
                     Spacer(modifier = Modifier.width(2.dp))
                     Icon(
