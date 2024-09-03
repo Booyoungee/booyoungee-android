@@ -19,6 +19,10 @@ interface AuthDataSource {
         accessToken: String,
     ): BaseResponse<UserIdDto>
 
+    suspend fun postLogout(
+        accessToken: String,
+    ): BaseResponse<UserIdDto>
+
     suspend fun postSignup(
         accessToken: String,
         refreshToken: String,

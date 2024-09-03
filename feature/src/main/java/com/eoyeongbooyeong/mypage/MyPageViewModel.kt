@@ -35,4 +35,15 @@ class MyPageViewModel @Inject constructor(
             }.onFailure(Timber::e)
         }
     }
+
+    fun logout() {
+        viewModelScope.launch {
+            authRepository.logout(
+                authRepository.getAccessToken()
+            ).onSuccess {
+                authRepository.clearInfo()
+                _sideEffects.emit(MyPageSideEffect.RestartApp)
+            }.onFailure(Timber::e)
+        }
+    }
 }

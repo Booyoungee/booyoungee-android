@@ -16,6 +16,10 @@ interface AuthRepository {
         accessToken: String
     ): Result<Unit>
 
+    suspend fun logout(
+        accessToken: String
+    ): Result<Unit>
+
     suspend fun signup(
         accessToken: String,
         refreshToken: String,

@@ -24,6 +24,10 @@ class AuthRepositoryImpl @Inject constructor(
         authDataSource.deleteWithDraw(accessToken)
     }
 
+    override suspend fun logout(accessToken: String): Result<Unit> = runCatching {
+        authDataSource.postLogout(accessToken)
+    }
+
     override suspend fun signup(
         accessToken: String,
         refreshToken: String,

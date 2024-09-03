@@ -61,7 +61,8 @@ internal fun MyPageRoute(
 
     MyPageScreen(
         navigateToWebView = viewModel::navigateToWebView,
-        withDraw = viewModel::cancelAuth
+        withDraw = viewModel::cancelAuth,
+        logout = viewModel::logout
     )
 }
 
@@ -69,6 +70,7 @@ internal fun MyPageRoute(
 internal fun MyPageScreen(
     navigateToWebView: (String) -> Unit = {},
     withDraw: () -> Unit = {},
+    logout: () -> Unit = {},
 ) {
     Column(
         modifier = Modifier
@@ -157,10 +159,9 @@ internal fun MyPageScreen(
                 onClick = { navigateToWebView(PrivacyPolicy) }
             )
             MyPageOptionItem(
-                text = "로그아웃"
-            ) {
-
-            }
+                text = "로그아웃",
+                onClick = logout
+            )
             MyPageOptionItem(
                 text = "탈퇴하기",
                 onClick = withDraw

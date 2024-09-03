@@ -26,6 +26,10 @@ interface AuthService {
         @Header(HEADER) accessToken: String,
     ): BaseResponse<UserIdDto>
 
+    @POST("api/v1/oauth/logout")
+    suspend fun postLogout(
+        @Header(HEADER) accessToken: String,
+    ): BaseResponse<UserIdDto>
 
     @POST("api/v1/oauth/signup")
     suspend fun postSignup(

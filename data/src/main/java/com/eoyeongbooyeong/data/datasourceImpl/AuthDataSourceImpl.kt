@@ -25,6 +25,9 @@ class AuthDataSourceImpl @Inject constructor(
     override suspend fun deleteWithDraw(accessToken: String): BaseResponse<UserIdDto> =
         authService.deleteWithDraw(BEARER + accessToken)
 
+    override suspend fun postLogout(accessToken: String): BaseResponse<UserIdDto> =
+        authService.postLogout(BEARER + accessToken)
+
     override suspend fun postSignup(
         accessToken: String,
         refreshToken: String,
