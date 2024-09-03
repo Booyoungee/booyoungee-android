@@ -1,4 +1,4 @@
-package com.eoyeongbooyeong.mypage
+package com.eoyeongbooyeong.mypage.EditNickName
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
