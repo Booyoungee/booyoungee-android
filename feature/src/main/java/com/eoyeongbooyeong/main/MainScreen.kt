@@ -126,7 +126,9 @@ internal fun MainScreen(
                     )
                     placeNavGraph()
                     stampNavGraph()
-                    myPageNavGraph()
+                    myPageNavGraph(
+                        paddingValues = paddingValue,
+                    )
                 }
             }
         },

@@ -1,5 +1,6 @@
 package com.eoyeongbooyeong.mypage
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -14,8 +15,8 @@ fun NavController.navigateToMyPage(navOptions: NavOptions) {
     navigate(MyPage, navOptions)
 }
 
-fun NavGraphBuilder.myPageNavGraph() {
+fun NavGraphBuilder.myPageNavGraph(paddingValues: PaddingValues) {
     composable<MyPage> {
-        MyPageRoute()
+        MyPageRoute(paddingValues)
     }
 }
