@@ -32,7 +32,7 @@ import androidx.core.content.ContextCompat
 import com.eoyeongbooyeong.core.R
 import com.eoyeongbooyeong.core.designsystem.component.textfield.BooSearchTextField
 import com.eoyeongbooyeong.core.designsystem.theme.White
-import com.eoyeongbooyeong.domain.Place
+import com.eoyeongbooyeong.domain.entity.PlaceEntity
 import com.eoyeongbooyeong.home.component.FloatingButton
 import com.eoyeongbooyeong.home.component.HomeFloatingButton
 import com.eoyeongbooyeong.home.component.PlaceInfoBox
@@ -88,7 +88,7 @@ internal fun HomeScreen(onClickBookmark: () -> Unit = {}) {
 
     // PlaceInfoBox 에 대한 State
     val showPlaceInfoBox = remember { mutableStateOf(false) }
-    val selectedPlace = remember { mutableStateOf<Place?>(null) }
+    val selectedPlaceEntity = remember { mutableStateOf<PlaceEntity?>(null) }
 
     Column(
         modifier =
@@ -139,9 +139,9 @@ internal fun HomeScreen(onClickBookmark: () -> Unit = {}) {
                             .padding(end = 24.dp, bottom = 24.dp),
                     onClick = {
                         // Toggle PlaceInfoBox visibility
-                        selectedPlace.value =
-                            Place(
-                                name = "Example Place",
+                        selectedPlaceEntity.value =
+                            PlaceEntity(
+                                name = "Example PlaceEntity",
                                 address = "123 Example Street 123 Example Street 123 Example Street 123 Example Street",
                                 star = 4.5f,
                                 reviewCount = 42,
@@ -161,9 +161,9 @@ internal fun HomeScreen(onClickBookmark: () -> Unit = {}) {
                 )
             }
 
-            if (showPlaceInfoBox.value && selectedPlace.value != null) {
+            if (showPlaceInfoBox.value && selectedPlaceEntity.value != null) {
                 PlaceInfoBox(
-                    place = selectedPlace.value!!,
+                    placeEntity = selectedPlaceEntity.value!!,
                     modifier =
                         Modifier
                             .padding(16.dp)

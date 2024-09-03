@@ -201,7 +201,7 @@ fun PlaceReviewAndLikedCount(
 fun PlaceInfoResultListPreview() {
     BooTheme {
         PlaceInfoListItem(
-            placeName = "Place Name",
+            placeName = "PlaceEntity Name",
             placeImageUrl = "https://placeimg.com/100/100/any",
             address = "Address",
             star = 4.5f,

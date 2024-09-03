@@ -30,12 +30,12 @@ import com.eoyeongbooyeong.core.designsystem.theme.Gray400
 import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.core.extension.listToBracketedString
 import com.eoyeongbooyeong.core.extension.noRippleClickable
-import com.eoyeongbooyeong.domain.Place
+import com.eoyeongbooyeong.domain.entity.PlaceEntity
 import com.eoyeongbooyeong.feature.R
 
 @Composable
 internal fun PlaceInfoBox(
-    place: Place,
+    placeEntity: PlaceEntity,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
 ) {
@@ -60,7 +60,7 @@ internal fun PlaceInfoBox(
                     .padding(end = 10.dp),
         ) {
             AsyncImage(
-                model = place.imageUrl,
+                model = placeEntity.imageUrl,
                 contentDescription = null,
                 modifier =
                     Modifier
@@ -73,7 +73,7 @@ internal fun PlaceInfoBox(
                 modifier = Modifier.padding(start = 10.dp),
             ) {
                 Text(
-                    text = place.name,
+                    text = placeEntity.name,
                     style = BooTheme.typography.body3,
                     color = Black,
                     maxLines = 1,
@@ -81,7 +81,7 @@ internal fun PlaceInfoBox(
                     modifier = Modifier.weight(1f, false),
                 )
                 Text(
-                    text = place.address,
+                    text = placeEntity.address,
                     style = BooTheme.typography.caption2,
                     color = Black,
                     maxLines = 1,
@@ -89,16 +89,16 @@ internal fun PlaceInfoBox(
                     modifier = Modifier.weight(1f, false),
                 )
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    ReviewStar(place.star)
+                    ReviewStar(placeEntity.star)
 
                     Text(
-                        text = place.star.toString(),
+                        text = placeEntity.star.toString(),
                         style = BooTheme.typography.caption1,
                         color = Black,
                         modifier = Modifier.weight(1f, false).padding(start = 4.dp),
                     )
                     Text(
-                        text = stringResource(R.string.placeReviewAndPoint, place.reviewCount),
+                        text = stringResource(R.string.placeReviewAndPoint, placeEntity.reviewCount),
                         style = BooTheme.typography.caption2,
                         color = Gray400,
                         modifier =
@@ -112,7 +112,7 @@ internal fun PlaceInfoBox(
                         modifier = Modifier.size(12.dp),
                     )
                     Text(
-                        text = place.likedCount.toString(),
+                        text = placeEntity.likedCount.toString(),
                         style = BooTheme.typography.caption1,
                         color = Black,
                         maxLines = 1,
@@ -127,7 +127,7 @@ internal fun PlaceInfoBox(
                         modifier = Modifier.size(20.dp)
                     )
                     Text(
-                        text = place.movieNameList.listToBracketedString(),
+                        text = placeEntity.movieNameList.listToBracketedString(),
                         style = BooTheme.typography.caption1,
                         color = Black,
                         maxLines = 1,
@@ -144,9 +144,9 @@ internal fun PlaceInfoBox(
 fun PlaceInfoBoxPreview() {
     BooTheme {
         PlaceInfoBox(
-            place =
-                Place(
-                    name = "Place Name",
+            placeEntity =
+                PlaceEntity(
+                    name = "PlaceEntity Name",
                     address = "Address",
                     star = 4.5f,
                     reviewCount = 100,

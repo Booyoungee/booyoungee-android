@@ -39,7 +39,7 @@ import com.eoyeongbooyeong.core.designsystem.theme.Blue300
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Purple
 import com.eoyeongbooyeong.core.designsystem.theme.White
-import com.eoyeongbooyeong.domain.Place
+import com.eoyeongbooyeong.domain.entity.PlaceEntity
 import com.eoyeongbooyeong.feature.R
 import com.eoyeongbooyeong.search.component.PlaceInfoListItem
 
@@ -52,7 +52,7 @@ fun SearchResultRoute(
     query: String = "",
     active: Boolean = false,
     resultCount: Int = 0,
-    searchResultList: List<Place> = emptyList(),
+    searchResultList: List<PlaceEntity> = emptyList(),
 ) {
     SearchResultScreen(
         modifier = modifier,
@@ -70,7 +70,7 @@ fun SearchResultRoute(
 fun SearchResultScreen(
     modifier: Modifier,
     resultCount: Int = 0,
-    searchResultList: List<Place>,
+    searchResultList: List<PlaceEntity>,
     onBackClick: () -> Unit,
     onQueryChange: (String) -> Unit,
     onActiveChange: (Boolean) -> Unit,
@@ -173,9 +173,9 @@ fun SearchResultScreen(
 @Composable
 fun SearchResultList(
     modifier: Modifier = Modifier,
-    searchResultList: List<Place>,
+    searchResultList: List<PlaceEntity>,
     resultCount: Int,
-    onPlaceClick: (Place) -> Unit = {},
+    onPlaceClick: (PlaceEntity) -> Unit = {},
 ) {
     Column(
         modifier =

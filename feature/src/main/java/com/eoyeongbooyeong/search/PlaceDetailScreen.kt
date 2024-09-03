@@ -39,7 +39,7 @@ import com.eoyeongbooyeong.core.designsystem.theme.Gray100
 import com.eoyeongbooyeong.core.designsystem.theme.Red
 import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.core.extension.noRippleClickable
-import com.eoyeongbooyeong.domain.ReviewInfo
+import com.eoyeongbooyeong.domain.entity.ReviewInfoEntity
 import com.eoyeongbooyeong.search.component.PlaceDetailBottomBar
 import com.eoyeongbooyeong.search.component.PlaceDetailInfo
 import com.eoyeongbooyeong.search.component.PlaceReviewAndLikedCount
@@ -55,7 +55,7 @@ fun PlaceDetailRoute(
     likedCount: Int = 0,
     placeDetailStarScore: Float = 0f,
     placeDetailBookmarkCount: Int = 0,
-    reviewInfoTotalList: List<ReviewInfo> = emptyList(),
+    reviewInfoEntityTotalList: List<ReviewInfoEntity> = emptyList(),
     onClickWriteReview: () -> Unit = {},
     onClickLike: () -> Unit = {},
     onClickBookmark: () -> Unit = {},
@@ -73,7 +73,7 @@ fun PlaceDetailRoute(
         placeDetailLikedCount = likedCount,
         placeDetailStarScore = placeDetailStarScore,
         placeDetailBookmarkCount = placeDetailBookmarkCount,
-        reviewInfoTotalList = reviewInfoTotalList,
+        reviewInfoEntityTotalList = reviewInfoEntityTotalList,
         onClickWriteReview = onClickWriteReview,
         onClickLike = onClickLike,
         onClickBookmark = onClickBookmark,
@@ -94,7 +94,7 @@ fun PlaceDetailScreen(
     placeDetailLikedCount: Int,
     placeDetailStarScore: Float,
     placeDetailBookmarkCount: Int,
-    reviewInfoTotalList: List<ReviewInfo>,
+    reviewInfoEntityTotalList: List<ReviewInfoEntity>,
     onClickWriteReview: () -> Unit,
     onClickLike: () -> Unit,
     onClickBookmark: () -> Unit,
@@ -144,7 +144,7 @@ fun PlaceDetailScreen(
                             .crossfade(true)
                             .build(),
                     placeholder = painterResource(R.drawable.img_default_5),
-                    contentDescription = "Place Detail Image",
+                    contentDescription = "PlaceEntity Detail Image",
                     contentScale = ContentScale.Crop,
                     modifier =
                         Modifier
@@ -272,7 +272,7 @@ fun PlaceDetailScreen(
                 }
             }
 
-            itemsIndexed(reviewInfoTotalList) { index, review ->
+            itemsIndexed(reviewInfoEntityTotalList) { index, review ->
                 Column(
                     modifier = Modifier.padding(bottom = 24.dp, start = 24.dp, end = 24.dp),
                 ) {
@@ -302,9 +302,9 @@ fun PlaceDetailScreenPreview() {
             reviewCount = 10,
             likedCount = 20,
             placeDetailStarScore = 4.5f,
-            reviewInfoTotalList =
+            reviewInfoEntityTotalList =
                 listOf(
-                    ReviewInfo(
+                    ReviewInfoEntity(
                         id = 1,
                         placeId = 1,
                         writerId = 1,
@@ -313,7 +313,7 @@ fun PlaceDetailScreenPreview() {
                         reviewContent = "너무 좋아요 너무 좋아요 너무 좋아요 너무 좋아요 너무 좋아요 너무 좋아요너무 좋아요너무 좋아요",
                         createdAt = "2024-01-01",
                     ),
-                    ReviewInfo(
+                    ReviewInfoEntity(
                         id = 1,
                         placeId = 1,
                         writerId = 1,
@@ -322,7 +322,7 @@ fun PlaceDetailScreenPreview() {
                         reviewContent = "너무 좋아요",
                         createdAt = "2024-01-01",
                     ),
-                    ReviewInfo(
+                    ReviewInfoEntity(
                         id = 1,
                         placeId = 1,
                         writerId = 1,
@@ -331,7 +331,7 @@ fun PlaceDetailScreenPreview() {
                         reviewContent = "너무 좋아요",
                         createdAt = "2024-01-01",
                     ),
-                    ReviewInfo(
+                    ReviewInfoEntity(
                         id = 1,
                         placeId = 1,
                         writerId = 1,
