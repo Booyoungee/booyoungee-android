@@ -49,8 +49,6 @@ internal class MainNavigator(
         when (tab) {
             MainTab.HOME -> navController.navigateToHome(navOptions = navOptions)
 
-            MainTab.PLACE -> navController.navigateToPlace(navOptions = navOptions)
-
             MainTab.STAMP -> navController.navigateToStamp(navOptions = navOptions)
 
             MainTab.MYPAGE -> navController.navigateToMyPage(navOptions = navOptions)

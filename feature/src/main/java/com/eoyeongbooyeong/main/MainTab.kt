@@ -19,11 +19,6 @@ internal enum class MainTab(
         contentDescription = "홈",
         route = Home,
     ),
-    PLACE(
-        defaultIconResource = com.eoyeongbooyeong.core.R.drawable.ic_place_default,
-        contentDescription = "장소 추천",
-        route = Place,
-    ),
     STAMP(
         defaultIconResource = com.eoyeongbooyeong.core.R.drawable.ic_stamp_default,
         contentDescription = "스탬프",
