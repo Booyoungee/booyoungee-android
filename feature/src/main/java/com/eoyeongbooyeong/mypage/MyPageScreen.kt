@@ -4,9 +4,9 @@ import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,25 +28,94 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.eoyeongbooyeong.core.constant.PrivacyPolicy
 import com.eoyeongbooyeong.core.constant.TermsOfService
+import com.eoyeongbooyeong.core.designsystem.component.dialog.BooDialog
 import com.eoyeongbooyeong.core.designsystem.component.topbar.BooTextTopAppBar
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Gray100
 import com.eoyeongbooyeong.core.designsystem.theme.Gray400
 import com.eoyeongbooyeong.core.designsystem.theme.White
+import com.eoyeongbooyeong.core.extension.noRippleClickable
+import com.jakewharton.processphoenix.ProcessPhoenix
 
 @Composable
-internal fun MyPageRoute() {
-    MyPageScreen()
+internal fun MyPageRoute(
+    paddingValues: PaddingValues,
+    navigateToEditNickname: () -> Unit,
+    viewModel: MyPageViewModel = hiltViewModel(),
+) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val context = LocalContext.current
+
+    val state = viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(viewModel.sideEffects, lifecycleOwner) {
+        viewModel.sideEffects.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    MyPageSideEffect.RestartApp -> ProcessPhoenix.triggerRebirth(context)
+                    is MyPageSideEffect.NavigateToWebView -> {
+                        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(sideEffect.url)))
+                    }
+
+                    MyPageSideEffect.NavigateToEditNickname -> navigateToEditNickname()
+                }
+            }
+    }
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.getUserNickname()
+    }
+
+    if (state.value.isWithdrawDialogVisible) {
+        BooDialog(
+            negativeButtonContext = "취소",
+            positiveButtonContext = "확인",
+            onNegativeButtonClicked = viewModel::controlWithDrawDialog,
+            onPositiveButtonClicked = viewModel::withDraw,
+            title = "정말로 탈퇴하시겠어요?",
+            description = "모든 정보가 지워지고 복구할 수 없어요"
+        )
+    }
+
+    if (state.value.isLogoutDialogVisible) {
+        BooDialog(
+            negativeButtonContext = "취소",
+            positiveButtonContext = "확인",
+            onNegativeButtonClicked = viewModel::controlLogoutDialog,
+            onPositiveButtonClicked = viewModel::logout,
+            title = "정말로 로그아웃 하시겠어요?",
+            description = "더 많은 부산의 매력을 느껴보세요!"
+        )
+    }
+
+    MyPageScreen(
+        paddingValues = paddingValues,
+        nickname = state.value.nickname,
+        navigateToWebView = viewModel::navigateToWebView,
+        navigateToEditNickname = viewModel::navigateToEditNickname,
+        withDraw = viewModel::controlWithDrawDialog,
+        logout = viewModel::controlLogoutDialog,
+    )
 }
 
 @Composable
-internal fun MyPageScreen() {
-    val context = LocalContext.current
-
+internal fun MyPageScreen(
+    paddingValues: PaddingValues,
+    nickname: String,
+    navigateToWebView: (String) -> Unit = {},
+    navigateToEditNickname: () -> Unit = {},
+    withDraw: () -> Unit = {},
+    logout: () -> Unit = {},
+) {
     Column(
         modifier = Modifier
+            .padding(paddingValues)
             .fillMaxSize()
             .background(White)
     ) {
@@ -67,8 +137,10 @@ internal fun MyPageScreen() {
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                Row {
-                    Text(text = "닉네임")
+                Row(
+                    modifier = Modifier.noRippleClickable(navigateToEditNickname)
+                ) {
+                    Text(text = nickname, style = BooTheme.typography.head3)
                     Spacer(modifier = Modifier.width(2.dp))
                     Icon(
                         imageVector = ImageVector.vectorResource(id = com.eoyeongbooyeong.core.R.drawable.ic_right),
@@ -123,25 +195,21 @@ internal fun MyPageScreen() {
             Spacer(modifier = Modifier.height(24.dp))
 
             MyPageOptionItem(
-                text = "서비스 이용약관"
-            ) {
-                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(TermsOfService)))
-            }
+                text = "서비스 이용약관",
+                onClick = { navigateToWebView(TermsOfService) }
+            )
             MyPageOptionItem(
-                text = "개인정보 처리방침"
-            ) {
-                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(PrivacyPolicy)))
-            }
+                text = "개인정보 처리방침",
+                onClick = { navigateToWebView(PrivacyPolicy) }
+            )
             MyPageOptionItem(
-                text = "로그아웃"
-            ) {
-
-            }
+                text = "로그아웃",
+                onClick = logout
+            )
             MyPageOptionItem(
-                text = "탈퇴하기"
-            ) {
-
-            }
+                text = "탈퇴하기",
+                onClick = withDraw
+            )
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -171,7 +239,7 @@ fun MyPageOptionItem(
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 20.dp)
-            .clickable(onClick = onClick),
+            .noRippleClickable(onClick = onClick),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
@@ -190,6 +258,9 @@ fun MyPageOptionItem(
 @Composable
 fun MyPageScreenPreview() {
     BooTheme {
-        MyPageScreen()
+        MyPageScreen(
+            PaddingValues(10.dp),
+            "닉네임",
+        )
     }
 }

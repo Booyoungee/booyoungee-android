@@ -12,6 +12,14 @@ interface AuthRepository {
         refreshToken: String,
     ): Result<TokenEntity>
 
+    suspend fun withDraw(
+        accessToken: String
+    ): Result<Unit>
+
+    suspend fun logout(
+        accessToken: String
+    ): Result<Unit>
+
     suspend fun signup(
         accessToken: String,
         refreshToken: String,
@@ -19,6 +27,7 @@ interface AuthRepository {
     ): Result<TokenEntity>
 
     suspend fun isAlreadyLogin(): Boolean
+    suspend fun getAccessToken(): String
     suspend fun setTokens(
         accessToken: String,
         refreshToken: String,

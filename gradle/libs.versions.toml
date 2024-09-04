@@ -56,6 +56,9 @@ timber = "5.0.1"
 coilCompose = "2.7.0"
 coilSvg = "2.7.0"
 
+## Phoenix
+phoenix = "3.0.0"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -110,6 +113,7 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
 
 google-play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "googleLocation" }
+jakewharton-process-phoenix= {group = "com.jakewharton", name = "process-phoenix", version.ref="phoenix"}
 
 [bundles]
 okhttp = ["okhttp", "okhttp-logging"]

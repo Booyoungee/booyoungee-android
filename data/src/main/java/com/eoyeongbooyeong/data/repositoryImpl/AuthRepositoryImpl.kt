@@ -12,13 +12,21 @@ class AuthRepositoryImpl @Inject constructor(
     private val booDataStore: BooDataStore,
 ) : AuthRepository {
     override suspend fun reissueTokens(refreshToken: String): Result<TokenEntity> = runCatching {
-        authDataSource.postReissueTokens(refreshToken).toEntity()
+        authDataSource.postReissueTokens(refreshToken).data.toEntity()
     }
 
     override suspend fun login(accessToken: String, refreshToken: String): Result<TokenEntity> =
         runCatching {
             authDataSource.postLogin(accessToken, refreshToken).data.toEntity()
         }
+
+    override suspend fun withDraw(accessToken: String): Result<Unit> = runCatching {
+        authDataSource.deleteWithDraw(accessToken)
+    }
+
+    override suspend fun logout(accessToken: String): Result<Unit> = runCatching {
+        authDataSource.postLogout(accessToken)
+    }
 
     override suspend fun signup(
         accessToken: String,
@@ -29,6 +37,7 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun isAlreadyLogin(): Boolean = booDataStore.isAlreadyLogin()
+    override suspend fun getAccessToken(): String = booDataStore.accessToken
     override suspend fun setTokens(accessToken: String, refreshToken: String) =
         booDataStore.setTokens(accessToken, refreshToken)
 
