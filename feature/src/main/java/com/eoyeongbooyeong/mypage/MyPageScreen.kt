@@ -34,6 +34,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.eoyeongbooyeong.core.constant.PrivacyPolicy
 import com.eoyeongbooyeong.core.constant.TermsOfService
+import com.eoyeongbooyeong.core.designsystem.component.dialog.BooDialog
 import com.eoyeongbooyeong.core.designsystem.component.topbar.BooTextTopAppBar
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Gray100
@@ -71,13 +72,35 @@ internal fun MyPageRoute(
         viewModel.getUserNickname()
     }
 
+    if (state.value.isWithdrawDialogVisible) {
+        BooDialog(
+            negativeButtonContext = "취소",
+            positiveButtonContext = "확인",
+            onNegativeButtonClicked = viewModel::controlWithDrawDialog,
+            onPositiveButtonClicked = viewModel::withDraw,
+            title = "정말로 탈퇴하시겠어요?",
+            description = "모든 정보가 지워지고 복구할 수 없어요"
+        )
+    }
+
+    if (state.value.isLogoutDialogVisible) {
+        BooDialog(
+            negativeButtonContext = "취소",
+            positiveButtonContext = "확인",
+            onNegativeButtonClicked = viewModel::controlLogoutDialog,
+            onPositiveButtonClicked = viewModel::logout,
+            title = "정말로 로그아웃 하시겠어요?",
+            description = "더 많은 부산의 매력을 느껴보세요!"
+        )
+    }
+
     MyPageScreen(
         paddingValues = paddingValues,
         nickname = state.value.nickname,
         navigateToWebView = viewModel::navigateToWebView,
         navigateToEditNickname = viewModel::navigateToEditNickname,
-        withDraw = viewModel::cancelAuth,
-        logout = viewModel::logout
+        withDraw = viewModel::controlWithDrawDialog,
+        logout = viewModel::controlLogoutDialog,
     )
 }
 

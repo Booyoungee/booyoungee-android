@@ -40,7 +40,17 @@ class MyPageViewModel @Inject constructor(
         }
     }
 
-    fun cancelAuth() {
+    fun controlLogoutDialog() {
+        _state.value =
+            _state.value.copy(isLogoutDialogVisible = !_state.value.isLogoutDialogVisible)
+    }
+
+    fun controlWithDrawDialog() {
+        _state.value =
+            _state.value.copy(isWithdrawDialogVisible = !_state.value.isWithdrawDialogVisible)
+    }
+
+    fun withDraw() {
         viewModelScope.launch {
             authRepository.withDraw(
                 authRepository.getAccessToken()

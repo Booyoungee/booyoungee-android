@@ -21,6 +21,7 @@ import androidx.compose.ui.window.Dialog
 import com.eoyeongbooyeong.core.designsystem.component.button.BooMiniButton
 import com.eoyeongbooyeong.core.designsystem.theme.Blue100
 import com.eoyeongbooyeong.core.designsystem.theme.Blue300
+import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.White
 
 @Composable
@@ -29,11 +30,13 @@ fun BooDialog(
     positiveButtonContext: String,
     onNegativeButtonClicked: () -> Unit,
     onPositiveButtonClicked: () -> Unit,
+    modifier: Modifier = Modifier,
     title: String? = null,
     description: String? = null,
 ) {
     Dialog(onDismissRequest = onNegativeButtonClicked) {
         Card(
+            modifier = modifier,
             shape = RoundedCornerShape(20.dp),
             colors = CardDefaults.cardColors(
                 containerColor = White
@@ -46,7 +49,8 @@ fun BooDialog(
                 if (title != null) {
                     Text(
                         text = title,
-                        textAlign = TextAlign.Start, // 임시로 start로 설정. 추후 center로 바뀔수도
+                        textAlign = TextAlign.Start,
+                        style = BooTheme.typography.head2,
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
@@ -57,6 +61,7 @@ fun BooDialog(
                     Text(
                         text = description,
                         textAlign = TextAlign.Start,
+                        style = BooTheme.typography.body4,
                         modifier = Modifier.fillMaxWidth()
                     )
 
