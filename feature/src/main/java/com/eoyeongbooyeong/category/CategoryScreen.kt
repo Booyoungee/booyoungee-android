@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
@@ -40,6 +39,7 @@ import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Purple
 import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.domain.entity.PlaceEntity
+import com.eoyeongbooyeong.domain.entity.PlaceType
 import com.eoyeongbooyeong.feature.R
 import com.eoyeongbooyeong.search.component.PlaceInfoListItem
 
@@ -48,6 +48,7 @@ fun PlaceCategoryRoute(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {},
     searchResultList: List<PlaceEntity> = emptyList(),
+    placeType: String = PlaceType.MOVIE.name,
 ) {
     PlaceCategoryScreen(
         modifier = modifier,
@@ -55,6 +56,7 @@ fun PlaceCategoryRoute(
         searchResultList = searchResultList,
         onSortSelected = {},
         navigateToMap = {},
+        placeType = placeType,
     )
 }
 
@@ -65,8 +67,19 @@ fun PlaceCategoryScreen(
     onBackClick: () -> Unit,
     onSortSelected: (String) -> Unit,
     navigateToMap: () -> Unit,
+    placeType: String,
 ) {
-    val selectedIndex = remember { mutableStateOf(0) }
+    val selectedIndex =
+        remember {
+            mutableStateOf(
+                when (placeType) {
+                    PlaceType.MOVIE.name -> 0
+                    PlaceType.LOCAL_SUPPORT.name -> 1
+                    PlaceType.TOUR.name -> 2
+                    else -> 0
+                },
+            )
+        }
     val tabItemTitle =
         listOf(
             stringResource(R.string.movie),
@@ -75,11 +88,12 @@ fun PlaceCategoryScreen(
         )
 
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(White)
-            .statusBarsPadding()
-            .systemBarsPadding(),
+        modifier =
+            modifier
+                .fillMaxSize()
+                .background(White)
+                .statusBarsPadding()
+                .systemBarsPadding(),
     ) {
         BooTextTopAppBar(
             leadingIcon = {
@@ -110,12 +124,12 @@ fun PlaceCategoryScreen(
                 ) {
                     Box(
                         modifier =
-                        Modifier
-                            .clickable(
-                                interactionSource = remember { MutableInteractionSource() },
-                                indication = null,
-                            ) { selectedIndex.value = index }
-                            .padding(top = 8.dp, start = 24.dp, end = 24.dp, bottom = 6.dp),
+                            Modifier
+                                .clickable(
+                                    interactionSource = remember { MutableInteractionSource() },
+                                    indication = null,
+                                ) { selectedIndex.value = index }
+                                .padding(top = 8.dp, start = 24.dp, end = 24.dp, bottom = 6.dp),
                     ) {
                         Text(
                             text = tabItemTitle[index],
