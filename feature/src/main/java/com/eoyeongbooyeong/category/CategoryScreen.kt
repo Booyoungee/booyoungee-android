@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
@@ -66,9 +68,8 @@ fun PlaceCategoryScreen(
         )
 
     Column(
-        modifier = modifier.fillMaxSize().background(White),
+        modifier = modifier.fillMaxSize().background(White).statusBarsPadding().systemBarsPadding(),
     ) {
-        Spacer(modifier = Modifier.height(12.dp))
         BooTextTopAppBar(
             leadingIcon = {
                 Icon(
@@ -78,7 +79,6 @@ fun PlaceCategoryScreen(
             },
             text = "",
         )
-        Spacer(modifier = Modifier.height(12.dp))
 
         TabRow(
             selectedTabIndex = selectedIndex.value,
