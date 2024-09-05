@@ -25,9 +25,10 @@ fun SortingDropdownMenu(
 
     val options = listOf("별점순", "리뷰 많은 순", "좋아요 많은 순")
 
-    Box(modifier = Modifier.padding(vertical = 12.dp, horizontal = 24.dp).fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
+    Box(modifier = Modifier.padding(vertical = 12.dp, horizontal = 24.dp), contentAlignment = Alignment.CenterEnd) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.End,
         ) {
             Text(
                 text = selectedOption,
@@ -48,7 +49,7 @@ fun SortingDropdownMenu(
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
-            modifier = Modifier.background(White),
+            modifier = Modifier.background(White).align(Alignment.CenterEnd),
         ) {
             options.forEach { option ->
                 DropdownMenuItem(
@@ -58,7 +59,7 @@ fun SortingDropdownMenu(
                         expanded = false
                         onSortSelected(option)
                     },
-                    modifier = Modifier.background(White),
+                    modifier = Modifier.background(White).align(Alignment.End),
                 )
             }
         }
