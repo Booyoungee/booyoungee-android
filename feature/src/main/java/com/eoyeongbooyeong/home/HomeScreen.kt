@@ -214,7 +214,7 @@ fun rememberMapView(
                             location: LatLng,
                         ): Label {
                             val label = map.labelManager?.layer
-                            val styles = LabelStyles.from(LabelStyle.from(R.drawable.ic_marker_36))
+                            val styles = LabelStyles.from(LabelStyle.from(R.drawable.ic_marker_clicked_81))
                             val labelOptions = LabelOptions.from(location).setStyles(styles)
 
                             return label?.addLabel(labelOptions) ?: error("Label creation failed")
@@ -226,7 +226,7 @@ fun rememberMapView(
                             map.setOnLabelClickListener { _, _, label ->
                                 val currentStyle = markerStateMap[label] ?: false
                                 val newStyleResId =
-                                    if (currentStyle) R.drawable.ic_marker_36 else R.drawable.ic_marker_72
+                                    if (currentStyle) R.drawable.ic_marker_clicked_81 else R.drawable.ic_marker_clicked_81
 
                                 label.changeStyles(
                                     LabelStyles.from(LabelStyle.from(newStyleResId)),
