@@ -33,8 +33,8 @@ import com.eoyeongbooyeong.core.R
 import com.eoyeongbooyeong.core.designsystem.component.textfield.BooSearchTextField
 import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.domain.entity.PlaceEntity
-import com.eoyeongbooyeong.home.component.FloatingButton
-import com.eoyeongbooyeong.home.component.HomeFloatingButton
+import com.eoyeongbooyeong.category.component.FloatingButton
+import com.eoyeongbooyeong.category.component.MapFloatingButton
 import com.eoyeongbooyeong.home.component.PlaceInfoBox
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -117,7 +117,7 @@ internal fun HomeScreen(onClickBookmark: () -> Unit = {}) {
                     Modifier
                         .align(Alignment.BottomEnd),
             ) {
-                HomeFloatingButton(
+                MapFloatingButton(
                     modifier =
                         Modifier
                             .padding(end = 24.dp, bottom = 12.dp),
@@ -133,7 +133,7 @@ internal fun HomeScreen(onClickBookmark: () -> Unit = {}) {
                     buttonState = FloatingButton(isMyLocationButton = true),
                 )
 
-                HomeFloatingButton(
+                MapFloatingButton(
                     modifier =
                         Modifier
                             .padding(end = 24.dp, bottom = 24.dp),

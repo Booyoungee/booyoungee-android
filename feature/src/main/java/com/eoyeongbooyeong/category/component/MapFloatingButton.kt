@@ -1,4 +1,4 @@
-package com.eoyeongbooyeong.home.component
+package com.eoyeongbooyeong.category.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -18,7 +18,7 @@ data class FloatingButton(
 )
 
 @Composable
-internal fun HomeFloatingButton(
+internal fun MapFloatingButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     buttonState: FloatingButton,
@@ -40,7 +40,7 @@ internal fun HomeFloatingButton(
 
                 buttonState.isBookmarkButton ->
                     Image(
-                        painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_bookmark_default_24),
+                        painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_bookmark_checked),
                         contentDescription = "bookmark location",
                     )
             }
