@@ -62,7 +62,6 @@ private fun NewHomeScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(White)
-            .statusBarsPadding()
             .padding(paddingValues)
             .verticalScroll(verticalScrollState, true),
     ) {
@@ -172,7 +171,7 @@ private fun NewHomeScreen(
             }
         }
 
-        Spacer(modifier = Modifier.height(280.dp))
+        Spacer(modifier = Modifier.height(28.dp))
     }
 }
 
