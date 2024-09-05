@@ -62,17 +62,35 @@ private const val BUSAN_STATION_LONGTITUDE = 129.03933
 
 @Composable
 fun KakaoMapRoute() {
-    KakakoMapScreen()
+    val dummyList: List<PlaceEntity> = listOf(
+        PlaceEntity(
+            latitude = 35.114495,
+            longitude = 129.03941
+        ),
+        PlaceEntity(
+            latitude = 35.114496,
+            longitude = 129.03946
+        ),
+        PlaceEntity(
+            latitude = 35.114493,
+            longitude = 129.03945
+        )
+    )
+    KakakoMapScreen(
+        placeList = dummyList
+    )
 }
 
 @Composable
-internal fun KakakoMapScreen() {
+internal fun KakakoMapScreen(
+    placeList: List<PlaceEntity>
+) {
     val context = LocalContext.current
     val kakaoMap = remember { mutableStateOf<KakaoMap?>(null) }
     val mapView =
         rememberMapView(context = context, onMapReady = { map ->
             kakaoMap.value = map
-        })
+        }, placeList = placeList)
 
     val locationPermissionGranted = remember { mutableStateOf(false) }
     val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
@@ -154,7 +172,8 @@ internal fun KakakoMapScreen() {
 fun rememberMapView(
     context: Context,
     onMapReady: (KakaoMap) -> Unit,
-    placeType: PlaceType = PlaceType.MOVIE
+    placeType: PlaceType = PlaceType.MOVIE,
+    placeList: List<PlaceEntity> = emptyList()
 ): MapView {
     val mapView =
         remember {
@@ -174,15 +193,12 @@ fun rememberMapView(
 
                         override fun onMapReady(map: KakaoMap) {
                             onMapReady(map) // KakaoMap 객체를 상태로 업데이트합니다.
-                            // TODO : 마커 위치 더미 데이터
-                            val markerLocations =
-                                listOf(
-                                    LatLng.from(35.16001944, 129.1658083),
-                                    LatLng.from(35.16801944, 129.258083),
-                                    LatLng.from(35.15001944, 129.1858083),
-                                )
 
-                            markerLocations.map { setMapMarker(map, it) }
+                            placeList.forEach { place ->
+                                val location = LatLng.from(place.latitude, place.longitude)
+                                setMapMarker(map, location)
+                            }
+
                             markerClickListener(map)
                         }
 
