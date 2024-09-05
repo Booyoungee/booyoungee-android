@@ -156,7 +156,7 @@ private fun NewHomeScreen(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Image(
-                painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.img_default_5),
+                painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.img_popcorn),
                 contentDescription = null,
                 modifier = Modifier
                     .size(100.dp)
