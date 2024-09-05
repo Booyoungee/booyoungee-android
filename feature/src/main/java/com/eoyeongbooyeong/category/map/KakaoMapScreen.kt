@@ -40,6 +40,7 @@ import com.eoyeongbooyeong.core.R
 import com.eoyeongbooyeong.core.designsystem.component.topbar.BooTextTopAppBar
 import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.domain.entity.PlaceEntity
+import com.eoyeongbooyeong.domain.entity.PlaceType
 import com.eoyeongbooyeong.home.component.PlaceInfoBox
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -153,6 +154,7 @@ internal fun KakakoMapScreen() {
 fun rememberMapView(
     context: Context,
     onMapReady: (KakaoMap) -> Unit,
+    placeType: PlaceType = PlaceType.MOVIE
 ): MapView {
     val mapView =
         remember {
@@ -184,12 +186,19 @@ fun rememberMapView(
                             markerClickListener(map)
                         }
 
+                        val markerIconResId = when (placeType) {
+                            PlaceType.MOVIE -> R.drawable.ic_marker_movie
+                            PlaceType.LOCAL_SUPPORT -> R.drawable.ic_marker_local_restaurant
+                            PlaceType.TOUR -> R.drawable.ic_marker_food
+                        }
+
                         private fun setMapMarker(
                             map: KakaoMap,
                             location: LatLng,
                         ): Label {
                             val label = map.labelManager?.layer
-                            val styles = LabelStyles.from(LabelStyle.from(R.drawable.ic_marker_36))
+
+                            val styles = LabelStyles.from(LabelStyle.from(markerIconResId))
                             val labelOptions = LabelOptions.from(location).setStyles(styles)
 
                             return label?.addLabel(labelOptions) ?: error("Label creation failed")
@@ -201,7 +210,7 @@ fun rememberMapView(
                             map.setOnLabelClickListener { _, _, label ->
                                 val currentStyle = markerStateMap[label] ?: false
                                 val newStyleResId =
-                                    if (currentStyle) R.drawable.ic_marker_36 else R.drawable.ic_marker_72
+                                    if (currentStyle) markerIconResId else R.drawable.ic_marker_clicked_81
 
                                 label.changeStyles(
                                     LabelStyles.from(LabelStyle.from(newStyleResId)),

@@ -55,6 +55,7 @@ dependencies {
     // connect module dependency
     implementation(project(":core"))
     implementation(project(":domain"))
+    implementation(project(":data"))
 
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.collections.immutable)
