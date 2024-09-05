@@ -77,20 +77,22 @@ fun KakaoMapRoute() {
         )
     )
     KakakoMapScreen(
-        placeList = dummyList
+        placeList = dummyList,
+        placeType = PlaceType.MOVIE
     )
 }
 
 @Composable
 internal fun KakakoMapScreen(
-    placeList: List<PlaceEntity>
+    placeList: List<PlaceEntity>,
+    placeType: PlaceType
 ) {
     val context = LocalContext.current
     val kakaoMap = remember { mutableStateOf<KakaoMap?>(null) }
     val mapView =
         rememberMapView(context = context, onMapReady = { map ->
             kakaoMap.value = map
-        }, placeList = placeList)
+        }, placeList = placeList, placeType = placeType)
 
     val locationPermissionGranted = remember { mutableStateOf(false) }
     val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
