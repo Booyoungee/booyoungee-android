@@ -1,5 +1,7 @@
 package com.eoyeongbooyeong.new_home
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
@@ -14,13 +16,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,32 +30,58 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
+import com.eoyeongbooyeong.core.constant.BusanInternationalFilmFestival
 import com.eoyeongbooyeong.core.designsystem.component.star.ReviewStar
 import com.eoyeongbooyeong.core.designsystem.component.textfield.BooSearchTextField
 import com.eoyeongbooyeong.core.designsystem.theme.Black
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Gray400
 import com.eoyeongbooyeong.core.designsystem.theme.White
+import com.eoyeongbooyeong.core.extension.noRippleClickable
 import com.eoyeongbooyeong.domain.Place
 import com.eoyeongbooyeong.feature.R
 
 @Composable
 internal fun NewHomeRoute(
     paddingValues: PaddingValues = PaddingValues(0.dp), // 추후 네비 연결시 기본값 제거 및 받아올 예정
+    viewModel: NewHomeViewModel = hiltViewModel(),
 ) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val context = LocalContext.current
+
+    val state = viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(viewModel.sideEffects, lifecycleOwner) {
+        viewModel.sideEffects.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    is NewHomeSideEffect.NavigateToWebView -> {
+                        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(sideEffect.url)))
+                    }
+                }
+            }
+    }
+
     NewHomeScreen(
-        paddingValues = paddingValues
+        paddingValues = paddingValues,
+        navigateToWebView = viewModel::navigateToWebView,
     )
 }
 
 @Composable
 private fun NewHomeScreen(
     paddingValues: PaddingValues,
+    navigateToWebView: (String) -> Unit = {},
 ) {
     val verticalScrollState = rememberScrollState()
     val horizontalRecommendedScrollState = rememberScrollState()
@@ -147,6 +175,9 @@ private fun NewHomeScreen(
 
         Row(
             Modifier
+                .noRippleClickable {
+                    navigateToWebView(BusanInternationalFilmFestival)
+                }
                 .padding(horizontal = 24.dp)
                 .clip(shape = RoundedCornerShape(10.dp))
                 .background(Brush.linearGradient(listOf(Color(0xFFC9E2D6), Color(0xFFC8D6EB))))
@@ -167,7 +198,11 @@ private fun NewHomeScreen(
             Column {
                 Text(text = "놓칠 수 없는 영화제 소식", style = BooTheme.typography.body1, color = Black)
                 Spacer(modifier = Modifier.height(6.dp))
-                Text(text = "영화제의 가장 뜨거운 이야기를\n빠짐없이 챙겨보세요!", style = BooTheme.typography.body4, color = Black)
+                Text(
+                    text = "영화제의 가장 뜨거운 이야기를\n빠짐없이 챙겨보세요!",
+                    style = BooTheme.typography.body4,
+                    color = Black
+                )
             }
         }
 
