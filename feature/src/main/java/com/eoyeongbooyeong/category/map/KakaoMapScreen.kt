@@ -206,8 +206,8 @@ fun rememberMapView(
 
                         val markerIconResId = when (placeType) {
                             PlaceType.MOVIE -> R.drawable.ic_marker_movie
-                            PlaceType.LOCAL_SUPPORT -> R.drawable.ic_marker_local_restaurant
-                            PlaceType.TOUR -> R.drawable.ic_marker_food
+                            PlaceType.LOCAL_SUPPORT -> R.drawable.ic_marker_local
+                            PlaceType.TOUR -> R.drawable.ic_marker_tour
                         }
 
                         private fun setMapMarker(
@@ -228,7 +228,7 @@ fun rememberMapView(
                             map.setOnLabelClickListener { _, _, label ->
                                 val currentStyle = markerStateMap[label] ?: false
                                 val newStyleResId =
-                                    if (currentStyle) markerIconResId else R.drawable.ic_marker_clicked_81
+                                    if (currentStyle) markerIconResId else R.drawable.ic_marker_clicked
 
                                 label.changeStyles(
                                     LabelStyles.from(LabelStyle.from(newStyleResId)),
