@@ -42,12 +42,13 @@ import com.eoyeongbooyeong.domain.entity.PlaceEntity
 import com.eoyeongbooyeong.domain.entity.PlaceType
 import com.eoyeongbooyeong.feature.R
 import com.eoyeongbooyeong.search.component.PlaceInfoListItem
+import com.google.common.collect.ImmutableList
 
 @Composable
 fun PlaceCategoryRoute(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {},
-    searchResultList: List<PlaceEntity> = emptyList(),
+    searchResultList: ImmutableList<PlaceEntity> = ImmutableList.of(),
     placeType: String = PlaceType.MOVIE.name,
 ) {
     PlaceCategoryScreen(
@@ -187,7 +188,7 @@ fun CategoryScreenPreview() {
     BooTheme {
         PlaceCategoryRoute(
             searchResultList =
-                listOf(
+                ImmutableList.of(
                     PlaceEntity(
                         name = "피자헛",
                         address = "서울특별시 강남구 역삼동 123-456",
