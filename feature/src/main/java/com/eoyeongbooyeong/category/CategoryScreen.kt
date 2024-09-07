@@ -151,6 +151,7 @@ fun PlaceCategoryScreen(
             searchResultList = searchResultList,
         )
         Spacer(modifier = Modifier.height(12.dp))
+        // TODO 플로팅 버튼 Z 축 위로 올리기
         FloatingButtonContainer(
             onClick = { navigateToMap() },
         )
@@ -189,6 +190,42 @@ fun CategoryScreenPreview() {
                 listOf(
                     PlaceEntity(
                         name = "피자헛",
+                        address = "서울특별시 강남구 역삼동 123-456",
+                        star = 4.5f,
+                        reviewCount = 123,
+                        likedCount = 456,
+                        movieNameList = listOf("마블", "DC"),
+                        imageUrl = "https://image.com",
+                    ),
+                    PlaceEntity(
+                        name = "도미노피자",
+                        address = "서울특별시 강남구 역삼동 123-456",
+                        star = 4.5f,
+                        reviewCount = 123,
+                        likedCount = 456,
+                        movieNameList = listOf("마블", "DC"),
+                        imageUrl = "https://image.com",
+                    ),
+                    PlaceEntity(
+                        name = "도미노피자",
+                        address = "서울특별시 강남구 역삼동 123-456",
+                        star = 4.5f,
+                        reviewCount = 123,
+                        likedCount = 456,
+                        movieNameList = listOf("마블", "DC"),
+                        imageUrl = "https://image.com",
+                    ),
+                    PlaceEntity(
+                        name = "도미노피자",
+                        address = "서울특별시 강남구 역삼동 123-456",
+                        star = 4.5f,
+                        reviewCount = 123,
+                        likedCount = 456,
+                        movieNameList = listOf("마블", "DC"),
+                        imageUrl = "https://image.com",
+                    ),
+                    PlaceEntity(
+                        name = "도미노피자",
                         address = "서울특별시 강남구 역삼동 123-456",
                         star = 4.5f,
                         reviewCount = 123,
