@@ -1,6 +1,6 @@
-package com.eoyeongbooyeong.domain
+package com.eoyeongbooyeong.domain.entity
 
-data class Place(
+data class PlaceEntity(
     val name: String = "",
     val address: String = "",
     val star: Float = 0.0f,

@@ -1,6 +1,6 @@
-package com.eoyeongbooyeong.domain
+package com.eoyeongbooyeong.domain.entity
 
-data class ReviewInfo(
+data class ReviewInfoEntity(
     val id: Int = -1,
     val placeId: Int = -1,
     val reviewContent: String = "",

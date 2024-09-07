@@ -1,4 +1,4 @@
-package com.eoyeongbooyeong.home
+package com.eoyeongbooyeong.category.map
 
 import android.Manifest
 import android.app.AlertDialog
@@ -17,6 +17,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -24,17 +27,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.eoyeongbooyeong.core.R
-import com.eoyeongbooyeong.core.designsystem.component.textfield.BooSearchTextField
-import com.eoyeongbooyeong.core.designsystem.theme.White
-import com.eoyeongbooyeong.domain.entity.PlaceEntity
 import com.eoyeongbooyeong.category.component.FloatingButton
 import com.eoyeongbooyeong.category.component.MapFloatingButton
+import com.eoyeongbooyeong.core.R
+import com.eoyeongbooyeong.core.designsystem.component.topbar.BooTextTopAppBar
+import com.eoyeongbooyeong.core.designsystem.theme.White
+import com.eoyeongbooyeong.domain.entity.PlaceEntity
+import com.eoyeongbooyeong.domain.entity.PlaceType
 import com.eoyeongbooyeong.home.component.PlaceInfoBox
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -51,14 +57,42 @@ import com.kakao.vectormap.label.LabelOptions
 import com.kakao.vectormap.label.LabelStyle
 import com.kakao.vectormap.label.LabelStyles
 
+private const val BUSAN_STATION_LATITUDE = 35.114495
+private const val BUSAN_STATION_LONGTITUDE = 129.03933
+
 @Composable
-internal fun HomeScreen(onClickBookmark: () -> Unit = {}) {
+fun KakaoMapRoute() {
+    val dummyList: List<PlaceEntity> = listOf(
+        PlaceEntity(
+            latitude = 35.114495,
+            longitude = 129.03941
+        ),
+        PlaceEntity(
+            latitude = 35.114496,
+            longitude = 129.03946
+        ),
+        PlaceEntity(
+            latitude = 35.114493,
+            longitude = 129.03945
+        )
+    )
+    KakakoMapScreen(
+        placeList = dummyList,
+        placeType = PlaceType.MOVIE
+    )
+}
+
+@Composable
+internal fun KakakoMapScreen(
+    placeList: List<PlaceEntity>,
+    placeType: PlaceType
+) {
     val context = LocalContext.current
     val kakaoMap = remember { mutableStateOf<KakaoMap?>(null) }
     val mapView =
         rememberMapView(context = context, onMapReady = { map ->
             kakaoMap.value = map
-        })
+        }, placeList = placeList, placeType = placeType)
 
     val locationPermissionGranted = remember { mutableStateOf(false) }
     val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
@@ -91,36 +125,28 @@ internal fun HomeScreen(onClickBookmark: () -> Unit = {}) {
     val selectedPlaceEntity = remember { mutableStateOf<PlaceEntity?>(null) }
 
     Column(
-        modifier =
-            Modifier
-                .fillMaxSize()
-                .background(color = White),
+        modifier = Modifier.fillMaxSize().background(color = White).statusBarsPadding().systemBarsPadding(),
     ) {
-        BooSearchTextField(
-            modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp),
-            isActive = false,
-            onClick = {}, // navigate to search screen
+        BooTextTopAppBar(
+            leadingIcon = {
+                Icon(
+                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_left),
+                    contentDescription = "left",
+                )
+            },
+            text = "",
         )
+
         Box(
-            modifier =
-                Modifier
-                    .fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
         ) {
-            AndroidView(
-                factory = {
-                    mapView
-                },
-            )
+            AndroidView(factory = { mapView })
 
             Column(
-                modifier =
-                    Modifier
-                        .align(Alignment.BottomEnd),
+                modifier = Modifier.align(Alignment.BottomEnd),
             ) {
                 MapFloatingButton(
-                    modifier =
-                        Modifier
-                            .padding(end = 24.dp, bottom = 12.dp),
+                    modifier = Modifier.padding(end = 24.dp, bottom = 30.dp),
                     onClick = {
                         requestPermissionAndMoveToCurrentLocation(
                             locationPermissionGranted,
@@ -132,42 +158,12 @@ internal fun HomeScreen(onClickBookmark: () -> Unit = {}) {
                     },
                     buttonState = FloatingButton(isMyLocationButton = true),
                 )
-
-                MapFloatingButton(
-                    modifier =
-                        Modifier
-                            .padding(end = 24.dp, bottom = 24.dp),
-                    onClick = {
-                        // Toggle PlaceInfoBox visibility
-                        selectedPlaceEntity.value =
-                            PlaceEntity(
-                                name = "Example PlaceEntity",
-                                address = "123 Example Street 123 Example Street 123 Example Street 123 Example Street",
-                                star = 4.5f,
-                                reviewCount = 42,
-                                likedCount = 15,
-                                movieNameList =
-                                    listOf(
-                                        "Movie A",
-                                        "Movie B",
-                                        "Movie B",
-                                        "Movie B",
-                                    ),
-                                imageUrl = "https://example.com/image.jpg", // Provide a valid image URL
-                            )
-                        showPlaceInfoBox.value = !showPlaceInfoBox.value
-                    },
-                    buttonState = FloatingButton(isBookmarkButton = true),
-                )
             }
 
             if (showPlaceInfoBox.value && selectedPlaceEntity.value != null) {
                 PlaceInfoBox(
                     placeEntity = selectedPlaceEntity.value!!,
-                    modifier =
-                        Modifier
-                            .padding(16.dp)
-                            .fillMaxWidth(),
+                    modifier = Modifier.padding(16.dp).fillMaxWidth(),
                 )
             }
         }
@@ -178,6 +174,8 @@ internal fun HomeScreen(onClickBookmark: () -> Unit = {}) {
 fun rememberMapView(
     context: Context,
     onMapReady: (KakaoMap) -> Unit,
+    placeType: PlaceType = PlaceType.MOVIE,
+    placeList: List<PlaceEntity> = emptyList()
 ): MapView {
     val mapView =
         remember {
@@ -191,22 +189,25 @@ fun rememberMapView(
                         override fun onMapResumed() = Unit
                     },
                     object : KakaoMapReadyCallback() {
-                        override fun getPosition(): LatLng = LatLng.from(35.16001944, 129.1658083)
+                        override fun getPosition(): LatLng = LatLng.from(BUSAN_STATION_LATITUDE, BUSAN_STATION_LONGTITUDE)
 
-                        override fun getZoomLevel(): Int = 13
+                        override fun getZoomLevel(): Int = 17
 
                         override fun onMapReady(map: KakaoMap) {
                             onMapReady(map) // KakaoMap 객체를 상태로 업데이트합니다.
-                            // TODO : 마커 위치 더미 데이터
-                            val markerLocations =
-                                listOf(
-                                    LatLng.from(35.16001944, 129.1658083),
-                                    LatLng.from(35.16801944, 129.258083),
-                                    LatLng.from(35.15001944, 129.1858083),
-                                )
 
-                            markerLocations.map { setMapMarker(map, it) }
+                            placeList.forEach { place ->
+                                val location = LatLng.from(place.latitude, place.longitude)
+                                setMapMarker(map, location)
+                            }
+
                             markerClickListener(map)
+                        }
+
+                        val markerIconResId = when (placeType) {
+                            PlaceType.MOVIE -> R.drawable.ic_marker_movie
+                            PlaceType.LOCAL_SUPPORT -> R.drawable.ic_marker_local
+                            PlaceType.TOUR -> R.drawable.ic_marker_tour
                         }
 
                         private fun setMapMarker(
@@ -214,7 +215,8 @@ fun rememberMapView(
                             location: LatLng,
                         ): Label {
                             val label = map.labelManager?.layer
-                            val styles = LabelStyles.from(LabelStyle.from(R.drawable.ic_marker_clicked))
+
+                            val styles = LabelStyles.from(LabelStyle.from(markerIconResId))
                             val labelOptions = LabelOptions.from(location).setStyles(styles)
 
                             return label?.addLabel(labelOptions) ?: error("Label creation failed")
@@ -226,7 +228,7 @@ fun rememberMapView(
                             map.setOnLabelClickListener { _, _, label ->
                                 val currentStyle = markerStateMap[label] ?: false
                                 val newStyleResId =
-                                    if (currentStyle) R.drawable.ic_marker_clicked else R.drawable.ic_marker_clicked
+                                    if (currentStyle) markerIconResId else R.drawable.ic_marker_clicked
 
                                 label.changeStyles(
                                     LabelStyles.from(LabelStyle.from(newStyleResId)),

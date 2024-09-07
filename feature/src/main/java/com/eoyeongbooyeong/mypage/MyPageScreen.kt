@@ -162,7 +162,7 @@ internal fun MyPageScreen(
                 ) {
                     Icon(
                         imageVector = ImageVector.vectorResource(id = com.eoyeongbooyeong.core.R.drawable.ic_write),
-                        contentDescription = "my ReviewInfo"
+                        contentDescription = "my ReviewInfoEntity"
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(
@@ -182,7 +182,7 @@ internal fun MyPageScreen(
                 ) {
                     Icon(
                         imageVector = ImageVector.vectorResource(id = com.eoyeongbooyeong.core.R.drawable.ic_bookmark),
-                        contentDescription = "my ReviewInfo"
+                        contentDescription = "my ReviewInfoEntity"
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(

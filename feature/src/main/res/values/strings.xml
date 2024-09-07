@@ -12,4 +12,5 @@
     <string name="searchResultCount">개의 검색 결과</string>
     <string name="noSearchResult">\'%1$s\' 에 대한\n검색 결과가 없습니다.</string>
     <string name="checkSearchResult">검색 결과를 확인해 주세요.</string>
+    <string name="tour">관광지</string>
 </resources>

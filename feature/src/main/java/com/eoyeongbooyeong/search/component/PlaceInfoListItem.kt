@@ -2,10 +2,13 @@ package com.eoyeongbooyeong.search.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -51,14 +54,15 @@ internal fun PlaceInfoListItem(
         modifier =
             modifier
                 .noRippleClickable(onClick = onClick)
-                .wrapContentSize()
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
                 .background(White),
     ) {
         Row(
             modifier =
                 modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
+                    .wrapContentSize()
+                    .height(IntrinsicSize.Min)
                     .padding(end = 10.dp),
         ) {
             AsyncImage(
@@ -74,8 +78,10 @@ internal fun PlaceInfoListItem(
 
             Spacer(modifier = modifier.width(10.dp))
 
-            Column {
-                Spacer(modifier = modifier.height(8.dp))
+            Column(
+                modifier = Modifier.weight(1f).fillMaxWidth(),
+                verticalArrangement = Arrangement.Center
+            ) {
                 Text(
                     text = placeName,
                     style = BooTheme.typography.body3,
@@ -91,8 +97,6 @@ internal fun PlaceInfoListItem(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
-
-                Spacer(modifier = Modifier.height(4.dp))
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     ReviewStar(star)
@@ -132,8 +136,6 @@ internal fun PlaceInfoListItem(
                                 .padding(start = 4.dp),
                     )
                 }
-
-                Spacer(modifier = Modifier.height(4.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Image(
                         painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_camera),
@@ -200,15 +202,20 @@ fun PlaceReviewAndLikedCount(
 @Composable
 fun PlaceInfoResultListPreview() {
     BooTheme {
-        PlaceInfoListItem(
-            placeName = "Place Name",
-            placeImageUrl = "https://placeimg.com/100/100/any",
-            address = "Address",
-            star = 4.5f,
-            reviewCount = 100,
-            likedCount = 100,
-            movieNameList = listOf("Movie 1", "Movie 2"),
-            modifier = Modifier.background(White),
-        )
+        Column(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            PlaceInfoListItem(
+                placeName = "PlaceEntity Name",
+                placeImageUrl = "https://placeimg.com/100/100/any",
+                address = "Address",
+                star = 4.5f,
+                reviewCount = 100,
+                likedCount = 100,
+                movieNameList = listOf("Movie 1", "Movie 2"),
+                modifier = Modifier.background(White),
+            )
+        }
+
     }
 }
