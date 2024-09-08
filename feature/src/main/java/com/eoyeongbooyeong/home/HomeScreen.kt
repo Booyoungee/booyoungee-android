@@ -32,9 +32,9 @@ import androidx.core.content.ContextCompat
 import com.eoyeongbooyeong.core.R
 import com.eoyeongbooyeong.core.designsystem.component.textfield.BooSearchTextField
 import com.eoyeongbooyeong.core.designsystem.theme.White
-import com.eoyeongbooyeong.domain.entity.PlaceEntity
-import com.eoyeongbooyeong.category.component.FloatingButton
-import com.eoyeongbooyeong.category.component.MapFloatingButton
+import com.eoyeongbooyeong.domain.entity.PlaceDetailsEntity
+import com.eoyeongbooyeong.places.component.FloatingButton
+import com.eoyeongbooyeong.places.component.MapFloatingButton
 import com.eoyeongbooyeong.home.component.PlaceInfoBox
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -88,7 +88,7 @@ internal fun HomeScreen(onClickBookmark: () -> Unit = {}) {
 
     // PlaceInfoBox 에 대한 State
     val showPlaceInfoBox = remember { mutableStateOf(false) }
-    val selectedPlaceEntity = remember { mutableStateOf<PlaceEntity?>(null) }
+    val selectedPlaceDetailsEntity = remember { mutableStateOf<PlaceDetailsEntity?>(null) }
 
     Column(
         modifier =
@@ -139,13 +139,13 @@ internal fun HomeScreen(onClickBookmark: () -> Unit = {}) {
                             .padding(end = 24.dp, bottom = 24.dp),
                     onClick = {
                         // Toggle PlaceInfoBox visibility
-                        selectedPlaceEntity.value =
-                            PlaceEntity(
-                                name = "Example PlaceEntity",
+                        selectedPlaceDetailsEntity.value =
+                            PlaceDetailsEntity(
+                                name = "Example PlaceDetailsEntity",
                                 address = "123 Example Street 123 Example Street 123 Example Street 123 Example Street",
-                                star = 4.5f,
+                                starCount = 4.5f,
                                 reviewCount = 42,
-                                likedCount = 15,
+                                likeCount = 15,
                                 movieNameList =
                                     listOf(
                                         "Movie A",
@@ -161,9 +161,9 @@ internal fun HomeScreen(onClickBookmark: () -> Unit = {}) {
                 )
             }
 
-            if (showPlaceInfoBox.value && selectedPlaceEntity.value != null) {
+            if (showPlaceInfoBox.value && selectedPlaceDetailsEntity.value != null) {
                 PlaceInfoBox(
-                    placeEntity = selectedPlaceEntity.value!!,
+                    placeDetailsEntity = selectedPlaceDetailsEntity.value!!,
                     modifier =
                         Modifier
                             .padding(16.dp)

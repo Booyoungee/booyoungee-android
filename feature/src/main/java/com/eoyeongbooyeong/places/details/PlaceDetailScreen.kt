@@ -144,7 +144,7 @@ fun PlaceDetailScreen(
                             .crossfade(true)
                             .build(),
                     placeholder = painterResource(R.drawable.img_default_5),
-                    contentDescription = "PlaceEntity Detail Image",
+                    contentDescription = "PlaceDetailsEntity Detail Image",
                     contentScale = ContentScale.Crop,
                     modifier =
                         Modifier

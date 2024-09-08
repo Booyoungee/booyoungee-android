@@ -206,7 +206,7 @@ fun PlaceInfoResultListPreview() {
             modifier = Modifier.fillMaxSize()
         ) {
             PlaceInfoListItem(
-                placeName = "PlaceEntity Name",
+                placeName = "PlaceDetailsEntity Name",
                 placeImageUrl = "https://placeimg.com/100/100/any",
                 address = "Address",
                 star = 4.5f,

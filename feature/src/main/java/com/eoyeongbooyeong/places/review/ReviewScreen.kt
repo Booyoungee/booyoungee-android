@@ -1,4 +1,4 @@
-package com.eoyeongbooyeong.review
+package com.eoyeongbooyeong.places.review
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

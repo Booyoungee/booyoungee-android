@@ -1,4 +1,4 @@
-package com.eoyeongbooyeong.category.map
+package com.eoyeongbooyeong.places.map
 
 import android.Manifest
 import android.app.AlertDialog
@@ -34,12 +34,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.eoyeongbooyeong.category.component.FloatingButton
-import com.eoyeongbooyeong.category.component.MapFloatingButton
+import com.eoyeongbooyeong.places.component.FloatingButton
+import com.eoyeongbooyeong.places.component.MapFloatingButton
 import com.eoyeongbooyeong.core.R
 import com.eoyeongbooyeong.core.designsystem.component.topbar.BooTextTopAppBar
 import com.eoyeongbooyeong.core.designsystem.theme.White
-import com.eoyeongbooyeong.domain.entity.PlaceEntity
+import com.eoyeongbooyeong.domain.entity.PlaceDetailsEntity
 import com.eoyeongbooyeong.domain.entity.PlaceType
 import com.eoyeongbooyeong.home.component.PlaceInfoBox
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -62,16 +62,16 @@ private const val BUSAN_STATION_LONGTITUDE = 129.03933
 
 @Composable
 fun KakaoMapRoute() {
-    val dummyList: List<PlaceEntity> = listOf(
-        PlaceEntity(
+    val dummyList: List<PlaceDetailsEntity> = listOf(
+        PlaceDetailsEntity(
             latitude = 35.114495,
             longitude = 129.03941
         ),
-        PlaceEntity(
+        PlaceDetailsEntity(
             latitude = 35.114496,
             longitude = 129.03946
         ),
-        PlaceEntity(
+        PlaceDetailsEntity(
             latitude = 35.114493,
             longitude = 129.03945
         )
@@ -84,7 +84,7 @@ fun KakaoMapRoute() {
 
 @Composable
 internal fun KakakoMapScreen(
-    placeList: List<PlaceEntity>,
+    placeList: List<PlaceDetailsEntity>,
     placeType: PlaceType
 ) {
     val context = LocalContext.current
@@ -122,7 +122,7 @@ internal fun KakakoMapScreen(
 
     // PlaceInfoBox 에 대한 State
     val showPlaceInfoBox = remember { mutableStateOf(false) }
-    val selectedPlaceEntity = remember { mutableStateOf<PlaceEntity?>(null) }
+    val selectedPlaceDetailsEntity = remember { mutableStateOf<PlaceDetailsEntity?>(null) }
 
     Column(
         modifier = Modifier.fillMaxSize().background(color = White).statusBarsPadding().systemBarsPadding(),
@@ -160,9 +160,9 @@ internal fun KakakoMapScreen(
                 )
             }
 
-            if (showPlaceInfoBox.value && selectedPlaceEntity.value != null) {
+            if (showPlaceInfoBox.value && selectedPlaceDetailsEntity.value != null) {
                 PlaceInfoBox(
-                    placeEntity = selectedPlaceEntity.value!!,
+                    placeDetailsEntity = selectedPlaceDetailsEntity.value!!,
                     modifier = Modifier.padding(16.dp).fillMaxWidth(),
                 )
             }
@@ -175,7 +175,7 @@ fun rememberMapView(
     context: Context,
     onMapReady: (KakaoMap) -> Unit,
     placeType: PlaceType = PlaceType.MOVIE,
-    placeList: List<PlaceEntity> = emptyList()
+    placeList: List<PlaceDetailsEntity> = emptyList()
 ): MapView {
     val mapView =
         remember {

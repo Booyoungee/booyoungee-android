@@ -1,4 +1,4 @@
-package com.eoyeongbooyeong.category.component
+package com.eoyeongbooyeong.places.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

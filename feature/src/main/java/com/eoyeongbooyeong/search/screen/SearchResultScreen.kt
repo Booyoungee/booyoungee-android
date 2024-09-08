@@ -39,7 +39,7 @@ import com.eoyeongbooyeong.core.designsystem.theme.Blue300
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Purple
 import com.eoyeongbooyeong.core.designsystem.theme.White
-import com.eoyeongbooyeong.domain.entity.PlaceEntity
+import com.eoyeongbooyeong.domain.entity.PlaceDetailsEntity
 import com.eoyeongbooyeong.feature.R
 import com.eoyeongbooyeong.search.component.PlaceInfoListItem
 
@@ -52,7 +52,7 @@ fun SearchResultRoute(
     query: String = "",
     active: Boolean = false,
     resultCount: Int = 0,
-    searchResultList: List<PlaceEntity> = emptyList(),
+    searchResultList: List<PlaceDetailsEntity> = emptyList(),
 ) {
     SearchResultScreen(
         modifier = modifier,
@@ -70,7 +70,7 @@ fun SearchResultRoute(
 fun SearchResultScreen(
     modifier: Modifier,
     resultCount: Int = 0,
-    searchResultList: List<PlaceEntity>,
+    searchResultList: List<PlaceDetailsEntity>,
     onBackClick: () -> Unit,
     onQueryChange: (String) -> Unit,
     onActiveChange: (Boolean) -> Unit,
@@ -173,9 +173,9 @@ fun SearchResultScreen(
 @Composable
 fun SearchResultList(
     modifier: Modifier = Modifier,
-    searchResultList: List<PlaceEntity>,
+    searchResultList: List<PlaceDetailsEntity>,
     resultCount: Int,
-    onPlaceClick: (PlaceEntity) -> Unit = {},
+    onPlaceClick: (PlaceDetailsEntity) -> Unit = {},
 ) {
     Column(
         modifier =
@@ -226,9 +226,9 @@ fun SearchResultList(
                 PlaceInfoListItem(
                     placeName = place.name,
                     address = place.address,
-                    star = place.star,
+                    star = place.starCount,
                     reviewCount = place.reviewCount,
-                    likedCount = place.likedCount,
+                    likedCount = place.likeCount,
                     movieNameList = place.movieNameList,
                     placeImageUrl = place.imageUrl,
                     onClick = { /* Handle item click */ },

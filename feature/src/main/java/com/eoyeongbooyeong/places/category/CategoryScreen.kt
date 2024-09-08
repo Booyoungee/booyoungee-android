@@ -1,4 +1,4 @@
-package com.eoyeongbooyeong.category
+package com.eoyeongbooyeong.places.category
 
 import SortingDropdownMenu
 import androidx.compose.foundation.background
@@ -32,13 +32,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.eoyeongbooyeong.category.component.FloatingButtonContainer
+import com.eoyeongbooyeong.places.component.FloatingButtonContainer
 import com.eoyeongbooyeong.core.designsystem.component.topbar.BooTextTopAppBar
 import com.eoyeongbooyeong.core.designsystem.theme.Black
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Purple
 import com.eoyeongbooyeong.core.designsystem.theme.White
-import com.eoyeongbooyeong.domain.entity.PlaceEntity
+import com.eoyeongbooyeong.domain.entity.PlaceDetailsEntity
 import com.eoyeongbooyeong.domain.entity.PlaceType
 import com.eoyeongbooyeong.feature.R
 import com.eoyeongbooyeong.search.component.PlaceInfoListItem
@@ -48,7 +48,7 @@ import com.google.common.collect.ImmutableList
 fun PlaceCategoryRoute(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {},
-    searchResultList: ImmutableList<PlaceEntity> = ImmutableList.of(),
+    searchResultList: ImmutableList<PlaceDetailsEntity> = ImmutableList.of(),
     placeType: String = PlaceType.MOVIE.name,
 ) {
     PlaceCategoryScreen(
@@ -64,7 +64,7 @@ fun PlaceCategoryRoute(
 @Composable
 fun PlaceCategoryScreen(
     modifier: Modifier,
-    searchResultList: List<PlaceEntity>,
+    searchResultList: List<PlaceDetailsEntity>,
     onBackClick: () -> Unit,
     onSortSelected: (String) -> Unit,
     navigateToMap: () -> Unit,
@@ -162,19 +162,19 @@ fun PlaceCategoryScreen(
 @Composable
 fun PlaceList(
     modifier: Modifier = Modifier,
-    searchResultList: List<PlaceEntity>,
-    onPlaceClick: (PlaceEntity) -> Unit = {},
+    searchResultList: List<PlaceDetailsEntity>,
+    onPlaceClick: (PlaceDetailsEntity) -> Unit = {},
 ) {
     LazyColumn {
         items(searchResultList) { place ->
             PlaceInfoListItem(
                 placeName = place.name,
                 address = place.address,
-                star = place.star,
+                star = place.starCount,
                 reviewCount = place.reviewCount,
-                likedCount = place.likedCount,
+                likedCount = place.likeCount,
                 movieNameList = place.movieNameList,
-                placeImageUrl = place.imageUrl,
+                placeImageUrl = place.imageUrl[0], // TODO : 슬라이드가 가능한 이미지 페이지로 변경해야 함
                 onClick = { /* Handle item click */ },
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -189,77 +189,69 @@ fun CategoryScreenPreview() {
         PlaceCategoryRoute(
             searchResultList =
                 ImmutableList.of(
-                    PlaceEntity(
+                    PlaceDetailsEntity(
                         name = "피자헛",
                         address = "서울특별시 강남구 역삼동 123-456",
-                        star = 4.5f,
+                        starCount = 4.5f,
                         reviewCount = 123,
-                        likedCount = 456,
+                        likeCount = 456,
                         movieNameList = listOf("마블", "DC"),
-                        imageUrl = "https://image.com",
                     ),
-                    PlaceEntity(
+                    PlaceDetailsEntity(
                         name = "도미노피자",
                         address = "서울특별시 강남구 역삼동 123-456",
-                        star = 4.5f,
+                        starCount = 4.5f,
                         reviewCount = 123,
-                        likedCount = 456,
+                        likeCount = 456,
                         movieNameList = listOf("마블", "DC"),
-                        imageUrl = "https://image.com",
                     ),
-                    PlaceEntity(
+                    PlaceDetailsEntity(
                         name = "도미노피자",
                         address = "서울특별시 강남구 역삼동 123-456",
-                        star = 4.5f,
+                        starCount = 4.5f,
                         reviewCount = 123,
-                        likedCount = 456,
+                        likeCount = 456,
                         movieNameList = listOf("마블", "DC"),
-                        imageUrl = "https://image.com",
                     ),
-                    PlaceEntity(
+                    PlaceDetailsEntity(
                         name = "도미노피자",
                         address = "서울특별시 강남구 역삼동 123-456",
-                        star = 4.5f,
+                        starCount = 4.5f,
                         reviewCount = 123,
-                        likedCount = 456,
+                        likeCount = 456,
                         movieNameList = listOf("마블", "DC"),
-                        imageUrl = "https://image.com",
                     ),
-                    PlaceEntity(
+                    PlaceDetailsEntity(
                         name = "도미노피자",
                         address = "서울특별시 강남구 역삼동 123-456",
-                        star = 4.5f,
+                        starCount = 4.5f,
                         reviewCount = 123,
-                        likedCount = 456,
+                        likeCount = 456,
                         movieNameList = listOf("마블", "DC"),
-                        imageUrl = "https://image.com",
                     ),
-                    PlaceEntity(
+                    PlaceDetailsEntity(
                         name = "도미노피자",
                         address = "서울특별시 강남구 역삼동 123-456",
-                        star = 4.5f,
+                        starCount = 4.5f,
                         reviewCount = 123,
-                        likedCount = 456,
+                        likeCount = 456,
                         movieNameList = listOf("마블", "DC"),
-                        imageUrl = "https://image.com",
                     ),
-                    PlaceEntity(
+                    PlaceDetailsEntity(
                         name = "도미노피자",
                         address = "서울특별시 강남구 역삼동 123-456",
-                        star = 4.5f,
+                        starCount = 4.5f,
                         reviewCount = 123,
-                        likedCount = 456,
+                        likeCount = 456,
                         movieNameList = listOf("마블", "DC"),
-                        imageUrl = "https://image.com",
                     ),
-                    PlaceEntity(
+                    PlaceDetailsEntity(
                         name = "도미노피자",
                         address = "서울특별시 강남구 역삼동 123-456",
-                        star = 4.5f,
+                        starCount = 4.5f,
                         reviewCount = 123,
-                        likedCount = 456,
+                        likeCount = 456,
                         movieNameList = listOf("마블", "DC"),
-                        imageUrl = "https://image.com",
                     ),
                 ),
             onBackClick = {},
