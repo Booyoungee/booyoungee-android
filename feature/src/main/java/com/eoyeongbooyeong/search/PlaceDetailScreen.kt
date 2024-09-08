@@ -1,5 +1,6 @@
 package com.eoyeongbooyeong.search
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -36,7 +37,6 @@ import com.eoyeongbooyeong.core.designsystem.component.topbar.BooTextTopAppBar
 import com.eoyeongbooyeong.core.designsystem.theme.Black
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Gray100
-import com.eoyeongbooyeong.core.designsystem.theme.Red
 import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.core.extension.noRippleClickable
 import com.eoyeongbooyeong.domain.entity.ReviewInfoEntity
@@ -166,11 +166,10 @@ fun PlaceDetailScreen(
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_like),
-                            contentDescription = "share",
-                            modifier = Modifier.size(24.dp),
-                            tint = Red,
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_stamp_boo),
+                            contentDescription = "stamp icon",
+                            modifier = Modifier.size(48.dp),
                         )
                         Spacer(modifier = Modifier.width(7.dp))
                         Text(
@@ -203,24 +202,6 @@ fun PlaceDetailScreen(
                         iconDescription = "film icon",
                         text = "<더킹>, <협녀, 칼의 기억>",
                         style = BooTheme.typography.body3,
-                    )
-
-                    PlaceDetailInfo(
-                        icon = painterResource(id = R.drawable.ic_clock),
-                        iconDescription = "operating hours info",
-                        text = "09:00 ~ 18:00",
-                    )
-
-                    PlaceDetailInfo(
-                        icon = painterResource(id = R.drawable.ic_money),
-                        iconDescription = "entrance fee info",
-                        text = "성인 기준 8,000원",
-                    )
-
-                    PlaceDetailInfo(
-                        icon = painterResource(id = R.drawable.ic_car),
-                        iconDescription = "parking info",
-                        text = "전용 주차장(무료)",
                     )
 
                     PlaceDetailInfo(
