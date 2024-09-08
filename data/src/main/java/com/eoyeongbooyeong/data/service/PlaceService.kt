@@ -2,10 +2,13 @@ package com.eoyeongbooyeong.data.service
 
 import com.eoyeongbooyeong.data.dto.response.BaseResponse
 import com.eoyeongbooyeong.data.dto.response.BookMarkDto
+import com.eoyeongbooyeong.data.dto.response.LikeDto
 import com.eoyeongbooyeong.data.dto.response.PlaceDetailsDto
+import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface PlaceService {
@@ -25,4 +28,14 @@ interface PlaceService {
     suspend fun deleteBookMark(
         @Query("bookMarkId") bookMarkId: Int,
     ): BaseResponse<BookMarkDto>
+
+    @POST("api/v1/like")
+    suspend fun postLike(
+        @Body placeId: Int,
+    ): BaseResponse<LikeDto>
+
+    @DELETE("api/v1/like/{likeId}")
+    suspend fun deleteLike(
+        @Path("likeId") likeId: Int,
+    ): BaseResponse<LikeDto>
 }
