@@ -5,7 +5,7 @@ import com.eoyeongbooyeong.data.dto.response.PlaceDetailsDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface PlaceDetailService {
+interface PlaceDetailsService {
     @GET("api/vq/place/details")
     suspend fun getPlaceDetails(
         @Query("placeId") placeId: Int,
