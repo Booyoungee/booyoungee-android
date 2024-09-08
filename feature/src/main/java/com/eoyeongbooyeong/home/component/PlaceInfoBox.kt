@@ -122,7 +122,7 @@ internal fun PlaceInfoBox(
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Image(
-                        painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_camera),
+                        painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_film),
                         contentDescription = "camera icon",
                         modifier = Modifier.size(20.dp)
                     )

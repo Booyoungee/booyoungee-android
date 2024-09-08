@@ -138,7 +138,7 @@ internal fun PlaceInfoListItem(
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Image(
-                        painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_camera),
+                        painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_film),
                         contentDescription = "camera icon",
                         modifier = modifier.size(20.dp),
                     )
