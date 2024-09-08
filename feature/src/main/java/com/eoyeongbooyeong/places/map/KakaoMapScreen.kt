@@ -14,6 +14,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -30,18 +31,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.eoyeongbooyeong.places.component.FloatingButton
-import com.eoyeongbooyeong.places.component.MapFloatingButton
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.eoyeongbooyeong.core.R
 import com.eoyeongbooyeong.core.designsystem.component.topbar.BooTextTopAppBar
 import com.eoyeongbooyeong.core.designsystem.theme.White
+import com.eoyeongbooyeong.core.extension.toast
 import com.eoyeongbooyeong.domain.entity.PlaceDetailsEntity
 import com.eoyeongbooyeong.domain.entity.PlaceType
 import com.eoyeongbooyeong.home.component.PlaceInfoBox
+import com.eoyeongbooyeong.places.component.FloatingButton
+import com.eoyeongbooyeong.places.component.MapFloatingButton
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
@@ -61,31 +68,61 @@ private const val BUSAN_STATION_LATITUDE = 35.114495
 private const val BUSAN_STATION_LONGTITUDE = 129.03933
 
 @Composable
-fun KakaoMapRoute() {
-    val dummyList: List<PlaceDetailsEntity> = listOf(
-        PlaceDetailsEntity(
-            latitude = 35.114495,
-            longitude = 129.03941
-        ),
-        PlaceDetailsEntity(
-            latitude = 35.114496,
-            longitude = 129.03946
-        ),
-        PlaceDetailsEntity(
-            latitude = 35.114493,
-            longitude = 129.03945
+fun KakaoMapRoute(
+    paddingValues: PaddingValues,
+    navigateToPlaceDetailScreen: () -> Unit,
+    viewModel: KakaoMapViewModel = hiltViewModel(),
+    placeType: String,
+) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val state = viewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+
+    LaunchedEffect(viewModel.sideEffects, lifecycleOwner) {
+        viewModel.sideEffects
+            .flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    is KakaoMapSideEffect.ShowToast -> {
+                        context.toast(sideEffect.message)
+                    }
+
+                    is KakaoMapSideEffect.NavigateToPlaceDetailScreen -> {
+                        navigateToPlaceDetailScreen()
+                    }
+                }
+            }
+    }
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.getPlaceDetailsInfo(222, PlaceType.STORE.name.toLowerCase()) // TODO: placeId와 placeType을 넘겨주기
+    }
+
+    val dummyList: List<PlaceDetailsEntity> =
+        listOf(
+            PlaceDetailsEntity(
+                latitude = 35.114495,
+                longitude = 129.03941,
+            ),
+            PlaceDetailsEntity(
+                latitude = 35.114496,
+                longitude = 129.03946,
+            ),
+            PlaceDetailsEntity(
+                latitude = 35.114493,
+                longitude = 129.03945,
+            ),
         )
-    )
     KakakoMapScreen(
         placeList = dummyList,
-        placeType = PlaceType.MOVIE
+        placeType = PlaceType.MOVIE,
     )
 }
 
 @Composable
 internal fun KakakoMapScreen(
     placeList: List<PlaceDetailsEntity>,
-    placeType: PlaceType
+    placeType: PlaceType,
 ) {
     val context = LocalContext.current
     val kakaoMap = remember { mutableStateOf<KakaoMap?>(null) }
@@ -125,7 +162,12 @@ internal fun KakakoMapScreen(
     val selectedPlaceDetailsEntity = remember { mutableStateOf<PlaceDetailsEntity?>(null) }
 
     Column(
-        modifier = Modifier.fillMaxSize().background(color = White).statusBarsPadding().systemBarsPadding(),
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(color = White)
+                .statusBarsPadding()
+                .systemBarsPadding(),
     ) {
         BooTextTopAppBar(
             leadingIcon = {
@@ -175,7 +217,7 @@ fun rememberMapView(
     context: Context,
     onMapReady: (KakaoMap) -> Unit,
     placeType: PlaceType = PlaceType.MOVIE,
-    placeList: List<PlaceDetailsEntity> = emptyList()
+    placeList: List<PlaceDetailsEntity> = emptyList(),
 ): MapView {
     val mapView =
         remember {
@@ -204,11 +246,12 @@ fun rememberMapView(
                             markerClickListener(map)
                         }
 
-                        val markerIconResId = when (placeType) {
-                            PlaceType.MOVIE -> R.drawable.ic_marker_movie
-                            PlaceType.LOCAL_SUPPORT -> R.drawable.ic_marker_local
-                            PlaceType.TOUR -> R.drawable.ic_marker_tour
-                        }
+                        val markerIconResId =
+                            when (placeType) {
+                                PlaceType.MOVIE -> R.drawable.ic_marker_movie
+                                PlaceType.STORE -> R.drawable.ic_marker_local
+                                PlaceType.TOUR -> R.drawable.ic_marker_tour
+                            }
 
                         private fun setMapMarker(
                             map: KakaoMap,
