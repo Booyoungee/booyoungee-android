@@ -12,13 +12,11 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.eoyeongbooyeong.auth.login.Login
 import com.eoyeongbooyeong.auth.signup.SignUp
-import com.eoyeongbooyeong.home.Home
-import com.eoyeongbooyeong.home.navigateToHome
-import com.eoyeongbooyeong.mypage.MyPage
 import com.eoyeongbooyeong.mypage.MyPageEditNickname
 import com.eoyeongbooyeong.mypage.navigateToMyPage
 import com.eoyeongbooyeong.navigation.Route
-import com.eoyeongbooyeong.place_recommend.navigateToPlace
+import com.eoyeongbooyeong.home.Home
+import com.eoyeongbooyeong.home.navigateToHome
 import com.eoyeongbooyeong.splash.Splash
 import com.eoyeongbooyeong.stamp.navigateToStamp
 
@@ -81,14 +79,15 @@ internal class MainNavigator(
         navController.navigate(MyPageEditNickname)
     }
 
-    private inline fun <reified T : Route> isSameCurrentDestination(): Boolean = navController.currentDestination?.hasRoute<T>() == true
+    private inline fun <reified T : Route> isSameCurrentDestination(): Boolean =
+        navController.currentDestination?.hasRoute<T>() == true
 
     @Composable
     fun shouldShowBottomBar() =
         MainTab.contains {
             currentDestination?.hasRoute(it::class) == true
         } &&
-            (currentTab?.showBottomSheet ?: true)
+                (currentTab?.showBottomSheet ?: true)
 }
 
 // MainNavigator 객체 생성, composition 상태 저장

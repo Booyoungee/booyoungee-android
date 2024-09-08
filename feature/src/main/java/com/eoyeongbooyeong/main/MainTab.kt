@@ -5,7 +5,6 @@ import com.eoyeongbooyeong.home.Home
 import com.eoyeongbooyeong.mypage.MyPage
 import com.eoyeongbooyeong.navigation.MainTabRoute
 import com.eoyeongbooyeong.navigation.Route
-import com.eoyeongbooyeong.place_recommend.Place
 import com.eoyeongbooyeong.stamp.Stamp
 
 internal enum class MainTab(
@@ -33,9 +32,11 @@ internal enum class MainTab(
 
     companion object {
         @Composable
-        fun find(predicate: @Composable (MainTabRoute) -> Boolean): MainTab? = entries.find { predicate(it.route) }
+        fun find(predicate: @Composable (MainTabRoute) -> Boolean): MainTab? =
+            entries.find { predicate(it.route) }
 
         @Composable
-        fun contains(predicate: @Composable (Route) -> Boolean): Boolean = entries.map { it.route }.any { predicate(it) }
+        fun contains(predicate: @Composable (Route) -> Boolean): Boolean =
+            entries.map { it.route }.any { predicate(it) }
     }
 }

@@ -1,4 +1,4 @@
-package com.eoyeongbooyeong.new_home
+package com.eoyeongbooyeong.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,20 +13,20 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class NewHomeViewModel @Inject constructor(
+class HomeViewModel @Inject constructor(
 
 ) : ViewModel() {
-    private val _state = MutableStateFlow(NewHomeState())
-    val state: StateFlow<NewHomeState>
+    private val _state = MutableStateFlow(HomeState())
+    val state: StateFlow<HomeState>
         get() = _state.asStateFlow()
 
-    private val _sideEffects = MutableSharedFlow<NewHomeSideEffect>()
-    val sideEffects: SharedFlow<NewHomeSideEffect>
+    private val _sideEffects = MutableSharedFlow<HomeSideEffect>()
+    val sideEffects: SharedFlow<HomeSideEffect>
         get() = _sideEffects.asSharedFlow()
 
     fun navigateToWebView(url: String) {
         viewModelScope.launch {
-            _sideEffects.emit(NewHomeSideEffect.NavigateToWebView(url))
+            _sideEffects.emit(HomeSideEffect.NavigateToWebView(url))
         }
     }
 

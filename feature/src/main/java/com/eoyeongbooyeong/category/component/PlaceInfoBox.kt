@@ -1,4 +1,4 @@
-package com.eoyeongbooyeong.home.component
+package com.eoyeongbooyeong.category.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -41,31 +41,32 @@ internal fun PlaceInfoBox(
 ) {
     Box(
         modifier =
-            modifier
-                .noRippleClickable(onClick = onClick)
-                .border(
-                    width = 1.dp,
-                    color = Gray200,
-                    shape = RoundedCornerShape(10.dp),
-                ).clip(RoundedCornerShape(10.dp))
-                .background(White)
-                .padding(start = 31.dp, top = 25.dp, bottom = 25.dp),
+        modifier
+            .noRippleClickable(onClick = onClick)
+            .border(
+                width = 1.dp,
+                color = Gray200,
+                shape = RoundedCornerShape(10.dp),
+            )
+            .clip(RoundedCornerShape(10.dp))
+            .background(White)
+            .padding(start = 31.dp, top = 25.dp, bottom = 25.dp),
     ) {
         Row(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .background(White)
-                    .padding(end = 10.dp),
+            Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .background(White)
+                .padding(end = 10.dp),
         ) {
             AsyncImage(
                 model = placeEntity.imageUrl,
                 contentDescription = null,
                 modifier =
-                    Modifier
-                        .size(90.dp)
-                        .clip(RoundedCornerShape(5.dp)),
+                Modifier
+                    .size(90.dp)
+                    .clip(RoundedCornerShape(5.dp)),
                 placeholder = painterResource(id = com.eoyeongbooyeong.core.R.drawable.img_default_5),
                 error = painterResource(id = com.eoyeongbooyeong.core.R.drawable.img_default_5),
             )
@@ -95,16 +96,21 @@ internal fun PlaceInfoBox(
                         text = placeEntity.star.toString(),
                         style = BooTheme.typography.caption1,
                         color = Black,
-                        modifier = Modifier.weight(1f, false).padding(start = 4.dp),
+                        modifier = Modifier
+                            .weight(1f, false)
+                            .padding(start = 4.dp),
                     )
                     Text(
-                        text = stringResource(R.string.placeReviewAndPoint, placeEntity.reviewCount),
+                        text = stringResource(
+                            R.string.placeReviewAndPoint,
+                            placeEntity.reviewCount
+                        ),
                         style = BooTheme.typography.caption2,
                         color = Gray400,
                         modifier =
-                            Modifier
-                                .weight(1f, false)
-                                .padding(start = 4.dp),
+                        Modifier
+                            .weight(1f, false)
+                            .padding(start = 4.dp),
                     )
                     Image(
                         painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_like),
@@ -117,7 +123,9 @@ internal fun PlaceInfoBox(
                         color = Black,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.weight(1f, false).padding(start = 4.dp),
+                        modifier = Modifier
+                            .weight(1f, false)
+                            .padding(start = 4.dp),
                     )
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -145,14 +153,14 @@ fun PlaceInfoBoxPreview() {
     BooTheme {
         PlaceInfoBox(
             placeEntity =
-                PlaceEntity(
-                    name = "PlaceEntity Name",
-                    address = "Address",
-                    star = 4.5f,
-                    reviewCount = 100,
-                    likedCount = 100,
-                    movieNameList = listOf("Movie 1", "Movie 2"),
-                ),
+            PlaceEntity(
+                name = "PlaceEntity Name",
+                address = "Address",
+                star = 4.5f,
+                reviewCount = 100,
+                likedCount = 100,
+                movieNameList = listOf("Movie 1", "Movie 2"),
+            ),
         )
     }
 }

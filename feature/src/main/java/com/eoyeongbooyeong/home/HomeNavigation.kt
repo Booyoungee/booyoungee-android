@@ -1,5 +1,6 @@
 package com.eoyeongbooyeong.home
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -15,9 +16,9 @@ fun NavController.navigateToHome(navOptions: NavOptions) {
 }
 
 fun NavGraphBuilder.homeNavGraph(
-    // TODO: Add parameters
+    paddingValues: PaddingValues,
 ) {
     composable<Home> {
-        HomeScreen()
+        HomeRoute(paddingValues = paddingValues)
     }
 }

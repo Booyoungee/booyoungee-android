@@ -36,12 +36,12 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.eoyeongbooyeong.category.component.FloatingButton
 import com.eoyeongbooyeong.category.component.MapFloatingButton
+import com.eoyeongbooyeong.category.component.PlaceInfoBox
 import com.eoyeongbooyeong.core.R
 import com.eoyeongbooyeong.core.designsystem.component.topbar.BooTextTopAppBar
 import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.domain.entity.PlaceEntity
 import com.eoyeongbooyeong.domain.entity.PlaceType
-import com.eoyeongbooyeong.home.component.PlaceInfoBox
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
