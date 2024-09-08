@@ -3,7 +3,7 @@ package com.eoyeongbooyeong.booyoungee.di
 import com.eoyeongbooyeong.booyoungee.di.qualifier.JWT
 import com.eoyeongbooyeong.booyoungee.di.qualifier.NoToken
 import com.eoyeongbooyeong.data.service.AuthService
-import com.eoyeongbooyeong.data.service.PlaceDetailsService
+import com.eoyeongbooyeong.data.service.PlaceService
 import com.eoyeongbooyeong.data.service.UserService
 import dagger.Module
 import dagger.Provides
@@ -28,6 +28,6 @@ object ServiceModule {
 
     @Provides
     @Singleton
-    fun providePlaceDetailsService(@JWT retrofit: Retrofit): PlaceDetailsService =
-        retrofit.create(PlaceDetailsService::class.java)
+    fun providePlaceDetailsService(@JWT retrofit: Retrofit): PlaceService =
+        retrofit.create(PlaceService::class.java)
 }

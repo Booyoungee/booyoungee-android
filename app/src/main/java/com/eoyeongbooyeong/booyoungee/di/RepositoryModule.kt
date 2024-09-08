@@ -1,8 +1,10 @@
 package com.eoyeongbooyeong.booyoungee.di
 
 import com.eoyeongbooyeong.data.repositoryImpl.AuthRepositoryImpl
+import com.eoyeongbooyeong.data.repositoryImpl.PlaceRepositoryImpl
 import com.eoyeongbooyeong.data.repositoryImpl.UserRepositoryImpl
 import com.eoyeongbooyeong.domain.repository.AuthRepository
+import com.eoyeongbooyeong.domain.repository.PlaceRepository
 import com.eoyeongbooyeong.domain.repository.UserRepository
 import dagger.Binds
 import dagger.Module
@@ -24,4 +26,10 @@ internal abstract class RepositoryModule {
     abstract fun provideUserRepository(
         userRepositoryImpl: UserRepositoryImpl
     ): UserRepository
+
+    @Binds
+    @Singleton
+    abstract fun providePlaceRepository(
+        placeRepositoryImpl: PlaceRepositoryImpl
+    ): PlaceRepository
 }
