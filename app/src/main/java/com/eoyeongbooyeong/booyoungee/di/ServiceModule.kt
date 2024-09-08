@@ -3,6 +3,7 @@ package com.eoyeongbooyeong.booyoungee.di
 import com.eoyeongbooyeong.booyoungee.di.qualifier.JWT
 import com.eoyeongbooyeong.booyoungee.di.qualifier.NoToken
 import com.eoyeongbooyeong.data.service.AuthService
+import com.eoyeongbooyeong.data.service.ReviewService
 import com.eoyeongbooyeong.data.service.UserService
 import dagger.Module
 import dagger.Provides
@@ -23,4 +24,9 @@ object ServiceModule {
     @Singleton
     fun provideUserService(@JWT retrofit: Retrofit): UserService =
         retrofit.create(UserService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideReviewService(@JWT retrofit: Retrofit): ReviewService =
+        retrofit.create(ReviewService::class.java)
 }
