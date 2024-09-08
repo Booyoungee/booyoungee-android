@@ -230,7 +230,7 @@ fun SearchResultList(
                     reviewCount = place.reviewCount,
                     likedCount = place.likeCount,
                     movieNameList = place.movieNameList,
-                    placeImageUrl = place.imageUrl,
+                    placeImageUrl = place.imageUrl[0],
                     onClick = { /* Handle item click */ },
                     modifier = Modifier.padding(bottom = 16.dp, start = 24.dp, end = 24.dp),
                 )
