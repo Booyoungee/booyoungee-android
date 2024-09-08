@@ -75,7 +75,7 @@ fun PlaceCategoryScreen(
             mutableStateOf(
                 when (placeType) {
                     PlaceType.MOVIE.name -> 0
-                    PlaceType.LOCAL_SUPPORT.name -> 1
+                    PlaceType.STORE.name -> 1
                     PlaceType.TOUR.name -> 2
                     else -> 0
                 },
