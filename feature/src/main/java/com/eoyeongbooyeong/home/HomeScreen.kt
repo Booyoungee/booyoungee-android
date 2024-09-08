@@ -129,9 +129,9 @@ private fun HomeScreen(
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     ImageWithText(
-                        painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.img_food_cover),
-                        title = "영화",
-                        description = "영화의 감동을 이어줄\n맛있는 여정",
+                        painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.img_tour_cover),
+                        title = "관광지",
+                        description = "다양한 매력이 숨 쉬는\n부산 필수 관광지",
                         alignment = Alignment.TopStart
                     )
                 }
