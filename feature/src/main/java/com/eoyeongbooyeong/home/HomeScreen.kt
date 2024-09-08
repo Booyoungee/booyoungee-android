@@ -153,7 +153,6 @@ internal fun HomeScreen(onClickBookmark: () -> Unit = {}) {
                                         "Movie B",
                                         "Movie B",
                                     ),
-                                imageUrl = "https://example.com/image.jpg", // Provide a valid image URL
                             )
                         showPlaceInfoBox.value = !showPlaceInfoBox.value
                     },
