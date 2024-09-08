@@ -1,7 +1,11 @@
 package com.eoyeongbooyeong.data.repositoryImpl
 
 import com.eoyeongbooyeong.data.datasource.PlaceDataSource
+import com.eoyeongbooyeong.data.dto.response.BookMarkDto
+import com.eoyeongbooyeong.data.dto.response.LikeDto
 import com.eoyeongbooyeong.data.dto.response.PlaceDetailsDto
+import com.eoyeongbooyeong.domain.entity.BookMarkEntity
+import com.eoyeongbooyeong.domain.entity.LikeEntity
 import com.eoyeongbooyeong.domain.entity.PlaceDetailsEntity
 import com.eoyeongbooyeong.domain.repository.PlaceRepository
 import javax.inject.Inject
@@ -11,6 +15,22 @@ class PlaceRepositoryImpl @Inject constructor(
 ): PlaceRepository {
     override suspend fun getPlaceDetails(placeId: Int, placeType: String): Result<PlaceDetailsEntity> = runCatching {
         placeDataSource.getPlaceDetails(placeId, placeType).toPlaceDetailsEntity()
+    }
+
+    override suspend fun postBookMark(placeId: Int, placeType: String): Result<BookMarkEntity> = runCatching {
+        placeDataSource.postBookMark(placeId, placeType).toBookMarkEntity()
+    }
+
+    override suspend fun deleteBookMark(bookMarkId: Int): Result<BookMarkEntity> = runCatching {
+        placeDataSource.deleteBookMark(bookMarkId).toBookMarkEntity()
+    }
+
+    override suspend fun postLike(placeId: Int): Result<LikeEntity> = runCatching {
+        placeDataSource.postLike(placeId).toLikeEntity()
+    }
+
+    override suspend fun deleteLike(likeId: Int): Result<LikeEntity> = runCatching {
+        placeDataSource.deleteLike(likeId).toLikeEntity()
     }
 }
 
@@ -26,5 +46,17 @@ private fun PlaceDetailsDto.toPlaceDetailsEntity(): PlaceDetailsEntity {
         movieNameList = movies ?: emptyList(),
         posterUrlList = listOfNotNull(posterUrl),
         type = type ?: "",
+    )
+}
+
+private fun BookMarkDto.toBookMarkEntity(): BookMarkEntity {
+    return BookMarkEntity(
+        bookmarkId = bookmarkId,
+    )
+}
+
+private fun LikeDto.toLikeEntity(): LikeEntity {
+    return LikeEntity(
+        likeId = likeId,
     )
 }
