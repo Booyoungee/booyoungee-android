@@ -31,11 +31,10 @@ fun NavGraphBuilder.myPageNavGraph(
     navigateToEditNickname: () -> Unit,
 ) {
     composable<MyPage> {
-        BookMarkRoute()
-//        MyPageRoute(
-//            paddingValues,
-//            navigateToEditNickname
-//        )
+        MyPageRoute(
+            paddingValues,
+            navigateToEditNickname
+        )
     }
     composable<MyPageEditNickname> {
         EditNicknameRoute(
