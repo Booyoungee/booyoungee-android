@@ -3,6 +3,7 @@ package com.eoyeongbooyeong.booyoungee.di
 import com.eoyeongbooyeong.booyoungee.di.qualifier.JWT
 import com.eoyeongbooyeong.booyoungee.di.qualifier.NoToken
 import com.eoyeongbooyeong.data.service.AuthService
+import com.eoyeongbooyeong.data.service.BookmarkService
 import com.eoyeongbooyeong.data.service.PlaceService
 import com.eoyeongbooyeong.data.service.ReviewService
 import com.eoyeongbooyeong.data.service.UserService
@@ -35,4 +36,9 @@ object ServiceModule {
     @Singleton
     fun providePlaceService(@JWT retrofit: Retrofit): PlaceService =
         retrofit.create(PlaceService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideBookmarkService(@JWT retrofit: Retrofit): BookmarkService =
+        retrofit.create(BookmarkService::class.java)
 }

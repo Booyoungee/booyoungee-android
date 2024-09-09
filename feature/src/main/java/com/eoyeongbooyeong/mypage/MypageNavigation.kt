@@ -5,6 +5,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import com.eoyeongbooyeong.mypage.bookmark.BookMarkRoute
 import com.eoyeongbooyeong.mypage.edit_nickname.EditNicknameRoute
 import com.eoyeongbooyeong.mypage.review.MyReviewRoute
 import com.eoyeongbooyeong.navigation.MainTabRoute
@@ -30,10 +31,11 @@ fun NavGraphBuilder.myPageNavGraph(
     navigateToEditNickname: () -> Unit,
 ) {
     composable<MyPage> {
-        MyPageRoute(
-            paddingValues,
-            navigateToEditNickname
-        )
+        BookMarkRoute()
+//        MyPageRoute(
+//            paddingValues,
+//            navigateToEditNickname
+//        )
     }
     composable<MyPageEditNickname> {
         EditNicknameRoute(

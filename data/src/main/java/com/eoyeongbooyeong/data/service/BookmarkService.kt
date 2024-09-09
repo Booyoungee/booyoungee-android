@@ -5,7 +5,7 @@ import com.eoyeongbooyeong.data.dto.response.BaseResponse
 import com.eoyeongbooyeong.data.dto.response.PlaceDto
 import retrofit2.http.GET
 
-interface PlaceService {
-    @GET("api/v1/recommend")
-    suspend fun getRecommendPlace(): BaseResponse<BaseContents<PlaceDto>>
+interface BookmarkService {
+    @GET("api/v1/bookmark/me")
+    suspend fun getBookmarkList(): BaseResponse<List<PlaceDto>>
 }
