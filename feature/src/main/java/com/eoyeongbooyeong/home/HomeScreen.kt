@@ -40,6 +40,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
+import coil.compose.AsyncImage
 import com.eoyeongbooyeong.core.constant.BusanInternationalFilmFestival
 import com.eoyeongbooyeong.core.designsystem.component.star.ReviewStar
 import com.eoyeongbooyeong.core.designsystem.component.textfield.BooSearchTextField
@@ -48,7 +49,7 @@ import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Gray400
 import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.core.extension.noRippleClickable
-import com.eoyeongbooyeong.domain.entity.PlaceEntity
+import com.eoyeongbooyeong.domain.entity.PlaceInfoEntity
 import com.eoyeongbooyeong.feature.R
 
 @Composable
@@ -72,8 +73,13 @@ internal fun HomeRoute(
             }
     }
 
+    LaunchedEffect(Unit) {
+        viewModel.getRecommendPlace()
+    }
+
     HomeScreen(
         paddingValues = paddingValues,
+        recommendedPlace = state.value.recommendedPlace,
         navigateToWebView = viewModel::navigateToWebView,
     )
 }
@@ -81,6 +87,7 @@ internal fun HomeRoute(
 @Composable
 private fun HomeScreen(
     paddingValues: PaddingValues,
+    recommendedPlace: List<PlaceInfoEntity> = emptyList(),
     navigateToWebView: (String) -> Unit = {},
 ) {
     val verticalScrollState = rememberScrollState()
@@ -153,19 +160,14 @@ private fun HomeScreen(
                 .horizontalScroll(horizontalRecommendedScrollState),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            repeat(5) { index ->
+            repeat(recommendedPlace.size) { index ->
                 if (index == 0) {
                     Spacer(modifier = Modifier.width(12.dp))
                 }
                 RecommendedPlaceItem(
-                    place = PlaceEntity(
-                        name = "부산 국제영화제",
-                        star = 4.5f,
-                        reviewCount = 100,
-                        likedCount = 100,
-                    ),
+                    place = recommendedPlace[index],
                 )
-                if (index == 4) {
+                if (index == recommendedPlace.size - 1) {
                     Spacer(modifier = Modifier.width(12.dp))
                 }
             }
@@ -249,15 +251,16 @@ fun ImageWithText(
 
 @Composable
 fun RecommendedPlaceItem(
-    place: PlaceEntity,
+    place: PlaceInfoEntity,
     modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier
     ) {
-        Image(
-            painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.img_default_5),
+        AsyncImage(
+            place.images.firstOrNull() ?: com.eoyeongbooyeong.core.R.drawable.img_default_5,
             contentDescription = null,
+            contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(180.dp)
                 .clip(shape = RoundedCornerShape(10.dp)),
@@ -271,10 +274,10 @@ fun RecommendedPlaceItem(
         Spacer(modifier = Modifier.height(2.dp))
 
         Row(verticalAlignment = Alignment.CenterVertically) {
-            ReviewStar(place.star)
+            ReviewStar(place.starCount)
 
             Text(
-                text = place.star.toString(),
+                text = place.starCount.toString(),
                 style = BooTheme.typography.caption1,
                 color = Black,
                 modifier =
@@ -295,7 +298,7 @@ fun RecommendedPlaceItem(
                 modifier = Modifier.size(12.dp),
             )
             Text(
-                text = place.likedCount.toString(),
+                text = place.likeCount.toString(),
                 style = BooTheme.typography.caption1,
                 color = Black,
                 maxLines = 1,

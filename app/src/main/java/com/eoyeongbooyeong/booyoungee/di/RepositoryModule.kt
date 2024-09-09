@@ -1,9 +1,11 @@
 package com.eoyeongbooyeong.booyoungee.di
 
 import com.eoyeongbooyeong.data.repositoryImpl.AuthRepositoryImpl
+import com.eoyeongbooyeong.data.repositoryImpl.PlaceRepositoryImpl
 import com.eoyeongbooyeong.data.repositoryImpl.ReviewRepositoryImpl
 import com.eoyeongbooyeong.data.repositoryImpl.UserRepositoryImpl
 import com.eoyeongbooyeong.domain.repository.AuthRepository
+import com.eoyeongbooyeong.domain.repository.PlaceRepository
 import com.eoyeongbooyeong.domain.repository.ReviewRepository
 import com.eoyeongbooyeong.domain.repository.UserRepository
 import dagger.Binds
@@ -32,4 +34,10 @@ internal abstract class RepositoryModule {
     abstract fun provideReviewRepository(
         reviewRepositoryImpl: ReviewRepositoryImpl,
     ): ReviewRepository
+
+    @Binds
+    @Singleton
+    abstract fun providePlaceRepository(
+        placeRepositoryImpl: PlaceRepositoryImpl,
+    ): PlaceRepository
 }
