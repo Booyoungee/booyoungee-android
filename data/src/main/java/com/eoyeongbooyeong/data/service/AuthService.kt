@@ -12,7 +12,7 @@ import retrofit2.http.POST
 interface AuthService {
     @POST("token/reissue")
     suspend fun postReissueTokens(
-        @Header(HEADER) refreshToken: String,
+        @Header("X-Kakao-Refresh-Token") refreshToken: String,
     ): BaseResponse<TokenDto>
 
     @POST("api/v1/oauth")
