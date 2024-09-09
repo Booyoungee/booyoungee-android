@@ -73,10 +73,6 @@ internal fun HomeRoute(
             }
     }
 
-    LaunchedEffect(Unit) {
-        viewModel.getRecommendPlace()
-    }
-
     HomeScreen(
         paddingValues = paddingValues,
         recommendedPlace = state.value.recommendedPlace,

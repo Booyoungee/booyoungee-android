@@ -1,6 +1,6 @@
 package com.eoyeongbooyeong.data.dto.response
 
-import com.eoyeongbooyeong.domain.entity.PlaceEntity
+import com.eoyeongbooyeong.domain.entity.MeEntity
 import com.eoyeongbooyeong.domain.entity.PlaceInfoEntity
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -27,7 +27,29 @@ data class PlaceDto(
     val likeCount: Int,
     @SerialName("starCount")
     val starCount: Int,
+    @SerialName("stampCount")
+    val stampCount: Int,
+    @SerialName("reviewCount")
+    val reviewCount: Int,
+    @SerialName("me")
+    val me: Me,
 ) {
+    @Serializable
+    data class Me(
+        @SerialName("hasStamp")
+        val hasStamp: Boolean,
+        @SerialName("hasLike")
+        val hasLike: Boolean,
+        @SerialName("hasBookmark")
+        val hasBookmark: Boolean,
+    ) {
+        fun toDomain() = MeEntity(
+            hasStamp = hasStamp,
+            hasLike = hasLike,
+            hasBookmark = hasBookmark,
+        )
+    }
+
     fun toDomain() = PlaceInfoEntity(
         placeId = placeId,
         name = name,
@@ -39,5 +61,8 @@ data class PlaceDto(
         posterUrl = posterUrl,
         likeCount = likeCount,
         starCount = starCount.toFloat(),
+        stampCount = stampCount,
+        reviewCount = reviewCount,
+        me = me.toDomain()
     )
 }

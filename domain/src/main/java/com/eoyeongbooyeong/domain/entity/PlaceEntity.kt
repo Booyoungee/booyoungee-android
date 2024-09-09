@@ -23,5 +23,7 @@ data class PlaceInfoEntity(
     val posterUrl: List<String>? = null,
     val likeCount: Int = 0,
     val starCount: Float = 0f,
+    val stampCount: Int = 0,
     val reviewCount: Int = 0,
+    val me: MeEntity = MeEntity(),
 )

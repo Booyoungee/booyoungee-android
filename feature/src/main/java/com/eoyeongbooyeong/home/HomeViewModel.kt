@@ -22,6 +22,10 @@ class HomeViewModel @Inject constructor(
     val state: StateFlow<HomeState>
         get() = _state.asStateFlow()
 
+    init {
+        getRecommendPlace()
+    }
+
     private val _sideEffects = MutableSharedFlow<HomeSideEffect>()
     val sideEffects: SharedFlow<HomeSideEffect>
         get() = _sideEffects.asSharedFlow()
