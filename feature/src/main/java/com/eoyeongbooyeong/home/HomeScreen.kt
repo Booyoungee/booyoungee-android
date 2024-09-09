@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -251,21 +252,24 @@ fun RecommendedPlaceItem(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
+        modifier = modifier.width(160.dp),
     ) {
         AsyncImage(
             place.images.firstOrNull() ?: com.eoyeongbooyeong.core.R.drawable.img_default_5,
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier
-                .size(180.dp)
+                .fillMaxWidth()
+                .aspectRatio(1f)
                 .clip(shape = RoundedCornerShape(10.dp)),
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = place.name,
             style = BooTheme.typography.body1,
-            color = Black
+            color = Black,
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 2
         )
         Spacer(modifier = Modifier.height(2.dp))
 
