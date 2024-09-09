@@ -15,18 +15,24 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.eoyeongbooyeong.core.designsystem.component.topbar.BooTextTopAppBar
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.core.extension.noRippleClickable
 
 @Composable
-fun MyReviewsRoute() {
-    MyReviewsScreen()
+fun MyReviewRoute(
+    viewModel: MyReviewViewModel = hiltViewModel(),
+) {
+    val state = viewModel.state.collectAsStateWithLifecycle()
+
+    MyReviewScreen()
 }
 
 @Composable
-fun MyReviewsScreen() {
+fun MyReviewScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -62,7 +68,7 @@ fun MyReviewsScreen() {
 @Preview
 @Composable
 fun MyReviewsScreenPreview() {
-    BooTheme{
-        MyReviewsScreen()
+    BooTheme {
+        MyReviewScreen()
     }
 }

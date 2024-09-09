@@ -10,9 +10,9 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface AuthService {
-    @POST("token/reissue")
+    @POST("api/v1/oauth/refresh-jwt-token")
     suspend fun postReissueTokens(
-        @Header(HEADER) refreshToken: String,
+        @Header("X-Kakao-Refresh-Token") refreshToken: String,
     ): BaseResponse<TokenDto>
 
     @POST("api/v1/oauth")

@@ -12,7 +12,7 @@ class AuthDataSourceImpl @Inject constructor(
     private val authService: AuthService,
 ) : AuthDataSource {
     override suspend fun postReissueTokens(refreshToken: String): BaseResponse<TokenDto> =
-        authService.postReissueTokens(BEARER + refreshToken)
+        authService.postReissueTokens(refreshToken)
 
     override suspend fun postLogin(
         accessToken: String,
