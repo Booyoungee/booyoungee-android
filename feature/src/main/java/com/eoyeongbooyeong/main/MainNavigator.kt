@@ -37,7 +37,7 @@ internal class MainNavigator(
     fun navigate(tab: MainTab) {
         val navOptions =
             navOptions {
-                popUpTo(navController.graph.findStartDestination().id) {
+                popUpTo(Home) {
                     inclusive = false
                     saveState = true
                 }
