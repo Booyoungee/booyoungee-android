@@ -129,7 +129,9 @@ internal fun MainScreen(
                     myPageNavGraph(
                         paddingValues = paddingValue,
                         navigateUp = navigator::navigateUpIfNotHome,
-                        navigateToEditNickname = navigator::navigateToMyPageEditNickname
+                        navigateToEditNickname = navigator::navigateToMyPageEditNickname,
+                        navigateToMyReview = navigator::navigateToMyReview,
+                        navigateToBookmark = navigator::navigateToBookmark,
                     )
                 }
             }
