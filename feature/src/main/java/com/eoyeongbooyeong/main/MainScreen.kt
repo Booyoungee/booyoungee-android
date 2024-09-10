@@ -130,7 +130,9 @@ internal fun MainScreen(
                             })
                         },
                     )
-                    searchNavGraph()
+                    searchNavGraph(
+                        navigateUp = navigator::navigateUpIfNotHome,
+                    )
                     placeNavGraph()
                     stampNavGraph()
                     myPageNavGraph(
