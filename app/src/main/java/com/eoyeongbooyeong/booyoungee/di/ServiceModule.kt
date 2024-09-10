@@ -6,6 +6,7 @@ import com.eoyeongbooyeong.data.service.AuthService
 import com.eoyeongbooyeong.data.service.BookmarkService
 import com.eoyeongbooyeong.data.service.PlaceService
 import com.eoyeongbooyeong.data.service.ReviewService
+import com.eoyeongbooyeong.data.service.TourInfoOpenApiService
 import com.eoyeongbooyeong.data.service.UserService
 import dagger.Module
 import dagger.Provides
@@ -41,4 +42,9 @@ object ServiceModule {
     @Singleton
     fun provideBookmarkService(@JWT retrofit: Retrofit): BookmarkService =
         retrofit.create(BookmarkService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideTourInfoOpenApiService(@JWT retrofit: Retrofit): TourInfoOpenApiService =
+        retrofit.create(TourInfoOpenApiService::class.java)
 }

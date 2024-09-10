@@ -24,6 +24,7 @@ import com.eoyeongbooyeong.core.designsystem.theme.Black
 import com.eoyeongbooyeong.core.designsystem.theme.Blue300
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Gray300
+import com.eoyeongbooyeong.core.extension.noRippleClickable
 import com.eoyeongbooyeong.domain.entity.HotPlaceEntity
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -33,6 +34,7 @@ fun HotTravelDestinationsScreen(
     modifier: Modifier,
     hotTravelDestinationsFetchTime: String,
     hotTravelDestinations: ImmutableList<HotPlaceEntity>,
+    clickHotPlace: (String) -> Unit = {},
 ) {
     Column(
         modifier = modifier.fillMaxSize()
@@ -68,9 +70,9 @@ fun HotTravelDestinationsScreen(
         ) {
             itemsIndexed(hotTravelDestinations) { rank, item ->
                 Row(
-                    modifier =
-                    Modifier
+                    modifier = Modifier
                         .fillMaxWidth()
+                        .noRippleClickable(onClick = { clickHotPlace(item.name) })
                         .padding(bottom = 12.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                     verticalAlignment = Alignment.CenterVertically,

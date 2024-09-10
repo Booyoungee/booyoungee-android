@@ -56,6 +56,7 @@ internal fun SearchRoute(
         isEmpty = state.isEmpty,
         hotTravelDestinationsFetchTime = state.hotTravelDestinationsFetchTime,
         hotTravelDestinations = state.hotTravelDestinations,
+        clickHotPlace = viewModel::clickHotPlace,
         navigateUp = viewModel::navigateUp,
     )
 }
@@ -66,6 +67,7 @@ private fun SearchScreen(
     isEmpty: Boolean = false,
     hotTravelDestinationsFetchTime: String = "2024년 10월 01일 08:00 기준",
     hotTravelDestinations: ImmutableList<HotPlaceEntity> = persistentListOf(),
+    clickHotPlace: (String) -> Unit = {},
     navigateUp: () -> Unit = {},
 ) {
     val focusManager = LocalFocusManager.current
@@ -107,6 +109,7 @@ private fun SearchScreen(
                 modifier = Modifier.fillMaxSize(),
                 hotTravelDestinationsFetchTime = hotTravelDestinationsFetchTime,
                 hotTravelDestinations = hotTravelDestinations,
+                clickHotPlace = clickHotPlace,
             )
         } else if (isEmpty) {
             // empty 화면
