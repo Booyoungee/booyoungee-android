@@ -45,6 +45,7 @@ import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.home.homeNavGraph
 import com.eoyeongbooyeong.mypage.myPageNavGraph
 import com.eoyeongbooyeong.place_recommend.placeNavGraph
+import com.eoyeongbooyeong.search.searchNavGraph
 import com.eoyeongbooyeong.splash.Splash
 import com.eoyeongbooyeong.splash.splashNavGraph
 import com.eoyeongbooyeong.stamp.stampNavGraph
@@ -123,7 +124,13 @@ internal fun MainScreen(
                     )
                     homeNavGraph(
                         paddingValues = paddingValue,
+                        navigateToSearch = {
+                            navigator.navigateToSearch(navOptions = navOptions {
+                                launchSingleTop = true
+                            })
+                        },
                     )
+                    searchNavGraph()
                     placeNavGraph()
                     stampNavGraph()
                     myPageNavGraph(

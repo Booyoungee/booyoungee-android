@@ -17,8 +17,12 @@ fun NavController.navigateToHome(navOptions: NavOptions) {
 
 fun NavGraphBuilder.homeNavGraph(
     paddingValues: PaddingValues,
+    navigateToSearch: () -> Unit
 ) {
     composable<Home> {
-        HomeRoute(paddingValues = paddingValues)
+        HomeRoute(
+            paddingValues = paddingValues,
+            navigateToSearch = navigateToSearch
+        )
     }
 }
