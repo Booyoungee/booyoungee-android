@@ -16,6 +16,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -26,6 +27,7 @@ import androidx.lifecycle.flowWithLifecycle
 import com.eoyeongbooyeong.core.designsystem.component.textfield.BooSearchTextField
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.White
+import com.eoyeongbooyeong.core.extension.addFocusCleaner
 import com.eoyeongbooyeong.core.extension.noRippleClickable
 import com.eoyeongbooyeong.domain.entity.HotPlaceEntity
 import com.eoyeongbooyeong.search.screen.HotTravelDestinationsScreen
@@ -66,9 +68,12 @@ private fun SearchScreen(
     hotTravelDestinations: ImmutableList<HotPlaceEntity> = persistentListOf(),
     navigateUp: () -> Unit = {},
 ) {
+    val focusManager = LocalFocusManager.current
+
     Column(
         modifier = Modifier
             .statusBarsPadding()
+            .addFocusCleaner(focusManager)
             .background(White)
             .fillMaxSize(),
     ) {
