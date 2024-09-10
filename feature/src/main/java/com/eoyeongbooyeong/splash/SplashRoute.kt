@@ -1,17 +1,20 @@
 package com.eoyeongbooyeong.splash
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
-import com.eoyeongbooyeong.core.designsystem.theme.White
+import com.eoyeongbooyeong.core.designsystem.theme.Blue100
 
 @Composable
 fun SplashRoute(
@@ -44,9 +47,15 @@ fun SplashScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(White),
+            .background(Blue100),
         contentAlignment = Alignment.Center,
     ) {
-        Text(text = "Splash Screen")
+        Image(
+            painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.img_splash_logo),
+            contentDescription = "Logo",
+            modifier = Modifier
+                .fillMaxWidth(0.6f)
+                .aspectRatio(1f)
+        )
     }
 }
