@@ -81,6 +81,7 @@ class SearchViewModel @Inject constructor(
                 keyword = query,
             ).onSuccess {
                 Timber.tag("SearchViewModel").d("searchOnKeyword: $it")
+                // TODO: 서버에서 데이터 정제 작업중. 추후 수정 예정
             }.onFailure(Timber::e)
         }
     }
