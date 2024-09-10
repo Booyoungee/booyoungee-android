@@ -31,8 +31,11 @@ import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.core.extension.addFocusCleaner
 import com.eoyeongbooyeong.core.extension.noRippleClickable
 import com.eoyeongbooyeong.domain.entity.HotPlaceEntity
+import com.eoyeongbooyeong.domain.entity.PlaceEntity
+import com.eoyeongbooyeong.domain.entity.PlaceInfoEntity
 import com.eoyeongbooyeong.search.screen.HotTravelDestinationsScreen
 import com.eoyeongbooyeong.search.screen.NoResultScreen
+import com.eoyeongbooyeong.search.screen.SearchResultScreen
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -70,7 +73,7 @@ private fun SearchScreen(
     query: String = "",
     hotTravelDestinationsFetchTime: String = "2024년 10월 01일 08:00 기준",
     hotTravelDestinations: ImmutableList<HotPlaceEntity> = persistentListOf(),
-    searchResults: ImmutableList<SearchResult> = persistentListOf(),
+    searchResults: ImmutableList<PlaceInfoEntity> = persistentListOf(),
     clickHotPlace: (String) -> Unit = {},
     queryValueChanged: (String) -> Unit = {},
     navigateUp: () -> Unit = {},
@@ -121,7 +124,18 @@ private fun SearchScreen(
                 modifier = Modifier.fillMaxSize(),
             )
         } else {
-            // 검색 결과 화면
+            SearchResultScreen(
+                modifier = Modifier.fillMaxSize(),
+                resultCount = searchResults.size,
+                searchResultList = persistentListOf( // TODO: 임시 데이터
+                    PlaceEntity(
+                        name = "서울",
+                        address = "서울특별시",
+                        latitude = 37.5665,
+                        longitude = 126.9780,
+                    )
+                ),
+            )
         }
     }
 }

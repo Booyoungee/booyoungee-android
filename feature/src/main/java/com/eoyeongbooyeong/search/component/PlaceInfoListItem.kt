@@ -63,18 +63,15 @@ internal fun PlaceInfoListItem(
             .background(White),
     ) {
         Row(
-            modifier =
-            modifier
+            modifier = Modifier
                 .wrapContentSize()
-                .height(IntrinsicSize.Min)
-                .padding(end = 10.dp),
+                .height(IntrinsicSize.Min),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             AsyncImage(
                 model = placeImageUrl ?: com.eoyeongbooyeong.core.R.drawable.img_default_5,
                 contentDescription = null,
-                modifier =
-                modifier
+                modifier = Modifier
                     .size(100.dp)
                     .clip(RoundedCornerShape(5.dp)),
                 placeholder = painterResource(id = com.eoyeongbooyeong.core.R.drawable.img_default_5),
@@ -133,8 +130,7 @@ internal fun PlaceInfoListItem(
                         text = star.toString(),
                         style = BooTheme.typography.caption1,
                         color = Black,
-                        modifier =
-                        modifier
+                        modifier = Modifier
                             .weight(1f, false)
                             .padding(start = 4.dp),
                     )
@@ -143,7 +139,7 @@ internal fun PlaceInfoListItem(
                         style = BooTheme.typography.caption2,
                         color = Gray400,
                         modifier =
-                        modifier
+                        Modifier
                             .weight(1f, false)
                             .padding(start = 4.dp),
                     )
@@ -158,8 +154,7 @@ internal fun PlaceInfoListItem(
                         color = Black,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        modifier =
-                        modifier
+                        modifier = Modifier
                             .weight(1f, false)
                             .padding(start = 4.dp),
                     )
