@@ -27,6 +27,7 @@ import com.eoyeongbooyeong.core.designsystem.component.textfield.BooSearchTextFi
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.core.extension.noRippleClickable
+import com.eoyeongbooyeong.domain.entity.HotPlaceEntity
 import com.eoyeongbooyeong.search.screen.HotTravelDestinationsScreen
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -62,7 +63,7 @@ private fun SearchScreen(
     query: String = "",
     isEmpty: Boolean = false,
     hotTravelDestinationsFetchTime: String = "2024년 10월 01일 08:00 기준",
-    hotTravelDestinations: ImmutableList<String> = persistentListOf(),
+    hotTravelDestinations: ImmutableList<HotPlaceEntity> = persistentListOf(),
     navigateUp: () -> Unit = {},
 ) {
     Column(

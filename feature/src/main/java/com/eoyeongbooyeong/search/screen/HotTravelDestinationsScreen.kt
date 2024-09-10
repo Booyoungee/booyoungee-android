@@ -24,6 +24,7 @@ import com.eoyeongbooyeong.core.designsystem.theme.Black
 import com.eoyeongbooyeong.core.designsystem.theme.Blue300
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Gray300
+import com.eoyeongbooyeong.domain.entity.HotPlaceEntity
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -31,7 +32,7 @@ import kotlinx.collections.immutable.persistentListOf
 fun HotTravelDestinationsScreen(
     modifier: Modifier,
     hotTravelDestinationsFetchTime: String,
-    hotTravelDestinations: ImmutableList<String>,
+    hotTravelDestinations: ImmutableList<HotPlaceEntity>,
 ) {
     Column(
         modifier = modifier.fillMaxSize()
@@ -90,7 +91,7 @@ fun HotTravelDestinationsScreen(
                     }
 
                     Text(
-                        text = item,
+                        text = item.name,
                         modifier = Modifier.weight(1f),
                         textAlign = TextAlign.Start,
                         style = BooTheme.typography.body4,
@@ -110,14 +111,41 @@ fun HotTravelDestinationsScreenPreview() {
             modifier = Modifier,
             hotTravelDestinationsFetchTime = "2021.10.01",
             hotTravelDestinations = persistentListOf(
-                "제주도",
-                "부산",
-                "강릉",
-                "경주",
-                "제주도",
-                "부산",
-                "강릉",
-                "경주"
+                HotPlaceEntity(
+                    placeId = 1,
+                    type = "HOT",
+                    name = "제주도",
+                    updatedAt = "2021.10.01",
+                    viewCount = 100,
+                ),
+                HotPlaceEntity(
+                    placeId = 2,
+                    type = "HOT",
+                    name = "부산",
+                    updatedAt = "2021.10.01",
+                    viewCount = 100,
+                ),
+                HotPlaceEntity(
+                    placeId = 3,
+                    type = "HOT",
+                    name = "강릉",
+                    updatedAt = "2021.10.01",
+                    viewCount = 100,
+                ),
+                HotPlaceEntity(
+                    placeId = 4,
+                    type = "HOT",
+                    name = "경주",
+                    updatedAt = "2021.10.01",
+                    viewCount = 100,
+                ),
+                HotPlaceEntity(
+                    placeId = 5,
+                    type = "HOT",
+                    name = "전주",
+                    updatedAt = "2021.10.01",
+                    viewCount = 100,
+                ),
             ),
         )
     }
