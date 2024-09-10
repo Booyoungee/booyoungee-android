@@ -1,5 +1,6 @@
 package com.eoyeongbooyeong.search
 
+import android.app.appsearch.SearchResult
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,6 +32,7 @@ import com.eoyeongbooyeong.core.extension.addFocusCleaner
 import com.eoyeongbooyeong.core.extension.noRippleClickable
 import com.eoyeongbooyeong.domain.entity.HotPlaceEntity
 import com.eoyeongbooyeong.search.screen.HotTravelDestinationsScreen
+import com.eoyeongbooyeong.search.screen.NoResultScreen
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -53,9 +55,9 @@ internal fun SearchRoute(
 
     SearchScreen(
         query = state.query,
-        isEmpty = state.isEmpty,
         hotTravelDestinationsFetchTime = state.hotTravelDestinationsFetchTime,
         hotTravelDestinations = state.hotTravelDestinations,
+        searchResults = state.searchResults,
         clickHotPlace = viewModel::clickHotPlace,
         navigateUp = viewModel::navigateUp,
     )
@@ -64,9 +66,9 @@ internal fun SearchRoute(
 @Composable
 private fun SearchScreen(
     query: String = "",
-    isEmpty: Boolean = false,
     hotTravelDestinationsFetchTime: String = "2024년 10월 01일 08:00 기준",
     hotTravelDestinations: ImmutableList<HotPlaceEntity> = persistentListOf(),
+    searchResults: ImmutableList<SearchResult> = persistentListOf(),
     clickHotPlace: (String) -> Unit = {},
     navigateUp: () -> Unit = {},
 ) {
@@ -111,18 +113,14 @@ private fun SearchScreen(
                 hotTravelDestinations = hotTravelDestinations,
                 clickHotPlace = clickHotPlace,
             )
-        } else if (isEmpty) {
-            // empty 화면
+        } else if (searchResults.isEmpty()) {
+            NoResultScreen(
+                query = query,
+                modifier = Modifier.fillMaxSize(),
+            )
         } else {
             // 검색 결과 화면
         }
-
-        /*
-        3개의 state가 필요함
-        1. 지금 핫한 여행지
-        2. 검색 결과
-        3. empty 화면
-         */
     }
 }
 
