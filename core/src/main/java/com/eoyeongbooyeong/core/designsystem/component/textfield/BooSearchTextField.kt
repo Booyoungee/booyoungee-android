@@ -69,6 +69,7 @@ fun BooSearchTextField(
                                     text = stringResource(R.string.movieSearchBarHint),
                                     color = Gray300,
                                     style = BooTheme.typography.caption2,
+                                    maxLines = 1
                                 )
                             }
                         }

@@ -42,6 +42,7 @@ internal fun SearchRoute(
     viewModel: SearchViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val query by viewModel.query.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
 
     LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
@@ -54,11 +55,12 @@ internal fun SearchRoute(
     }
 
     SearchScreen(
-        query = state.query,
+        query = query,
         hotTravelDestinationsFetchTime = state.hotTravelDestinationsFetchTime,
         hotTravelDestinations = state.hotTravelDestinations,
         searchResults = state.searchResults,
         clickHotPlace = viewModel::clickHotPlace,
+        queryValueChanged = viewModel::queryValueChanged,
         navigateUp = viewModel::navigateUp,
     )
 }
@@ -70,6 +72,7 @@ private fun SearchScreen(
     hotTravelDestinations: ImmutableList<HotPlaceEntity> = persistentListOf(),
     searchResults: ImmutableList<SearchResult> = persistentListOf(),
     clickHotPlace: (String) -> Unit = {},
+    queryValueChanged: (String) -> Unit = {},
     navigateUp: () -> Unit = {},
 ) {
     val focusManager = LocalFocusManager.current
@@ -98,10 +101,9 @@ private fun SearchScreen(
             )
             Spacer(modifier = Modifier.width(6.dp))
             BooSearchTextField(
-                text = "",
-                onValueChange = {},
+                text = query,
+                onValueChange = queryValueChanged,
                 isActive = true,
-                onClick = { },
                 modifier = Modifier.weight(1f),
             )
         }
