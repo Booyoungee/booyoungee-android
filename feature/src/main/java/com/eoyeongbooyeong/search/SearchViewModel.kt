@@ -35,15 +35,13 @@ class SearchViewModel @Inject constructor(
                 .onSuccess {
                     _state.value = _state.value.copy(
                         hotTravelDestinations = it.toImmutableList(),
-                        hotTravelDestinationsFetchTime = it.first().updatedAt.apply {
+                        hotTravelDestinationsFetchTime = it.first().updatedAt.run {
                             this.substring(0, 10).split("-").let { (year, month, day) ->
-                                LocalDateTime.of(year.toInt(), month.toInt(), day.toInt(), 8, 0)
-                                    .toString()
+                                "${year}년 ${month}월 ${day}일 ${this.substring(11, 16)} 기준"
                             }
                         },
                     )
 
-                    Log.e("TAG", "getHotPlace: ${state.value.hotTravelDestinationsFetchTime}")
                 }.onFailure(Timber::e)
         }
     }
