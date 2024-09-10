@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -26,13 +27,16 @@ import com.eoyeongbooyeong.core.designsystem.component.textfield.BooSearchTextFi
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.core.extension.noRippleClickable
+import com.eoyeongbooyeong.search.screen.HotTravelDestinationsScreen
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 internal fun SearchRoute(
     navigateUp: () -> Unit,
     viewModel: SearchViewModel = hiltViewModel(),
 ) {
-    val state = viewModel.state.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
 
     LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
@@ -45,12 +49,20 @@ internal fun SearchRoute(
     }
 
     SearchScreen(
+        query = state.query,
+        isEmpty = state.isEmpty,
+        hotTravelDestinationsFetchTime = state.hotTravelDestinationsFetchTime,
+        hotTravelDestinations = state.hotTravelDestinations,
         navigateUp = viewModel::navigateUp,
     )
 }
 
 @Composable
 private fun SearchScreen(
+    query: String = "",
+    isEmpty: Boolean = false,
+    hotTravelDestinationsFetchTime: String = "2024년 10월 01일 08:00 기준",
+    hotTravelDestinations: ImmutableList<String> = persistentListOf(),
     navigateUp: () -> Unit = {},
 ) {
     Column(
@@ -82,6 +94,18 @@ private fun SearchScreen(
                 onClick = { },
                 modifier = Modifier.weight(1f),
             )
+        }
+
+        if (query.isEmpty()) {
+            HotTravelDestinationsScreen(
+                modifier = Modifier.fillMaxSize(),
+                hotTravelDestinationsFetchTime = hotTravelDestinationsFetchTime,
+                hotTravelDestinations = hotTravelDestinations,
+            )
+        } else if (isEmpty) {
+            // empty 화면
+        } else {
+            // 검색 결과 화면
         }
 
         /*
