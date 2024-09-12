@@ -104,27 +104,27 @@ fun PlaceDetailRoute(
         placeAddress = placeInfoEntity.address,
         placeDetailReviewCount = placeInfoEntity.reviewCount,
         placeDetailLikedCount = placeInfoEntity.likeCount,
-        placeDetailStarScore = placeInfoEntity.starCount,
+        placeDetailStarScore = placeInfoEntity.stars, // TODO
         placeDetailBookmarkCount = -1, // TODO
         reviewInfoEntityTotalList = reviewInfoEntityTotalList,
         onClickWriteReview = onClickWriteReview,
         onClickLike = {
-            if (state.value.placeInfoEntity.me.hasLike) {
+            if (state.value.isLiked) {
                 viewModel.deleteLike(likeId = likeId)
             } else {
                 viewModel.postLike(placeId = placeId)
             }
         },
         onClickBookmark = {
-            if (state.value.placeInfoEntity.me.hasBookmark) {
+            if (state.value.isBookmarked) {
                 viewModel.deleteBookMark(bookMarkId = bookMarkId)
             } else {
                 viewModel.postBookMark(placeId = placeId, placeType = placeType)
             }
         },
         onClickBackButton = onClickBackButton,
-        isLike = state.value.isLiked,
-        isBookmark = state.value.isBookmarked,
+        isLike = (state.value.isLiked),
+        isBookmark = (state.value.isBookmarked),
     )
 }
 

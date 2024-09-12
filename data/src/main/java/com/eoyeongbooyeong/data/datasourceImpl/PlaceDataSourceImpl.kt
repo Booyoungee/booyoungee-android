@@ -3,18 +3,19 @@ package com.eoyeongbooyeong.data.datasourceImpl
 import com.eoyeongbooyeong.data.datasource.PlaceDataSource
 import com.eoyeongbooyeong.data.dto.response.BookMarkDto
 import com.eoyeongbooyeong.data.dto.response.LikeDto
-import com.eoyeongbooyeong.data.dto.response.PlaceDetailsDto
-import com.eoyeongbooyeong.data.dto.response.PlaceDto
+import com.eoyeongbooyeong.data.dto.response.LikeRequestDto
 import com.eoyeongbooyeong.data.service.PlaceService
 import com.eoyeongbooyeong.domain.entity.PlaceInfoEntity
 import javax.inject.Inject
 
-class PlaceDataSourceImpl @Inject constructor(
+class PlaceDataSourceImpl
+    @Inject
+    constructor(
         private val placeService: PlaceService,
     ) : PlaceDataSource {
-    override suspend fun getRecommendPlace() = placeService.getRecommendPlace()
+        override suspend fun getRecommendPlace() = placeService.getRecommendPlace()
 
-    override suspend fun getPlaceDetails(
+        override suspend fun getPlaceDetails(
             placeId: Int,
             placeType: String,
         ): PlaceInfoEntity = placeService.getPlaceDetails(placeId, placeType).data.toDomain()
@@ -26,7 +27,7 @@ class PlaceDataSourceImpl @Inject constructor(
 
         override suspend fun deleteBookMark(bookMarkId: Int): BookMarkDto = placeService.deleteBookMark(bookMarkId).data
 
-        override suspend fun postLike(placeId: Int): LikeDto = placeService.postLike(placeId).data
+        override suspend fun postLike(placeId: Int): LikeDto = placeService.postLike(LikeRequestDto(placeId)).data
 
         override suspend fun deleteLike(likeId: Int): LikeDto = placeService.deleteLike(likeId).data
 

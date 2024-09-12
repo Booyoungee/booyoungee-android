@@ -4,6 +4,7 @@ import com.eoyeongbooyeong.data.dto.response.BaseContents
 import com.eoyeongbooyeong.data.dto.response.BaseResponse
 import com.eoyeongbooyeong.data.dto.response.BookMarkDto
 import com.eoyeongbooyeong.data.dto.response.LikeDto
+import com.eoyeongbooyeong.data.dto.response.LikeRequestDto
 import com.eoyeongbooyeong.data.dto.response.PlaceDetailsDto
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -37,7 +38,7 @@ interface PlaceService {
 
     @POST("api/v1/like")
     suspend fun postLike(
-        @Body placeId: Int,
+        @Body placeId: LikeRequestDto,
     ): BaseResponse<LikeDto>
 
     @DELETE("api/v1/like/{likeId}")

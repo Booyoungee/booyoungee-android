@@ -13,5 +13,6 @@ data class PlaceInfoEntity(
     val starCount: Float = 0f,
     val stampCount: Int = 0,
     val reviewCount: Int = 0,
+    val stars: Float = 0f,
     val me: MeEntity = MeEntity(),
 )
