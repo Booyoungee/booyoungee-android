@@ -39,6 +39,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
+import com.eoyeongbooyeong.core.designsystem.component.LoadingWithProgressIndicator
 import com.eoyeongbooyeong.core.designsystem.component.topbar.BooTextTopAppBar
 import com.eoyeongbooyeong.core.designsystem.theme.Black
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
@@ -238,16 +239,7 @@ fun PlaceCategoryScreen(
 
     // API 호출 후 loading 상태인 경우
     if (isLoading) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(White.copy(alpha = 0.5f)),
-            contentAlignment = Alignment.Center
-        ) {
-            androidx.compose.material3.CircularProgressIndicator(
-                color = Purple
-            )
-        }
+        LoadingWithProgressIndicator()
     }
 }
 
