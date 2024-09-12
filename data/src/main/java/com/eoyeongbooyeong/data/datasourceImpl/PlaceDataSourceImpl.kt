@@ -27,4 +27,10 @@ class PlaceDataSourceImpl @Inject constructor(
         override suspend fun postLike(placeId: Int): LikeDto = placeService.postLike(placeId).data
 
         override suspend fun deleteLike(likeId: Int): LikeDto = placeService.deleteLike(likeId).data
+
+        override suspend fun getMoviePlacesWithCategory(filter: String) = placeService.getMoviePlacesWithCategory(filter).data
+
+        override suspend fun getLocalStorePlacesWithCategory(filter: String) = placeService.getLocalStorePlacesWithCategory(filter).data
+
+        override suspend fun getTourPlacesWithCategory(filter: String) = placeService.getTourPlacesWithCategory(filter).data
     }

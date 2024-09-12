@@ -32,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.eoyeongbooyeong.places.component.FloatingButtonContainer
 import com.eoyeongbooyeong.core.designsystem.component.topbar.BooTextTopAppBar
 import com.eoyeongbooyeong.core.designsystem.theme.Black
@@ -50,6 +51,7 @@ fun PlaceCategoryRoute(
     onBackClick: () -> Unit = {},
     searchResultList: ImmutableList<PlaceDetailsEntity> = ImmutableList.of(),
     placeType: String = PlaceType.MOVIE.name,
+    viewModel: CategoryPlaceViewModel = hiltViewModel(),
 ) {
     PlaceCategoryScreen(
         modifier = modifier,

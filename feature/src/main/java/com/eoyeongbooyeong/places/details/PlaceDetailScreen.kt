@@ -112,13 +112,10 @@ fun PlaceDetailRoute(
         onClickLike = onClickLike,
         onClickBookmark ={
             if (state.value.isBookmarked) {
-                coroutineScope.launch {
                     viewModel.deleteBookMark(bookMarkId = bookMarkId)
-                }
             } else {
-                coroutineScope.launch {
                     viewModel.postBookMark(placeId = placeId, placeType = placeType.name.toLowerCase())
-                }
+
             }
         },
         onClickBackButton = onClickBackButton,
