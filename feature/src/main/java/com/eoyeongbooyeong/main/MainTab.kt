@@ -5,7 +5,6 @@ import com.eoyeongbooyeong.home.Home
 import com.eoyeongbooyeong.mypage.MyPage
 import com.eoyeongbooyeong.navigation.MainTabRoute
 import com.eoyeongbooyeong.navigation.Route
-import com.eoyeongbooyeong.place_recommend.Place
 import com.eoyeongbooyeong.stamp.Stamp
 
 internal enum class MainTab(
@@ -18,11 +17,6 @@ internal enum class MainTab(
         defaultIconResource = com.eoyeongbooyeong.core.R.drawable.ic_home_default,
         contentDescription = "홈",
         route = Home,
-    ),
-    PLACE(
-        defaultIconResource = com.eoyeongbooyeong.core.R.drawable.ic_place_default,
-        contentDescription = "장소 추천",
-        route = Place,
     ),
     STAMP(
         defaultIconResource = com.eoyeongbooyeong.core.R.drawable.ic_stamp_default,
@@ -38,9 +32,11 @@ internal enum class MainTab(
 
     companion object {
         @Composable
-        fun find(predicate: @Composable (MainTabRoute) -> Boolean): MainTab? = entries.find { predicate(it.route) }
+        fun find(predicate: @Composable (MainTabRoute) -> Boolean): MainTab? =
+            entries.find { predicate(it.route) }
 
         @Composable
-        fun contains(predicate: @Composable (Route) -> Boolean): Boolean = entries.map { it.route }.any { predicate(it) }
+        fun contains(predicate: @Composable (Route) -> Boolean): Boolean =
+            entries.map { it.route }.any { predicate(it) }
     }
 }

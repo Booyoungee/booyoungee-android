@@ -1,4 +1,4 @@
-package com.eoyeongbooyeong.home.component
+package com.eoyeongbooyeong.category.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -30,42 +30,43 @@ import com.eoyeongbooyeong.core.designsystem.theme.Gray400
 import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.core.extension.listToBracketedString
 import com.eoyeongbooyeong.core.extension.noRippleClickable
-import com.eoyeongbooyeong.domain.entity.PlaceDetailsEntity
+import com.eoyeongbooyeong.domain.entity.PlaceEntity
 import com.eoyeongbooyeong.feature.R
 
 @Composable
 internal fun PlaceInfoBox(
-    placeDetailsEntity: PlaceDetailsEntity,
+    placeEntity: PlaceEntity,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
 ) {
     Box(
         modifier =
-            modifier
-                .noRippleClickable(onClick = onClick)
-                .border(
-                    width = 1.dp,
-                    color = Gray200,
-                    shape = RoundedCornerShape(10.dp),
-                ).clip(RoundedCornerShape(10.dp))
-                .background(White)
-                .padding(start = 31.dp, top = 25.dp, bottom = 25.dp),
+        modifier
+            .noRippleClickable(onClick = onClick)
+            .border(
+                width = 1.dp,
+                color = Gray200,
+                shape = RoundedCornerShape(10.dp),
+            )
+            .clip(RoundedCornerShape(10.dp))
+            .background(White)
+            .padding(start = 31.dp, top = 25.dp, bottom = 25.dp),
     ) {
         Row(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .background(White)
-                    .padding(end = 10.dp),
+            Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .background(White)
+                .padding(end = 10.dp),
         ) {
             AsyncImage(
-                model = placeDetailsEntity.imageUrl,
+                model = placeEntity.imageUrl,
                 contentDescription = null,
                 modifier =
-                    Modifier
-                        .size(90.dp)
-                        .clip(RoundedCornerShape(5.dp)),
+                Modifier
+                    .size(90.dp)
+                    .clip(RoundedCornerShape(5.dp)),
                 placeholder = painterResource(id = com.eoyeongbooyeong.core.R.drawable.img_default_5),
                 error = painterResource(id = com.eoyeongbooyeong.core.R.drawable.img_default_5),
             )
@@ -73,7 +74,7 @@ internal fun PlaceInfoBox(
                 modifier = Modifier.padding(start = 10.dp),
             ) {
                 Text(
-                    text = placeDetailsEntity.name,
+                    text = placeEntity.name,
                     style = BooTheme.typography.body3,
                     color = Black,
                     maxLines = 1,
@@ -81,7 +82,7 @@ internal fun PlaceInfoBox(
                     modifier = Modifier.weight(1f, false),
                 )
                 Text(
-                    text = placeDetailsEntity.address,
+                    text = placeEntity.address,
                     style = BooTheme.typography.caption2,
                     color = Black,
                     maxLines = 1,
@@ -89,22 +90,27 @@ internal fun PlaceInfoBox(
                     modifier = Modifier.weight(1f, false),
                 )
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    ReviewStar(placeDetailsEntity.starCount)
+                    ReviewStar(placeEntity.star)
 
                     Text(
-                        text = placeDetailsEntity.starCount.toString(),
+                        text = placeEntity.star.toString(),
                         style = BooTheme.typography.caption1,
                         color = Black,
-                        modifier = Modifier.weight(1f, false).padding(start = 4.dp),
+                        modifier = Modifier
+                            .weight(1f, false)
+                            .padding(start = 4.dp),
                     )
                     Text(
-                        text = stringResource(R.string.placeReviewAndPoint, placeDetailsEntity.reviewCount),
+                        text = stringResource(
+                            R.string.placeReviewAndPoint,
+                            placeEntity.reviewCount
+                        ),
                         style = BooTheme.typography.caption2,
                         color = Gray400,
                         modifier =
-                            Modifier
-                                .weight(1f, false)
-                                .padding(start = 4.dp),
+                        Modifier
+                            .weight(1f, false)
+                            .padding(start = 4.dp),
                     )
                     Image(
                         painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_like),
@@ -112,22 +118,24 @@ internal fun PlaceInfoBox(
                         modifier = Modifier.size(12.dp),
                     )
                     Text(
-                        text = placeDetailsEntity.likeCount.toString(),
+                        text = placeEntity.likedCount.toString(),
                         style = BooTheme.typography.caption1,
                         color = Black,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.weight(1f, false).padding(start = 4.dp),
+                        modifier = Modifier
+                            .weight(1f, false)
+                            .padding(start = 4.dp),
                     )
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Image(
-                        painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_film),
+                        painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_camera),
                         contentDescription = "camera icon",
                         modifier = Modifier.size(20.dp)
                     )
                     Text(
-                        text = placeDetailsEntity.movieNameList.listToBracketedString(),
+                        text = placeEntity.movieNameList.listToBracketedString(),
                         style = BooTheme.typography.caption1,
                         color = Black,
                         maxLines = 1,
@@ -144,15 +152,15 @@ internal fun PlaceInfoBox(
 fun PlaceInfoBoxPreview() {
     BooTheme {
         PlaceInfoBox(
-            placeDetailsEntity =
-                PlaceDetailsEntity(
-                    name = "PlaceDetailsEntity Name",
-                    address = "Address",
-                    starCount = 4.5f,
-                    reviewCount = 100,
-                    likeCount = 100,
-                    movieNameList = listOf("Movie 1", "Movie 2"),
-                ),
+            placeEntity =
+            PlaceEntity(
+                name = "PlaceEntity Name",
+                address = "Address",
+                star = 4.5f,
+                reviewCount = 100,
+                likedCount = 100,
+                movieNameList = listOf("Movie 1", "Movie 2"),
+            ),
         )
     }
 }

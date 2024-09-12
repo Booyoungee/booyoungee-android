@@ -1,322 +1,320 @@
 package com.eoyeongbooyeong.home
 
-import android.Manifest
-import android.app.AlertDialog
-import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.provider.Settings
-import android.widget.Toast
-import androidx.activity.compose.ManagedActivityResultLauncher
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
+import android.net.Uri
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import com.eoyeongbooyeong.core.R
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
+import coil.compose.AsyncImage
+import com.eoyeongbooyeong.core.constant.BusanInternationalFilmFestival
+import com.eoyeongbooyeong.core.designsystem.component.star.ReviewStar
 import com.eoyeongbooyeong.core.designsystem.component.textfield.BooSearchTextField
+import com.eoyeongbooyeong.core.designsystem.theme.Black
+import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
+import com.eoyeongbooyeong.core.designsystem.theme.Gray400
 import com.eoyeongbooyeong.core.designsystem.theme.White
-import com.eoyeongbooyeong.domain.entity.PlaceDetailsEntity
-import com.eoyeongbooyeong.places.component.FloatingButton
-import com.eoyeongbooyeong.places.component.MapFloatingButton
-import com.eoyeongbooyeong.home.component.PlaceInfoBox
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.Priority
-import com.kakao.vectormap.KakaoMap
-import com.kakao.vectormap.KakaoMapReadyCallback
-import com.kakao.vectormap.LatLng
-import com.kakao.vectormap.MapLifeCycleCallback
-import com.kakao.vectormap.MapView
-import com.kakao.vectormap.camera.CameraAnimation
-import com.kakao.vectormap.camera.CameraUpdateFactory
-import com.kakao.vectormap.label.Label
-import com.kakao.vectormap.label.LabelOptions
-import com.kakao.vectormap.label.LabelStyle
-import com.kakao.vectormap.label.LabelStyles
+import com.eoyeongbooyeong.core.extension.noRippleClickable
+import com.eoyeongbooyeong.domain.entity.PlaceInfoEntity
+import com.eoyeongbooyeong.feature.R
 
 @Composable
-internal fun HomeScreen(onClickBookmark: () -> Unit = {}) {
-    val context = LocalContext.current
-    val kakaoMap = remember { mutableStateOf<KakaoMap?>(null) }
-    val mapView =
-        rememberMapView(context = context, onMapReady = { map ->
-            kakaoMap.value = map
-        })
-
-    val locationPermissionGranted = remember { mutableStateOf(false) }
-    val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-
-    val requestLocationPermissionLauncher =
-        rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.RequestMultiplePermissions(),
-        ) { permissions ->
-            locationPermissionGranted.value =
-                permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true
-        }
-
-    LaunchedEffect(Unit) {
-        val hasFineLocationPermission =
-            ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-            ) == PackageManager.PERMISSION_GRANTED
-        val hasCoarseLocationPermission =
-            ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-            ) == PackageManager.PERMISSION_GRANTED
-
-        locationPermissionGranted.value = hasFineLocationPermission && hasCoarseLocationPermission
-    }
-
-    // PlaceInfoBox 에 대한 State
-    val showPlaceInfoBox = remember { mutableStateOf(false) }
-    val selectedPlaceDetailsEntity = remember { mutableStateOf<PlaceDetailsEntity?>(null) }
-
-    Column(
-        modifier =
-            Modifier
-                .fillMaxSize()
-                .background(color = White),
-    ) {
-        BooSearchTextField(
-            modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp),
-            isActive = false,
-            onClick = {}, // navigate to search screen
-        )
-        Box(
-            modifier =
-                Modifier
-                    .fillMaxSize(),
-        ) {
-            AndroidView(
-                factory = {
-                    mapView
-                },
-            )
-
-            Column(
-                modifier =
-                    Modifier
-                        .align(Alignment.BottomEnd),
-            ) {
-                MapFloatingButton(
-                    modifier =
-                        Modifier
-                            .padding(end = 24.dp, bottom = 12.dp),
-                    onClick = {
-                        requestPermissionAndMoveToCurrentLocation(
-                            locationPermissionGranted,
-                            fusedLocationClient,
-                            kakaoMap,
-                            requestLocationPermissionLauncher,
-                            context,
-                        )
-                    },
-                    buttonState = FloatingButton(isMyLocationButton = true),
-                )
-
-                MapFloatingButton(
-                    modifier =
-                        Modifier
-                            .padding(end = 24.dp, bottom = 24.dp),
-                    onClick = {
-                        // Toggle PlaceInfoBox visibility
-                        selectedPlaceDetailsEntity.value =
-                            PlaceDetailsEntity(
-                                name = "Example PlaceDetailsEntity",
-                                address = "123 Example Street 123 Example Street 123 Example Street 123 Example Street",
-                                starCount = 4.5f,
-                                reviewCount = 42,
-                                likeCount = 15,
-                                movieNameList =
-                                    listOf(
-                                        "Movie A",
-                                        "Movie B",
-                                        "Movie B",
-                                        "Movie B",
-                                    ),
-                            )
-                        showPlaceInfoBox.value = !showPlaceInfoBox.value
-                    },
-                    buttonState = FloatingButton(isBookmarkButton = true),
-                )
-            }
-
-            if (showPlaceInfoBox.value && selectedPlaceDetailsEntity.value != null) {
-                PlaceInfoBox(
-                    placeDetailsEntity = selectedPlaceDetailsEntity.value!!,
-                    modifier =
-                        Modifier
-                            .padding(16.dp)
-                            .fillMaxWidth(),
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun rememberMapView(
-    context: Context,
-    onMapReady: (KakaoMap) -> Unit,
-): MapView {
-    val mapView =
-        remember {
-            MapView(context).also { mapView ->
-                mapView.start(
-                    object : MapLifeCycleCallback() {
-                        override fun onMapDestroy() = Unit
-
-                        override fun onMapError(e: Exception?) = Unit
-
-                        override fun onMapResumed() = Unit
-                    },
-                    object : KakaoMapReadyCallback() {
-                        override fun getPosition(): LatLng = LatLng.from(35.16001944, 129.1658083)
-
-                        override fun getZoomLevel(): Int = 13
-
-                        override fun onMapReady(map: KakaoMap) {
-                            onMapReady(map) // KakaoMap 객체를 상태로 업데이트합니다.
-                            // TODO : 마커 위치 더미 데이터
-                            val markerLocations =
-                                listOf(
-                                    LatLng.from(35.16001944, 129.1658083),
-                                    LatLng.from(35.16801944, 129.258083),
-                                    LatLng.from(35.15001944, 129.1858083),
-                                )
-
-                            markerLocations.map { setMapMarker(map, it) }
-                            markerClickListener(map)
-                        }
-
-                        private fun setMapMarker(
-                            map: KakaoMap,
-                            location: LatLng,
-                        ): Label {
-                            val label = map.labelManager?.layer
-                            val styles = LabelStyles.from(LabelStyle.from(R.drawable.ic_marker_clicked))
-                            val labelOptions = LabelOptions.from(location).setStyles(styles)
-
-                            return label?.addLabel(labelOptions) ?: error("Label creation failed")
-                        }
-
-                        private fun markerClickListener(map: KakaoMap) {
-                            val markerStateMap = mutableMapOf<Label, Boolean>()
-
-                            map.setOnLabelClickListener { _, _, label ->
-                                val currentStyle = markerStateMap[label] ?: false
-                                val newStyleResId =
-                                    if (currentStyle) R.drawable.ic_marker_clicked else R.drawable.ic_marker_clicked
-
-                                label.changeStyles(
-                                    LabelStyles.from(LabelStyle.from(newStyleResId)),
-                                )
-
-                                markerStateMap[label] = !currentStyle
-                                true
-                            }
-                        }
-                    },
-                )
-            }
-        }
-    return mapView
-}
-
-private fun requestPermissionAndMoveToCurrentLocation(
-    locationPermissionGranted: MutableState<Boolean>,
-    fusedLocationClient: FusedLocationProviderClient,
-    kakaoMap: MutableState<KakaoMap?>,
-    requestLocationPermissionLauncher: ManagedActivityResultLauncher<Array<String>, Map<String, @JvmSuppressWildcards Boolean>>,
-    context: Context,
+internal fun HomeRoute(
+    paddingValues: PaddingValues,
+    viewModel: HomeViewModel = hiltViewModel(),
 ) {
-    if (locationPermissionGranted.value) {
-        if (ActivityCompat.checkSelfPermission(
-                context,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-            ) != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(
-                context,
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            return
-        }
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val context = LocalContext.current
 
-        fusedLocationClient
-            .getCurrentLocation(
-                Priority.PRIORITY_HIGH_ACCURACY,
-                null,
-            ).addOnSuccessListener { location ->
-                if (location != null) {
-                    kakaoMap.value?.moveCameraToLocation(
-                        location.latitude,
-                        location.longitude,
-                    )
-                } else {
-                    // 위치 정보가 null인 경우 (GPS가 꺼져있는 경우)
-                    setGPSPermissionDialog(context)
+    val state = viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(viewModel.sideEffects, lifecycleOwner) {
+        viewModel.sideEffects.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    is HomeSideEffect.NavigateToWebView -> {
+                        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(sideEffect.url)))
+                    }
                 }
             }
-    } else {
-        requestLocationPermissionLauncher.launch(
-            arrayOf(
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-            ),
-        )
     }
+
+    HomeScreen(
+        paddingValues = paddingValues,
+        recommendedPlace = state.value.recommendedPlace,
+        navigateToWebView = viewModel::navigateToWebView,
+    )
 }
 
-private fun setGPSPermissionDialog(context: Context) {
-    AlertDialog.Builder(context).apply {
-        setTitle(context.getString(com.eoyeongbooyeong.feature.R.string.dialogGPSTitle))
-        setMessage(context.getString(com.eoyeongbooyeong.feature.R.string.dialogGPSMessage))
-        setPositiveButton(context.getString(com.eoyeongbooyeong.feature.R.string.dialogGPSOk)) { _: DialogInterface, _: Int ->
-            val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-            context.startActivity(intent)
-        }
-        setNegativeButton(context.getString(com.eoyeongbooyeong.feature.R.string.cancel)) { _: DialogInterface, _: Int ->
-            Toast
-                .makeText(
-                    context,
-                    context.getString(com.eoyeongbooyeong.feature.R.string.disableGPSPermissionToast),
-                    Toast.LENGTH_SHORT,
-                ).show()
-        }
-        create().show()
-    }
-}
-
-// 화면 이동 확장함수
-fun KakaoMap.moveCameraToLocation(
-    latitude: Double,
-    longitude: Double,
-    zoomLevel: Int = 17,
-    animationDuration: Int = 500,
+@Composable
+private fun HomeScreen(
+    paddingValues: PaddingValues,
+    recommendedPlace: List<PlaceInfoEntity> = emptyList(),
+    navigateToWebView: (String) -> Unit = {},
 ) {
-    val cameraUpdate = CameraUpdateFactory.newCenterPosition(LatLng.from(latitude, longitude))
-    val zoomUpdate = CameraUpdateFactory.zoomTo(zoomLevel)
+    val verticalScrollState = rememberScrollState()
+    val horizontalRecommendedScrollState = rememberScrollState()
 
-    moveCamera(cameraUpdate, CameraAnimation.from(animationDuration, true, true))
-    moveCamera(zoomUpdate, CameraAnimation.from(animationDuration, true, true))
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(White)
+            .padding(paddingValues)
+            .verticalScroll(verticalScrollState, true),
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
+        ) {
+
+
+            BooSearchTextField(
+                modifier = Modifier.padding(vertical = 12.dp),
+                isActive = false,
+                onClick = {}, // navigate to search screen
+            )
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                ImageWithText(
+                    painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.img_movie_cover),
+                    title = "영화",
+                    description = "영화와 함께 하는\n부산의 특별한 순간",
+                    modifier = Modifier.weight(1f)
+                )
+
+                Spacer(modifier = Modifier.width(12.dp))
+
+                Column(modifier = Modifier.weight(1f)) {
+                    ImageWithText(
+                        painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.img_local_cover),
+                        title = "지역상생",
+                        description = "부산의 매력을 더하는\n숨은 명소들",
+                        alignment = Alignment.TopStart
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    ImageWithText(
+                        painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.img_tour_cover),
+                        title = "관광지",
+                        description = "다양한 매력이 숨 쉬는\n부산 필수 관광지",
+                        alignment = Alignment.TopStart
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(28.dp))
+
+            Text(
+                text = "부산 유명 장소를 추천해 드릴게요",
+                style = BooTheme.typography.head3,
+                color = Black
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .horizontalScroll(horizontalRecommendedScrollState),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            repeat(recommendedPlace.size) { index ->
+                if (index == 0) {
+                    Spacer(modifier = Modifier.width(12.dp))
+                }
+                RecommendedPlaceItem(
+                    place = recommendedPlace[index],
+                )
+                if (index == recommendedPlace.size - 1) {
+                    Spacer(modifier = Modifier.width(12.dp))
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(28.dp))
+
+        Row(
+            Modifier
+                .noRippleClickable {
+                    navigateToWebView(BusanInternationalFilmFestival)
+                }
+                .padding(horizontal = 24.dp)
+                .clip(shape = RoundedCornerShape(10.dp))
+                .background(Brush.linearGradient(listOf(Color(0xFFC9E2D6), Color(0xFFC8D6EB))))
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Image(
+                painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.img_popcorn),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(100.dp)
+                    .clip(shape = RoundedCornerShape(10.dp)),
+            )
+
+            Spacer(modifier = Modifier.width(4.dp))
+
+            Column {
+                Text(text = "놓칠 수 없는 영화제 소식", style = BooTheme.typography.body1, color = Black)
+                Spacer(modifier = Modifier.height(6.dp))
+                Text(
+                    text = "영화제의 가장 뜨거운 이야기를\n빠짐없이 챙겨보세요!",
+                    style = BooTheme.typography.body4,
+                    color = Black
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(28.dp))
+    }
+}
+
+@Composable
+fun ImageWithText(
+    painter: Painter,
+    title: String,
+    description: String,
+    modifier: Modifier = Modifier,
+    alignment: Alignment = Alignment.BottomStart,
+) {
+    Box(modifier = modifier.fillMaxWidth()) {
+        Image(
+            painter = painter,
+            contentDescription = null,
+            modifier = Modifier.fillMaxWidth(),
+            contentScale = ContentScale.FillWidth
+        )
+
+        Column(
+            modifier = Modifier
+                .align(alignment)
+                .padding(horizontal = 12.dp)
+                .padding(bottom = 19.dp, top = 8.dp)
+        ) {
+            Text(
+                text = title,
+                style = BooTheme.typography.body1,
+                color = White
+            )
+            Text(
+                text = description,
+                style = BooTheme.typography.caption1,
+                color = White
+            )
+        }
+
+    }
+}
+
+@Composable
+fun RecommendedPlaceItem(
+    place: PlaceInfoEntity,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier.width(160.dp),
+    ) {
+        AsyncImage(
+            place.images.firstOrNull() ?: com.eoyeongbooyeong.core.R.drawable.img_default_5,
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1f)
+                .clip(shape = RoundedCornerShape(10.dp)),
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = place.name,
+            style = BooTheme.typography.body1,
+            color = Black,
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 2
+        )
+        Spacer(modifier = Modifier.height(2.dp))
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            ReviewStar(place.starCount)
+
+            Text(
+                text = place.starCount.toString(),
+                style = BooTheme.typography.caption1,
+                color = Black,
+                modifier =
+                modifier
+                    .padding(start = 4.dp),
+            )
+            Text(
+                text = stringResource(R.string.placeReviewAndPoint, place.reviewCount),
+                style = BooTheme.typography.caption2,
+                color = Gray400,
+                modifier =
+                modifier
+                    .padding(start = 4.dp),
+            )
+            Image(
+                painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_like),
+                contentDescription = "liked icon",
+                modifier = Modifier.size(12.dp),
+            )
+            Text(
+                text = place.likeCount.toString(),
+                style = BooTheme.typography.caption1,
+                color = Black,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier =
+                modifier
+                    .padding(start = 4.dp),
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun NewHomeScreenPreview() {
+    BooTheme {
+        HomeScreen(PaddingValues(0.dp))
+    }
 }

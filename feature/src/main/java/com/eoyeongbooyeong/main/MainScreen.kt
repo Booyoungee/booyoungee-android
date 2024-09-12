@@ -43,7 +43,6 @@ import com.eoyeongbooyeong.core.designsystem.theme.Gray100
 import com.eoyeongbooyeong.core.designsystem.theme.Gray400
 import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.home.homeNavGraph
-import com.eoyeongbooyeong.mypage.MyPageEditNickname
 import com.eoyeongbooyeong.mypage.myPageNavGraph
 import com.eoyeongbooyeong.place_recommend.placeNavGraph
 import com.eoyeongbooyeong.splash.Splash
@@ -123,7 +122,7 @@ internal fun MainScreen(
                         },
                     )
                     homeNavGraph(
-                        // paddingValue = paddingValue,
+                        paddingValues = paddingValue,
                     )
                     placeNavGraph()
                     stampNavGraph()

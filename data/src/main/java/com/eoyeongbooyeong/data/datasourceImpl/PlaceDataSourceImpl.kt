@@ -7,12 +7,12 @@ import com.eoyeongbooyeong.data.dto.response.PlaceDetailsDto
 import com.eoyeongbooyeong.data.service.PlaceService
 import javax.inject.Inject
 
-class PlaceDataSourceImpl
-    @Inject
-    constructor(
+class PlaceDataSourceImpl @Inject constructor(
         private val placeService: PlaceService,
     ) : PlaceDataSource {
-        override suspend fun getPlaceDetails(
+    override suspend fun getRecommendPlace() = placeService.getRecommendPlace()
+
+    override suspend fun getPlaceDetails(
             placeId: Int,
             placeType: String,
         ): PlaceDetailsDto = placeService.getPlaceDetails(placeId, placeType).data
