@@ -40,13 +40,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
+import com.eoyeongbooyeong.category.component.PlaceInfoBox
 import com.eoyeongbooyeong.core.R
 import com.eoyeongbooyeong.core.designsystem.component.topbar.BooTextTopAppBar
 import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.core.extension.toast
 import com.eoyeongbooyeong.domain.entity.PlaceDetailsEntity
+import com.eoyeongbooyeong.domain.entity.PlaceEntity
 import com.eoyeongbooyeong.domain.entity.PlaceType
-import com.eoyeongbooyeong.home.component.PlaceInfoBox
 import com.eoyeongbooyeong.places.component.FloatingButton
 import com.eoyeongbooyeong.places.component.MapFloatingButton
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -159,7 +160,7 @@ internal fun KakakoMapScreen(
 
     // PlaceInfoBox 에 대한 State
     val showPlaceInfoBox = remember { mutableStateOf(false) }
-    val selectedPlaceDetailsEntity = remember { mutableStateOf<PlaceDetailsEntity?>(null) }
+    val selectedPlaceDetailsEntity = remember { mutableStateOf<PlaceEntity?>(null) }
 
     Column(
         modifier =
@@ -204,7 +205,7 @@ internal fun KakakoMapScreen(
 
             if (showPlaceInfoBox.value && selectedPlaceDetailsEntity.value != null) {
                 PlaceInfoBox(
-                    placeDetailsEntity = selectedPlaceDetailsEntity.value!!,
+                    placeEntity = selectedPlaceDetailsEntity.value!!,
                     modifier = Modifier.padding(16.dp).fillMaxWidth(),
                 )
             }
