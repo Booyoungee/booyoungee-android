@@ -38,6 +38,8 @@ class CategoryPlaceViewModel
     }
 
         fun getMoviePlaceListWitFilter(filter: String) {
+            _state.value = _state.value.copy(isLoading = true)
+
             viewModelScope.launch {
                 placeRepository
                     .getMoviePlacesWithCategory(filter)
@@ -45,6 +47,7 @@ class CategoryPlaceViewModel
                         _state.value =
                             state.value.copy(
                                 placeList = it,
+                                isLoading = false,
                             )
                     }.onFailure {
                         _sideEffects.emit(CategorySideEffect.ShowToast(it.message.toString()))
@@ -53,6 +56,8 @@ class CategoryPlaceViewModel
         }
 
         fun getLocalStorePlaceListWitFilter(filter: String) {
+            _state.value = _state.value.copy(isLoading = true)
+
             viewModelScope.launch {
                 placeRepository
                     .getLocalStorePlacesWithCategory(filter)
@@ -60,6 +65,7 @@ class CategoryPlaceViewModel
                         _state.value =
                             state.value.copy(
                                 placeList = it,
+                                isLoading = false,
                             )
                     }.onFailure {
                         _sideEffects.emit(CategorySideEffect.ShowToast(it.message.toString()))
@@ -68,6 +74,8 @@ class CategoryPlaceViewModel
         }
 
         fun getTourPlaceListWitFilter(filter: String) {
+            _state.value = _state.value.copy(isLoading = true)
+
             viewModelScope.launch {
                 placeRepository
                     .getTourPlacesWithCategory(filter)
@@ -75,6 +83,7 @@ class CategoryPlaceViewModel
                         _state.value =
                             state.value.copy(
                                 placeList = it,
+                                isLoading = false,
                             )
                     }.onFailure {
                         _sideEffects.emit(CategorySideEffect.ShowToast(it.message.toString()))

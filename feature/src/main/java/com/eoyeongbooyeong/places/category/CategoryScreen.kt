@@ -118,6 +118,7 @@ fun PlaceCategoryRoute(
             }
         },
         navigateToMap = {},
+        isLoading = state.value.isLoading,
     )
 }
 
@@ -129,6 +130,7 @@ fun PlaceCategoryScreen(
     onSortingSelected: (String) -> Unit,
     navigateToMap: () -> Unit,
     placeType: String,
+    isLoading: Boolean = false,
     viewModel: CategoryPlaceViewModel = hiltViewModel(),
 ) {
     val selectedIndex =
@@ -232,6 +234,20 @@ fun PlaceCategoryScreen(
         FloatingButtonContainer(
             onClick = { navigateToMap() },
         )
+    }
+
+    // API 호출 후 loading 상태인 경우
+    if (isLoading) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(White.copy(alpha = 0.5f)),
+            contentAlignment = Alignment.Center
+        ) {
+            androidx.compose.material3.CircularProgressIndicator(
+                color = Purple
+            )
+        }
     }
 }
 
