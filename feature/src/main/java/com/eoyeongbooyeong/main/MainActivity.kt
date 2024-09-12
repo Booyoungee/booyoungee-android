@@ -18,8 +18,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navigator: MainNavigator = rememberMainNavigator()
             BooTheme {
-                //MainScreen(navigator = navigator)
-                PlaceCategoryRoute()
+                // MainScreen(navigator = navigator)
+                PlaceCategoryRoute(placeType = "movie")
             }
         }
     }

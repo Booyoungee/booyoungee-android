@@ -6,4 +6,5 @@ sealed class CategorySideEffect {
     ) : CategorySideEffect()
 
     object NavigateToDetail : CategorySideEffect()
+    object NavigateToBack : CategorySideEffect()
 }

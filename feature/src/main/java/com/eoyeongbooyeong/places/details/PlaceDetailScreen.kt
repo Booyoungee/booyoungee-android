@@ -19,7 +19,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -28,7 +27,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -54,7 +52,6 @@ import com.eoyeongbooyeong.places.details.PlaceDetailsViewModel
 import com.eoyeongbooyeong.search.component.PlaceDetailBottomBar
 import com.eoyeongbooyeong.search.component.PlaceDetailInfo
 import com.eoyeongbooyeong.search.component.PlaceReviewAndLikedCount
-import kotlinx.coroutines.launch
 
 @Composable
 fun PlaceDetailRoute(
@@ -75,11 +72,10 @@ fun PlaceDetailRoute(
     onClickBookmark: () -> Unit = {},
     onClickBackButton: () -> Unit = {},
     viewModel: PlaceDetailsViewModel = hiltViewModel(),
-    bookMarkId: Int = -1
+    bookMarkId: Int = -1,
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
-    val coroutineScope = rememberCoroutineScope()
 
     val state = viewModel.state.collectAsStateWithLifecycle()
 
@@ -110,12 +106,11 @@ fun PlaceDetailRoute(
         reviewInfoEntityTotalList = reviewInfoEntityTotalList,
         onClickWriteReview = onClickWriteReview,
         onClickLike = onClickLike,
-        onClickBookmark ={
+        onClickBookmark = {
             if (state.value.isBookmarked) {
-                    viewModel.deleteBookMark(bookMarkId = bookMarkId)
+                viewModel.deleteBookMark(bookMarkId = bookMarkId)
             } else {
-                    viewModel.postBookMark(placeId = placeId, placeType = placeType.name.toLowerCase())
-
+                viewModel.postBookMark(placeId = placeId, placeType = placeType.name.lowercase())
             }
         },
         onClickBackButton = onClickBackButton,

@@ -1,6 +1,6 @@
 package com.eoyeongbooyeong.data.dto.response
 
-import com.eoyeongbooyeong.domain.entity.PlaceInfoWithCategoryEntity
+import com.eoyeongbooyeong.domain.entity.PlaceInfoEntity
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -22,12 +22,12 @@ data class PlaceWithCategoryDto(
     val movieName: String?,
 ) {
     fun toDomain() =
-        PlaceInfoWithCategoryEntity(
-            placeId = placeId ?: 0,
+        PlaceInfoEntity(
+            placeId = placeId.toString(),
             name = name ?: "",
-            basicAddress = address ?: "",
-            likes = likeCount ?: 0,
-            stars = starCount ?: 0.0f,
-            movieName = movieName ?: "",
+            address = address ?: "",
+            likeCount = likeCount ?: 0,
+            starCount = starCount ?: 0.0f,
+            movies = listOf(movieName ?: "")
         )
 }

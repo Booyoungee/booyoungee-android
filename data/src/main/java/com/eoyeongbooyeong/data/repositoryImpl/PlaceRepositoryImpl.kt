@@ -8,7 +8,6 @@ import com.eoyeongbooyeong.data.dto.response.PlaceDetailsDto
 import com.eoyeongbooyeong.domain.entity.BookMarkEntity
 import com.eoyeongbooyeong.domain.entity.LikeEntity
 import com.eoyeongbooyeong.domain.entity.PlaceDetailsEntity
-import com.eoyeongbooyeong.domain.entity.PlaceInfoWithCategoryEntity
 import com.eoyeongbooyeong.domain.repository.PlaceRepository
 import javax.inject.Inject
 
@@ -38,15 +37,15 @@ class PlaceRepositoryImpl @Inject constructor(
         placeDataSource.deleteLike(likeId).toLikeEntity()
     }
 
-    override suspend fun getMoviePlacesWithCategory(filter: String): Result<List<PlaceInfoWithCategoryEntity>> = runCatching {
+    override suspend fun getMoviePlacesWithCategory(filter: String): Result<List<PlaceInfoEntity>> = runCatching {
         placeDataSource.getMoviePlacesWithCategory(filter).contents.map { it.toDomain() }
     }
 
-    override suspend fun getLocalStorePlacesWithCategory(filter: String): Result<List<PlaceInfoWithCategoryEntity>> = runCatching {
+    override suspend fun getLocalStorePlacesWithCategory(filter: String): Result<List<PlaceInfoEntity>> = runCatching {
         placeDataSource.getLocalStorePlacesWithCategory(filter).contents.map { it.toDomain() }
     }
 
-    override suspend fun getTourPlacesWithCategory(filter: String): Result<List<PlaceInfoWithCategoryEntity>> = runCatching {
+    override suspend fun getTourPlacesWithCategory(filter: String): Result<List<PlaceInfoEntity>> = runCatching {
         placeDataSource.getTourPlacesWithCategory(filter).contents.map { it.toDomain() }
     }
 }

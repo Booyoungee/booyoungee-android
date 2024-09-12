@@ -31,7 +31,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.app.ActivityCompat
@@ -96,7 +95,10 @@ fun KakaoMapRoute(
     }
 
     LaunchedEffect(key1 = Unit) {
-        viewModel.getPlaceDetailsInfo(222, PlaceType.STORE.name.toLowerCase()) // TODO: placeId와 placeType을 넘겨주기
+        viewModel.getPlaceDetailsInfo(
+            222,
+            PlaceType.STORE.name.lowercase(),
+        ) // TODO: placeId와 placeType을 넘겨주기
     }
 
     val dummyList: List<PlaceDetailsEntity> =

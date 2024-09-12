@@ -27,12 +27,6 @@ class CategoryPlaceViewModel
         val sideEffects: SharedFlow<CategorySideEffect>
             get() = _sideEffects.asSharedFlow()
 
-        init {
-            getMoviePlaceListWitFilter("star")
-            getLocalStorePlaceListWitFilter("star")
-            getTourPlaceListWitFilter("star")
-        }
-
         fun getMoviePlaceListWitFilter(filter: String) {
             viewModelScope.launch {
                 placeRepository
