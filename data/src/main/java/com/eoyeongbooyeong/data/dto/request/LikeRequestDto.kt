@@ -1,4 +1,4 @@
-package com.eoyeongbooyeong.data.dto.response
+package com.eoyeongbooyeong.data.dto.request
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

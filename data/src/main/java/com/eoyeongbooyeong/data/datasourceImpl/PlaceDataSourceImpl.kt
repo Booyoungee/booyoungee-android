@@ -3,7 +3,7 @@ package com.eoyeongbooyeong.data.datasourceImpl
 import com.eoyeongbooyeong.data.datasource.PlaceDataSource
 import com.eoyeongbooyeong.data.dto.response.BookMarkDto
 import com.eoyeongbooyeong.data.dto.response.LikeDto
-import com.eoyeongbooyeong.data.dto.response.LikeRequestDto
+import com.eoyeongbooyeong.data.dto.request.LikeRequestDto
 import com.eoyeongbooyeong.data.service.PlaceService
 import com.eoyeongbooyeong.domain.entity.PlaceInfoEntity
 import javax.inject.Inject

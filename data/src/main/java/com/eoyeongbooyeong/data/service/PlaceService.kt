@@ -4,8 +4,7 @@ import com.eoyeongbooyeong.data.dto.response.BaseContents
 import com.eoyeongbooyeong.data.dto.response.BaseResponse
 import com.eoyeongbooyeong.data.dto.response.BookMarkDto
 import com.eoyeongbooyeong.data.dto.response.LikeDto
-import com.eoyeongbooyeong.data.dto.response.LikeRequestDto
-import com.eoyeongbooyeong.data.dto.response.PlaceDetailsDto
+import com.eoyeongbooyeong.data.dto.request.LikeRequestDto
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import com.eoyeongbooyeong.data.dto.response.PlaceDto
