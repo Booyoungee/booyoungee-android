@@ -1,8 +1,7 @@
 package com.eoyeongbooyeong.places.map
 
-import com.eoyeongbooyeong.domain.entity.PlaceDetailsEntity
-
+import com.eoyeongbooyeong.domain.entity.PlaceInfoEntity
 
 data class KakaoMapState(
-    val placeDetailsInfo: PlaceDetailsEntity = PlaceDetailsEntity()
+    val placeDetailsInfo: PlaceInfoEntity = PlaceInfoEntity(),
 )

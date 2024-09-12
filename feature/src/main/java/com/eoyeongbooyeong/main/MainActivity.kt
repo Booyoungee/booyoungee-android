@@ -8,6 +8,7 @@ import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.places.category.CategoryScreenPreview
 import com.eoyeongbooyeong.places.category.PlaceCategoryRoute
 import com.eoyeongbooyeong.places.category.PlaceCategoryScreen
+import com.eoyeongbooyeong.search.PlaceDetailRoute
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,7 +20,8 @@ class MainActivity : ComponentActivity() {
             val navigator: MainNavigator = rememberMainNavigator()
             BooTheme {
                 // MainScreen(navigator = navigator)
-                PlaceCategoryRoute(placeType = "movie")
+                // PlaceCategoryRoute(placeType = "movie")
+                PlaceDetailRoute()
             }
         }
     }

@@ -7,7 +7,7 @@ import com.eoyeongbooyeong.domain.entity.PlaceInfoEntity
 
 interface PlaceRepository {
     suspend fun getRecommendPlace(): Result<List<PlaceInfoEntity>>
-    suspend fun getPlaceDetails(placeId: Int, placeType: String): Result<PlaceDetailsEntity>
+    suspend fun getPlaceDetails(placeId: Int, placeType: String): Result<PlaceInfoEntity>
     suspend fun postBookMark(placeId: Int, placeType: String): Result<BookMarkEntity>
     suspend fun deleteBookMark(bookMarkId: Int): Result<BookMarkEntity>
     suspend fun postLike(placeId: Int): Result<LikeEntity>

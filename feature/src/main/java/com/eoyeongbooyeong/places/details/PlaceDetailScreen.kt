@@ -56,8 +56,8 @@ import com.eoyeongbooyeong.search.component.PlaceReviewAndLikedCount
 @Composable
 fun PlaceDetailRoute(
     modifier: Modifier = Modifier,
-    placeId: Int = 0,
-    placeType: PlaceType = PlaceType.MOVIE,
+    placeId: Int = 898,
+    placeType: String = "movie",
     movieTitle: String = "",
     imageUrl: String = "",
     stampCount: Int = 0,
@@ -78,6 +78,10 @@ fun PlaceDetailRoute(
     val context = LocalContext.current
 
     val state = viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.getPlaceDetailsInfo(placeId = placeId, placeType = placeType)
+    }
 
     LaunchedEffect(viewModel.sideEffects, lifecycleOwner) {
         viewModel.sideEffects
@@ -112,7 +116,7 @@ fun PlaceDetailRoute(
             if (state.value.isBookmarked) {
                 viewModel.deleteBookMark(bookMarkId = bookMarkId)
             } else {
-                viewModel.postBookMark(placeId = placeId, placeType = placeType.name.lowercase())
+                viewModel.postBookMark(placeId = placeId, placeType = placeType)
             }
         },
         onClickBackButton = onClickBackButton,

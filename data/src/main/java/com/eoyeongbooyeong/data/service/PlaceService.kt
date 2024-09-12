@@ -22,7 +22,7 @@ interface PlaceService {
     suspend fun getPlaceDetails(
         @Query("placeId") placeId: Int,
         @Query("placeType") placeType: String,
-    ): BaseResponse<PlaceDetailsDto>
+    ): BaseResponse<PlaceDto>
 
     @POST("api/v1/bookmark")
     suspend fun postBookMark(

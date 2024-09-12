@@ -4,7 +4,9 @@ import com.eoyeongbooyeong.data.datasource.PlaceDataSource
 import com.eoyeongbooyeong.data.dto.response.BookMarkDto
 import com.eoyeongbooyeong.data.dto.response.LikeDto
 import com.eoyeongbooyeong.data.dto.response.PlaceDetailsDto
+import com.eoyeongbooyeong.data.dto.response.PlaceDto
 import com.eoyeongbooyeong.data.service.PlaceService
+import com.eoyeongbooyeong.domain.entity.PlaceInfoEntity
 import javax.inject.Inject
 
 class PlaceDataSourceImpl @Inject constructor(
@@ -15,7 +17,7 @@ class PlaceDataSourceImpl @Inject constructor(
     override suspend fun getPlaceDetails(
             placeId: Int,
             placeType: String,
-        ): PlaceDetailsDto = placeService.getPlaceDetails(placeId, placeType).data
+        ): PlaceInfoEntity = placeService.getPlaceDetails(placeId, placeType).data.toDomain()
 
         override suspend fun postBookMark(
             placeId: Int,

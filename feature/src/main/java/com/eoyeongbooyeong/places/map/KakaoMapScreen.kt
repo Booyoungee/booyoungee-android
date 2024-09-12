@@ -45,7 +45,7 @@ import com.eoyeongbooyeong.core.designsystem.component.topbar.BooTextTopAppBar
 import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.core.extension.toast
 import com.eoyeongbooyeong.domain.entity.PlaceDetailsEntity
-import com.eoyeongbooyeong.domain.entity.PlaceEntity
+import com.eoyeongbooyeong.domain.entity.PlaceInfoEntity
 import com.eoyeongbooyeong.domain.entity.PlaceType
 import com.eoyeongbooyeong.places.component.FloatingButton
 import com.eoyeongbooyeong.places.component.MapFloatingButton
@@ -162,7 +162,7 @@ internal fun KakakoMapScreen(
 
     // PlaceInfoBox 에 대한 State
     val showPlaceInfoBox = remember { mutableStateOf(false) }
-    val selectedPlaceDetailsEntity = remember { mutableStateOf<PlaceEntity?>(null) }
+    val selectedPlaceDetailsEntity = remember { mutableStateOf<PlaceInfoEntity?>(null) }
 
     Column(
         modifier =
