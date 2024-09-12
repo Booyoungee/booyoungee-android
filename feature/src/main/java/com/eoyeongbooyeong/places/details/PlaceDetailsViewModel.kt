@@ -50,6 +50,8 @@ class PlaceDetailsViewModel
                     _state.value =
                         _state.value.copy(
                             placeInfoEntity = it,
+                            isLiked = it.me.hasLike,
+                            isBookmarked = it.me.hasBookmark
                         )
                     Timber.tag("PlaceDetailsViewModel").d(it.toString())
                 }.onFailure {

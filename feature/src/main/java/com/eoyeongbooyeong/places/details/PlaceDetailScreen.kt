@@ -59,7 +59,6 @@ fun PlaceDetailRoute(
     placeId: Int = 898,
     placeType: String = "movie",
     modifier: Modifier = Modifier,
-    placeDetailBookmarkCount: Int = 0,
     reviewInfoEntityTotalList: List<ReviewInfoEntity> = emptyList(),
     onClickWriteReview: () -> Unit = {},
     onClickLike: () -> Unit = {},
@@ -67,11 +66,13 @@ fun PlaceDetailRoute(
     onClickBackButton: () -> Unit = {},
     viewModel: PlaceDetailsViewModel = hiltViewModel(),
     bookMarkId: Int = -1,
+    likeId: Int = -1,
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
     val state = viewModel.state.collectAsStateWithLifecycle()
+    val placeInfoEntity = state.value.placeInfoEntity
 
     LaunchedEffect(key1 = Unit) {
         viewModel.getPlaceDetailsInfo(placeId = placeId, placeType = placeType)
@@ -95,26 +96,27 @@ fun PlaceDetailRoute(
 
     PlaceDetailScreen(
         modifier = modifier,
-        movieList =
-            viewModel.state.value.placeInfoEntity.movies
-                ?.joinToString(", ") ?: "",
-        movieTitle = viewModel.state.value.placeInfoEntity.name,
-        tel = viewModel.state.value.placeInfoEntity.tel,
-        imageUrl =
-            viewModel.state.value.placeInfoEntity.images
-                .firstOrNull() ?: "",
-        // TODO
-        stampCount = viewModel.state.value.placeInfoEntity.stampCount,
-        placeAddress = viewModel.state.value.placeInfoEntity.address,
-        placeDetailReviewCount = viewModel.state.value.placeInfoEntity.reviewCount,
-        placeDetailLikedCount = viewModel.state.value.placeInfoEntity.likeCount,
-        placeDetailStarScore = viewModel.state.value.placeInfoEntity.starCount,
-        placeDetailBookmarkCount = placeDetailBookmarkCount,
+        movieList = placeInfoEntity.movies?.joinToString(", ") ?: "",
+        movieTitle = placeInfoEntity.name,
+        tel = placeInfoEntity.tel,
+        imageUrl = placeInfoEntity.images.firstOrNull() ?: "", // TODO
+        stampCount = placeInfoEntity.stampCount,
+        placeAddress = placeInfoEntity.address,
+        placeDetailReviewCount = placeInfoEntity.reviewCount,
+        placeDetailLikedCount = placeInfoEntity.likeCount,
+        placeDetailStarScore = placeInfoEntity.starCount,
+        placeDetailBookmarkCount = -1, // TODO
         reviewInfoEntityTotalList = reviewInfoEntityTotalList,
         onClickWriteReview = onClickWriteReview,
-        onClickLike = onClickLike,
+        onClickLike = {
+            if (state.value.placeInfoEntity.me.hasLike) {
+                viewModel.deleteLike(likeId = likeId)
+            } else {
+                viewModel.postLike(placeId = placeId)
+            }
+        },
         onClickBookmark = {
-            if (state.value.isBookmarked) {
+            if (state.value.placeInfoEntity.me.hasBookmark) {
                 viewModel.deleteBookMark(bookMarkId = bookMarkId)
             } else {
                 viewModel.postBookMark(placeId = placeId, placeType = placeType)
