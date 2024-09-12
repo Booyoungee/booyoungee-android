@@ -24,6 +24,11 @@ fun SortingDropdownMenu(
     var selectedOption by remember { mutableStateOf("별점순") }
 
     val options = listOf("별점순", "리뷰 많은 순", "좋아요 많은 순")
+    val filterMapping = mapOf(
+        "별점순" to "star",
+        "리뷰 많은 순" to "review",
+        "좋아요 많은 순" to "like"
+    )
 
     Box(modifier = Modifier.padding(vertical = 12.dp, horizontal = 24.dp), contentAlignment = Alignment.CenterEnd) {
         Row(
@@ -33,9 +38,9 @@ fun SortingDropdownMenu(
             Text(
                 text = selectedOption,
                 modifier =
-                    Modifier
-                        .noRippleClickable { expanded = true }
-                        .padding(8.dp),
+                Modifier
+                    .noRippleClickable { expanded = true }
+                    .padding(8.dp),
                 color = Gray400,
                 style = BooTheme.typography.caption1,
             )
@@ -57,7 +62,7 @@ fun SortingDropdownMenu(
                     onClick = {
                         selectedOption = option
                         expanded = false
-                        onSortSelected(option)
+                        onSortSelected(filterMapping[option] ?: "star")
                     },
                     modifier = Modifier.background(White).align(Alignment.End),
                 )
@@ -65,6 +70,7 @@ fun SortingDropdownMenu(
         }
     }
 }
+
 
 @Composable
 @Preview

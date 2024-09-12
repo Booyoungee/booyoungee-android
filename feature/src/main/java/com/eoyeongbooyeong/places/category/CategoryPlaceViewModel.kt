@@ -33,6 +33,10 @@ class CategoryPlaceViewModel
         }
     }
 
+    fun updateState(newState: CategoryState) {
+        _state.value = newState.copy()
+    }
+
         fun getMoviePlaceListWitFilter(filter: String) {
             viewModelScope.launch {
                 placeRepository

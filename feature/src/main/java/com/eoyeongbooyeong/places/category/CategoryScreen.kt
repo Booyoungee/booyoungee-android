@@ -109,7 +109,14 @@ fun PlaceCategoryRoute(
         modifier = modifier,
         onBackClick = onBackClick,
         placeList = state.value.placeList,
-        onSortSelected = {},
+        onSortingSelected = { selectedFilter ->
+            viewModel.updateState(state.value.copy(filter = selectedFilter))
+            when (placeType) {
+                "movie" -> viewModel.getMoviePlaceListWitFilter(selectedFilter)
+                "store" -> viewModel.getLocalStorePlaceListWitFilter(selectedFilter)
+                "tour" -> viewModel.getTourPlaceListWitFilter(selectedFilter)
+            }
+        },
         navigateToMap = {},
     )
 }
@@ -119,7 +126,7 @@ fun PlaceCategoryScreen(
     modifier: Modifier,
     placeList: List<PlaceInfoEntity>,
     onBackClick: () -> Unit,
-    onSortSelected: (String) -> Unit,
+    onSortingSelected: (String) -> Unit,
     navigateToMap: () -> Unit,
     placeType: String,
     viewModel: CategoryPlaceViewModel = hiltViewModel(),
@@ -213,7 +220,7 @@ fun PlaceCategoryScreen(
 
         Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
             SortingDropdownMenu(
-                onSortSelected = onSortSelected,
+                onSortSelected = onSortingSelected,
             )
         }
 
