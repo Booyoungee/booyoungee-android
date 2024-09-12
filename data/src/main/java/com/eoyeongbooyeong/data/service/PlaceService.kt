@@ -8,6 +8,7 @@ import com.eoyeongbooyeong.data.dto.response.PlaceDetailsDto
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import com.eoyeongbooyeong.data.dto.response.PlaceDto
+import com.eoyeongbooyeong.data.dto.response.PlaceWithCategoryDto
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -43,4 +44,19 @@ interface PlaceService {
     suspend fun deleteLike(
         @Path("likeId") likeId: Int,
     ): BaseResponse<LikeDto>
+
+    @GET("api/v1/place/movie")
+    suspend fun getMoviePlacesWithCategory(
+        @Query("filter") filter: String,
+    ): BaseResponse<BaseContents<PlaceWithCategoryDto>>
+
+    @GET("api/v1/place/store")
+    suspend fun getLocalStorePlacesWithCategory(
+        @Query("filter") filter: String,
+    ): BaseResponse<BaseContents<PlaceWithCategoryDto>>
+
+    @GET("api/v1/place/tour")
+    suspend fun getTourPlacesWithCategory(
+        @Query("filter") filter: String,
+    ): BaseResponse<BaseContents<PlaceWithCategoryDto>>
 }
