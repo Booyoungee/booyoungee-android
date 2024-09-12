@@ -7,4 +7,7 @@ sealed class CategorySideEffect {
 
     object NavigateToDetail : CategorySideEffect()
     object NavigateToBack : CategorySideEffect()
+    object clickMovieTab : CategorySideEffect()
+    object clickLocalStoreTab : CategorySideEffect()
+    object clickTourTab : CategorySideEffect()
 }

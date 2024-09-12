@@ -1,6 +1,7 @@
 package com.eoyeongbooyeong.places.category
 
 import SortingDropdownMenu
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -22,23 +23,28 @@ import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.eoyeongbooyeong.core.designsystem.component.topbar.BooTextTopAppBar
 import com.eoyeongbooyeong.core.designsystem.theme.Black
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Purple
 import com.eoyeongbooyeong.core.designsystem.theme.White
+import com.eoyeongbooyeong.core.extension.toast
 import com.eoyeongbooyeong.domain.entity.PlaceInfoEntity
 import com.eoyeongbooyeong.domain.entity.PlaceType
 import com.eoyeongbooyeong.feature.R
@@ -53,13 +59,50 @@ fun PlaceCategoryRoute(
     onBackClick: () -> Unit = {},
     viewModel: CategoryPlaceViewModel = hiltViewModel(),
 ) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val context = LocalContext.current
     val state = viewModel.state.collectAsStateWithLifecycle()
 
-    when (placeType) {
-        "movie" -> viewModel.getMoviePlaceListWitFilter(state.value.filter)
-        "store" -> viewModel.getLocalStorePlaceListWitFilter(state.value.filter)
-        "tour" -> viewModel.getTourPlaceListWitFilter(state.value.filter)
+    LaunchedEffect(key1 = Unit) {
+        when (placeType) {
+            "movie" -> viewModel.getMoviePlaceListWitFilter(state.value.filter)
+            "store" -> viewModel.getLocalStorePlaceListWitFilter(state.value.filter)
+            "tour" -> viewModel.getTourPlaceListWitFilter(state.value.filter)
+        }
     }
+
+    LaunchedEffect(viewModel.sideEffects, lifecycleOwner) {
+        viewModel.sideEffects
+            .flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    is CategorySideEffect.ShowToast -> context.toast(sideEffect.message)
+
+                    is CategorySideEffect.clickMovieTab -> {
+                        viewModel.getMoviePlaceListWitFilter(state.value.filter)
+                    }
+
+                    is CategorySideEffect.clickLocalStoreTab -> {
+                        viewModel.getLocalStorePlaceListWitFilter(state.value.filter)
+                    }
+
+                    is CategorySideEffect.clickTourTab -> {
+                        viewModel.getTourPlaceListWitFilter(state.value.filter)
+                    }
+
+                    is CategorySideEffect.NavigateToBack -> {
+                    }
+
+                    is CategorySideEffect.NavigateToDetail -> {
+                    }
+                }
+            }
+    }
+
+    Log.d(
+        "PlaceCategoryRoute",
+        "${state.value.placeList}, ${state.value.filter}, ${state.value.placeType}",
+    )
 
     PlaceCategoryScreen(
         placeType = placeType,
@@ -79,6 +122,7 @@ fun PlaceCategoryScreen(
     onSortSelected: (String) -> Unit,
     navigateToMap: () -> Unit,
     placeType: String,
+    viewModel: CategoryPlaceViewModel = hiltViewModel(),
 ) {
     val selectedIndex =
         remember {
@@ -130,7 +174,14 @@ fun PlaceCategoryScreen(
             tabItemTitle.forEachIndexed { index, _ ->
                 Tab(
                     selected = selectedIndex.value == index,
-                    onClick = { selectedIndex.value = index },
+                    onClick = {
+                        selectedIndex.value = index
+                        when (index) {
+                            0 -> viewModel.sendSideEffect(CategorySideEffect.clickMovieTab)
+                            1 -> viewModel.sendSideEffect(CategorySideEffect.clickLocalStoreTab)
+                            2 -> viewModel.sendSideEffect(CategorySideEffect.clickTourTab)
+                        }
+                    },
                     modifier = Modifier.padding(horizontal = 16.dp),
                 ) {
                     Box(
@@ -139,8 +190,16 @@ fun PlaceCategoryScreen(
                                 .clickable(
                                     interactionSource = remember { MutableInteractionSource() },
                                     indication = null,
-                                ) { selectedIndex.value = index }
-                                .padding(top = 8.dp, start = 24.dp, end = 24.dp, bottom = 6.dp),
+                                ) {
+                                    if (selectedIndex.value != index) {
+                                        selectedIndex.value = index
+                                        when (index) {
+                                            0 -> viewModel.sendSideEffect(CategorySideEffect.clickMovieTab)
+                                            1 -> viewModel.sendSideEffect(CategorySideEffect.clickLocalStoreTab)
+                                            2 -> viewModel.sendSideEffect(CategorySideEffect.clickTourTab)
+                                        }
+                                    }
+                                }.padding(top = 8.dp, start = 24.dp, end = 24.dp, bottom = 6.dp),
                     ) {
                         Text(
                             text = tabItemTitle[index],

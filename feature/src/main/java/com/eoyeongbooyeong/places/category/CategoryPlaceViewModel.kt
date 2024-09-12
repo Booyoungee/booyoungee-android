@@ -27,6 +27,12 @@ class CategoryPlaceViewModel
         val sideEffects: SharedFlow<CategorySideEffect>
             get() = _sideEffects.asSharedFlow()
 
+    fun sendSideEffect(sideEffect: CategorySideEffect) {
+        viewModelScope.launch {
+            _sideEffects.emit(sideEffect)
+        }
+    }
+
         fun getMoviePlaceListWitFilter(filter: String) {
             viewModelScope.launch {
                 placeRepository
@@ -71,4 +77,5 @@ class CategoryPlaceViewModel
                     }
             }
         }
-    }
+
+}
