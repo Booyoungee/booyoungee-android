@@ -5,6 +5,8 @@ import com.eoyeongbooyeong.domain.entity.PlaceInfoEntity
 
 data class PlaceDetailsState(
     val placeInfoEntity: PlaceInfoEntity = PlaceInfoEntity(),
+    var likeCount: Int = PlaceInfoEntity().likeCount,
+    //val bookMarkCount: Int = PlaceInfoEntity(),
     val isLiked: Boolean = false,
     val isBookmarked: Boolean = false,
     val likeId: Int = 0,

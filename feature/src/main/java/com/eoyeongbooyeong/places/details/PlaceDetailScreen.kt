@@ -103,7 +103,7 @@ fun PlaceDetailRoute(
         stampCount = placeInfoEntity.stampCount,
         placeAddress = placeInfoEntity.address,
         placeDetailReviewCount = placeInfoEntity.reviewCount,
-        placeDetailLikedCount = placeInfoEntity.likeCount,
+        placeDetailLikedCount = state.value.likeCount,
         placeDetailStarScore = placeInfoEntity.stars, // TODO
         placeDetailBookmarkCount = -1, // TODO
         reviewInfoEntityTotalList = reviewInfoEntityTotalList,
