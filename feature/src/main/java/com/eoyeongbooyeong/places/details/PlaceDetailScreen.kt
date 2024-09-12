@@ -18,6 +18,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -26,8 +28,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.eoyeongbooyeong.core.R
@@ -39,14 +46,21 @@ import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Gray100
 import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.core.extension.noRippleClickable
+import com.eoyeongbooyeong.core.extension.toast
+import com.eoyeongbooyeong.domain.entity.PlaceType
 import com.eoyeongbooyeong.domain.entity.ReviewInfoEntity
+import com.eoyeongbooyeong.places.details.PlaceDetailsSideEffect
+import com.eoyeongbooyeong.places.details.PlaceDetailsViewModel
 import com.eoyeongbooyeong.search.component.PlaceDetailBottomBar
 import com.eoyeongbooyeong.search.component.PlaceDetailInfo
 import com.eoyeongbooyeong.search.component.PlaceReviewAndLikedCount
+import kotlinx.coroutines.launch
 
 @Composable
 fun PlaceDetailRoute(
     modifier: Modifier = Modifier,
+    placeId: Int = 0,
+    placeType: PlaceType = PlaceType.MOVIE,
     movieTitle: String = "",
     imageUrl: String = "",
     stampCount: Int = 0,
@@ -60,9 +74,29 @@ fun PlaceDetailRoute(
     onClickLike: () -> Unit = {},
     onClickBookmark: () -> Unit = {},
     onClickBackButton: () -> Unit = {},
-    isLike: Boolean = false,
-    isBookmark: Boolean = false,
+    viewModel: PlaceDetailsViewModel = hiltViewModel(),
+    bookMarkId: Int = -1
 ) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+
+    val state = viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(viewModel.sideEffects, lifecycleOwner) {
+        viewModel.sideEffects
+            .flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    is PlaceDetailsSideEffect.ShowToast -> {
+                        context.toast(sideEffect.message)
+                    }
+
+                    is PlaceDetailsSideEffect.NavigateToWritingReview -> onClickWriteReview() // TODO
+                }
+            }
+    }
+
     PlaceDetailScreen(
         modifier = modifier,
         movieTitle = movieTitle,
@@ -76,10 +110,20 @@ fun PlaceDetailRoute(
         reviewInfoEntityTotalList = reviewInfoEntityTotalList,
         onClickWriteReview = onClickWriteReview,
         onClickLike = onClickLike,
-        onClickBookmark = onClickBookmark,
+        onClickBookmark ={
+            if (state.value.isBookmarked) {
+                coroutineScope.launch {
+                    viewModel.deleteBookMark(bookMarkId = bookMarkId)
+                }
+            } else {
+                coroutineScope.launch {
+                    viewModel.postBookMark(placeId = placeId, placeType = placeType.name.toLowerCase())
+                }
+            }
+        },
         onClickBackButton = onClickBackButton,
-        isLike = isLike,
-        isBookmark = isBookmark,
+        isLike = state.value.isLiked,
+        isBookmark = state.value.isBookmarked,
     )
 }
 
@@ -325,8 +369,6 @@ fun PlaceDetailScreenPreview() {
             onClickWriteReview = {},
             onClickLike = {},
             onClickBookmark = {},
-            isLike = false,
-            isBookmark = false,
         )
     }
 }
