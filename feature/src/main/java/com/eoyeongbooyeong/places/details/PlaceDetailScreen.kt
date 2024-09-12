@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -45,7 +47,6 @@ import com.eoyeongbooyeong.core.designsystem.theme.Gray100
 import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.core.extension.noRippleClickable
 import com.eoyeongbooyeong.core.extension.toast
-import com.eoyeongbooyeong.domain.entity.PlaceType
 import com.eoyeongbooyeong.domain.entity.ReviewInfoEntity
 import com.eoyeongbooyeong.places.details.PlaceDetailsSideEffect
 import com.eoyeongbooyeong.places.details.PlaceDetailsViewModel
@@ -55,16 +56,9 @@ import com.eoyeongbooyeong.search.component.PlaceReviewAndLikedCount
 
 @Composable
 fun PlaceDetailRoute(
-    modifier: Modifier = Modifier,
     placeId: Int = 898,
     placeType: String = "movie",
-    movieTitle: String = "",
-    imageUrl: String = "",
-    stampCount: Int = 0,
-    placeAddress: String = "",
-    reviewCount: Int = 0,
-    likedCount: Int = 0,
-    placeDetailStarScore: Float = 0f,
+    modifier: Modifier = Modifier,
     placeDetailBookmarkCount: Int = 0,
     reviewInfoEntityTotalList: List<ReviewInfoEntity> = emptyList(),
     onClickWriteReview: () -> Unit = {},
@@ -94,20 +88,27 @@ fun PlaceDetailRoute(
 
                     is PlaceDetailsSideEffect.NavigateToWritingReview -> onClickWriteReview() // TODO
 
-                    else -> { }
+                    else -> {}
                 }
             }
     }
 
     PlaceDetailScreen(
         modifier = modifier,
-        movieTitle = movieTitle,
-        imageUrl = imageUrl,
-        stampCount = stampCount,
-        placeAddress = placeAddress,
-        placeDetailReviewCount = reviewCount,
-        placeDetailLikedCount = likedCount,
-        placeDetailStarScore = placeDetailStarScore,
+        movieList =
+            viewModel.state.value.placeInfoEntity.movies
+                ?.joinToString(", ") ?: "",
+        movieTitle = viewModel.state.value.placeInfoEntity.name,
+        tel = viewModel.state.value.placeInfoEntity.tel,
+        imageUrl =
+            viewModel.state.value.placeInfoEntity.images
+                .firstOrNull() ?: "",
+        // TODO
+        stampCount = viewModel.state.value.placeInfoEntity.stampCount,
+        placeAddress = viewModel.state.value.placeInfoEntity.address,
+        placeDetailReviewCount = viewModel.state.value.placeInfoEntity.reviewCount,
+        placeDetailLikedCount = viewModel.state.value.placeInfoEntity.likeCount,
+        placeDetailStarScore = viewModel.state.value.placeInfoEntity.starCount,
         placeDetailBookmarkCount = placeDetailBookmarkCount,
         reviewInfoEntityTotalList = reviewInfoEntityTotalList,
         onClickWriteReview = onClickWriteReview,
@@ -128,24 +129,26 @@ fun PlaceDetailRoute(
 @Composable
 fun PlaceDetailScreen(
     modifier: Modifier = Modifier,
-    movieTitle: String,
-    imageUrl: String,
-    stampCount: Int,
-    placeAddress: String,
-    placeDetailReviewCount: Int,
-    placeDetailLikedCount: Int,
-    placeDetailStarScore: Float,
-    placeDetailBookmarkCount: Int,
-    reviewInfoEntityTotalList: List<ReviewInfoEntity>,
-    onClickWriteReview: () -> Unit,
-    onClickLike: () -> Unit,
-    onClickBookmark: () -> Unit,
-    onClickBackButton: () -> Unit,
-    isLike: Boolean,
-    isBookmark: Boolean,
+    movieTitle: String = "",
+    imageUrl: String = "",
+    stampCount: Int = 0,
+    placeAddress: String = "",
+    movieList: String = "",
+    tel: String? = null,
+    placeDetailReviewCount: Int = 0,
+    placeDetailLikedCount: Int = 0,
+    placeDetailStarScore: Float = 0f,
+    placeDetailBookmarkCount: Int = 0,
+    reviewInfoEntityTotalList: List<ReviewInfoEntity> = emptyList(),
+    onClickWriteReview: () -> Unit = {},
+    onClickLike: () -> Unit = {},
+    onClickBookmark: () -> Unit = {},
+    onClickBackButton: () -> Unit ,
+    isLike: Boolean = false,
+    isBookmark: Boolean = false,
 ) {
     Scaffold(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize().systemBarsPadding().statusBarsPadding(),
         topBar = {
             BooTextTopAppBar(
                 leadingIcon = {
@@ -242,14 +245,14 @@ fun PlaceDetailScreen(
                     PlaceDetailInfo(
                         icon = painterResource(id = R.drawable.ic_film),
                         iconDescription = "film icon",
-                        text = "<더킹>, <협녀, 칼의 기억>",
+                        text = movieList,
                         style = BooTheme.typography.body3,
                     )
 
                     PlaceDetailInfo(
                         icon = painterResource(id = R.drawable.ic_call),
                         iconDescription = "call info",
-                        text = "전용 주차장(무료)",
+                        text = tel ?: "",
                     )
                 }
             }
@@ -317,13 +320,13 @@ fun PlaceDetailScreen(
 @Preview
 fun PlaceDetailScreenPreview() {
     BooTheme {
-        PlaceDetailRoute(
+        PlaceDetailScreen(
             movieTitle = "영화 제목",
             imageUrl = "https://picsum.photos/200/300",
             stampCount = 10,
             placeAddress = "부산 기장군 철마면 웅천리 520-10",
-            reviewCount = 10,
-            likedCount = 20,
+            placeDetailReviewCount = 10,
+            placeDetailLikedCount = 20,
             placeDetailStarScore = 4.5f,
             reviewInfoEntityTotalList =
                 listOf(
@@ -367,6 +370,9 @@ fun PlaceDetailScreenPreview() {
             onClickWriteReview = {},
             onClickLike = {},
             onClickBookmark = {},
+            onClickBackButton = {},
+            isLike = true,
+            isBookmark = true,
         )
     }
 }
