@@ -89,6 +89,8 @@ fun PlaceDetailRoute(
                     }
 
                     is PlaceDetailsSideEffect.NavigateToWritingReview -> onClickWriteReview() // TODO
+
+                    else -> { }
                 }
             }
     }
