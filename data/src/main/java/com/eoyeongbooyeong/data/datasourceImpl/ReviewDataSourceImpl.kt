@@ -9,4 +9,5 @@ class ReviewDataSourceImpl @Inject constructor(
     private val reviewService: ReviewService,
 ) : ReviewDataSource {
     override suspend fun getMyReviews(): List<ReviewDto> = reviewService.getMyReviewList().data.contents
+    override suspend fun getReviews(placeId: Int): List<ReviewDto> = reviewService.getMyReviewList(placeId).data.contents
 }

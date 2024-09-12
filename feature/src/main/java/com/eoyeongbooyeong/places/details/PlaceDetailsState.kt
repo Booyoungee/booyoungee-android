@@ -1,6 +1,7 @@
 package com.eoyeongbooyeong.places.details
 
 import com.eoyeongbooyeong.domain.entity.PlaceInfoEntity
+import com.eoyeongbooyeong.domain.entity.ReviewInfoEntity
 
 
 data class PlaceDetailsState(
@@ -10,5 +11,6 @@ data class PlaceDetailsState(
     val isLiked: Boolean = false,
     val isBookmarked: Boolean = false,
     val likeId: Int = 0,
-    val bookMarkId: Int = 0
+    val bookMarkId: Int = 0,
+    val reviewList: List<ReviewInfoEntity> = emptyList()
 )

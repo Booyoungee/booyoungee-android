@@ -45,6 +45,7 @@ import com.eoyeongbooyeong.core.designsystem.theme.Black
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Gray100
 import com.eoyeongbooyeong.core.designsystem.theme.White
+import com.eoyeongbooyeong.core.extension.formatReviewDate
 import com.eoyeongbooyeong.core.extension.noRippleClickable
 import com.eoyeongbooyeong.core.extension.toast
 import com.eoyeongbooyeong.domain.entity.ReviewInfoEntity
@@ -59,10 +60,7 @@ fun PlaceDetailRoute(
     placeId: Int = 898,
     placeType: String = "movie",
     modifier: Modifier = Modifier,
-    reviewInfoEntityTotalList: List<ReviewInfoEntity> = emptyList(),
     onClickWriteReview: () -> Unit = {},
-    onClickLike: () -> Unit = {},
-    onClickBookmark: () -> Unit = {},
     onClickBackButton: () -> Unit = {},
     viewModel: PlaceDetailsViewModel = hiltViewModel(),
     bookMarkId: Int = -1,
@@ -76,6 +74,7 @@ fun PlaceDetailRoute(
 
     LaunchedEffect(key1 = Unit) {
         viewModel.getPlaceDetailsInfo(placeId = placeId, placeType = placeType)
+        viewModel.getReviews(placeId = placeId)
     }
 
     LaunchedEffect(viewModel.sideEffects, lifecycleOwner) {
@@ -106,7 +105,7 @@ fun PlaceDetailRoute(
         placeDetailLikedCount = state.value.likeCount,
         placeDetailStarScore = placeInfoEntity.stars, // TODO
         placeDetailBookmarkCount = -1, // TODO
-        reviewInfoEntityTotalList = reviewInfoEntityTotalList,
+        reviewInfoEntityTotalList = state.value.reviewList,
         onClickWriteReview = onClickWriteReview,
         onClickLike = {
             if (state.value.isLiked) {
@@ -310,7 +309,7 @@ fun PlaceDetailScreen(
                         nickName = review.writerNickName,
                         reviewScore = review.reviewScore,
                         reviewContent = review.reviewContent,
-                        reviewDate = review.createdAt,
+                        reviewDate = formatReviewDate(review.createdAt),
                     )
                 }
             }
