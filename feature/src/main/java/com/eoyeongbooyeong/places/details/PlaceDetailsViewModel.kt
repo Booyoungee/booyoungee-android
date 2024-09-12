@@ -27,6 +27,18 @@ class PlaceDetailsViewModel
         val sideEffects: SharedFlow<PlaceDetailsSideEffect>
             get() = _sideEffects.asSharedFlow()
 
+        fun updateState(newState: PlaceDetailsState) {
+            _state.value = newState.copy()
+        }
+
+        fun sendSideEffect(sideEffect: PlaceDetailsSideEffect) {
+            viewModelScope.launch {
+                _sideEffects.emit(sideEffect)
+            }
+        }
+
+    
+
         fun postBookMark(
             placeId: Int,
             placeType: String,
@@ -36,7 +48,10 @@ class PlaceDetailsViewModel
                     .postBookMark(placeId, placeType)
                     .onSuccess {
                         _state.value =
-                            _state.value.copy(isBookmarked = it.isBookMarked, bookMarkId = it.bookmarkId)
+                            _state.value.copy(
+                                isBookmarked = it.isBookMarked,
+                                bookMarkId = it.bookmarkId,
+                            )
                     }.onFailure {
                         _sideEffects.emit(PlaceDetailsSideEffect.ShowToast(it.message.toString()))
                     }
@@ -49,7 +64,10 @@ class PlaceDetailsViewModel
                     .deleteBookMark(bookMarkId)
                     .onSuccess {
                         _state.value =
-                            _state.value.copy(isBookmarked = it.isBookMarked, bookMarkId = it.bookmarkId)
+                            _state.value.copy(
+                                isBookmarked = it.isBookMarked,
+                                bookMarkId = it.bookmarkId,
+                            )
                     }.onFailure {
                         _sideEffects.emit(PlaceDetailsSideEffect.ShowToast(it.message.toString()))
                     }
