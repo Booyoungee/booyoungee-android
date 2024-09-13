@@ -21,10 +21,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
+import com.eoyeongbooyeong.core.designsystem.component.star.MyReviewComponent
 import com.eoyeongbooyeong.core.designsystem.component.topbar.BooTextTopAppBar
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.core.extension.noRippleClickable
+import com.eoyeongbooyeong.mypage.MyReview
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun MyReviewRoute(
@@ -53,6 +57,7 @@ fun MyReviewRoute(
 @Composable
 fun MyReviewScreen(
     paddingValues: PaddingValues = PaddingValues(0.dp),
+    reviewList: ImmutableList<String> = persistentListOf(),
     navigateUp: () -> Unit = {},
 ) {
     Column(
@@ -75,12 +80,9 @@ fun MyReviewScreen(
         LazyColumn(
             modifier = Modifier.fillMaxSize()
         ) { // 리뷰 아이템 적용 예정
-            items(listOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)) {
-                Text(
-                    text = "리뷰 아이템 $it",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(12.dp)
+            items(reviewList) {
+                MyReviewComponent(
+
                 )
             }
         }
