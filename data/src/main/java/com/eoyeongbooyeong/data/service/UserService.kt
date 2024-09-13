@@ -3,6 +3,7 @@ package com.eoyeongbooyeong.data.service
 import com.eoyeongbooyeong.data.dto.response.BaseResponse
 import com.eoyeongbooyeong.data.dto.response.NicknameDto
 import com.eoyeongbooyeong.data.dto.response.UserDto
+import com.eoyeongbooyeong.data.dto.response.UserIdDto
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -26,5 +27,5 @@ interface UserService {
     @POST("api/v1/block/{blockUserId}")
     suspend fun postBlockUser(
         @Path("blockUserId") blockUserId: Int,
-    ): Int
+    ): BaseResponse<UserIdDto>
 }

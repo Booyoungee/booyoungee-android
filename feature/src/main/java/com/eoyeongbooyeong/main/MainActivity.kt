@@ -21,7 +21,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navigator: MainNavigator = rememberMainNavigator()
             BooTheme {
-                MainScreen(navigator = navigator)
+                //MainScreen(navigator = navigator)
+                PlaceDetailRoute()
             }
         }
     }

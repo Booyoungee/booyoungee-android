@@ -124,7 +124,7 @@ fun PlaceDetailRoute(
         isLike = (state.value.isLiked),
         isBookmark = (state.value.isBookmarked),
         onBlockClick = { blockUserId ->
-            viewModel.postBlockUser(blockUserId = blockUserId)
+            viewModel.postBlockUser(blockUserId = blockUserId, placeId = placeId)
         },
         onAccuseClick = { reviewId ->
             viewModel.postAccuseReview(commentId = reviewId)

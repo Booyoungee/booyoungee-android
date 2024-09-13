@@ -17,5 +17,5 @@ class UserDataSourceImpl
 
         override suspend fun putNewNickname(nickname: String): NicknameDto = userService.putNewNickname(nickname).data
 
-        override suspend fun postBlockUser(blockUserId: Int): Int = userService.postBlockUser(blockUserId)
+        override suspend fun postBlockUser(blockUserId: Int): Int = userService.postBlockUser(blockUserId).data.userId
     }

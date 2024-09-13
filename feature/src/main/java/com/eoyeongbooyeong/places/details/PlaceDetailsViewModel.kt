@@ -158,11 +158,12 @@ class PlaceDetailsViewModel
     }
 
     // 유저 차단
-    fun postBlockUser(blockUserId: Int) {
+    fun postBlockUser(blockUserId: Int, placeId: Int) {
         viewModelScope.launch {
             userRepository.blockUser(blockUserId)
                 .onSuccess {
                     _sideEffects.emit(PlaceDetailsSideEffect.ShowToast("해당 사용자를 차단했습니다."))
+                    getReviews(placeId)
                 }.onFailure {
                     _sideEffects.emit(PlaceDetailsSideEffect.ShowToast(it.message.toString()))
                 }
