@@ -56,7 +56,7 @@ class KakaoMapViewModel
             )
         }
 
-        fun getMoviePlaceListWitFilter(filter: String = "default") {
+        fun getMoviePlaceListWitFilter(filter: String = "star") {
             _state.value = _state.value.copy(isLoading = true)
 
             viewModelScope.launch {
@@ -74,7 +74,7 @@ class KakaoMapViewModel
             }
         }
 
-        fun getLocalStorePlaceListWitFilter(filter: String = "default") {
+        fun getLocalStorePlaceListWitFilter(filter: String = "star") {
             _state.value = _state.value.copy(isLoading = true)
 
             viewModelScope.launch {
@@ -92,7 +92,7 @@ class KakaoMapViewModel
             }
         }
 
-        fun getTourPlaceListWitFilter(filter: String = "default") {
+        fun getTourPlaceListWitFilter(filter: String = "star") {
             _state.value = _state.value.copy(isLoading = true)
 
             viewModelScope.launch {

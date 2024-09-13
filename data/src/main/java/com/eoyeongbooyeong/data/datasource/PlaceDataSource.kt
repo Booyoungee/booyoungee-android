@@ -24,7 +24,7 @@ interface PlaceDataSource {
 
     suspend fun postLike(placeId: Int): LikeDto
 
-    suspend fun deleteLike(likeId: Int): LikeDto
+    suspend fun deleteLike(placeId: Int): LikeDto
 
     suspend fun getRecommendPlace(): BaseResponse<BaseContents<PlaceDto>>
 

@@ -19,6 +19,10 @@ import com.eoyeongbooyeong.home.Home
 import com.eoyeongbooyeong.home.navigateToHome
 import com.eoyeongbooyeong.mypage.MyBookMark
 import com.eoyeongbooyeong.mypage.MyReview
+import com.eoyeongbooyeong.places.category.CategoryPlace
+import com.eoyeongbooyeong.places.details.PlaceDetail
+import com.eoyeongbooyeong.places.map.KakaoMap
+import com.eoyeongbooyeong.places.review.WriteReview
 import com.eoyeongbooyeong.search.Search
 import com.eoyeongbooyeong.search.navigateToSearch
 import com.eoyeongbooyeong.splash.Splash
@@ -93,6 +97,26 @@ internal class MainNavigator(
 
     fun navigateToBookmark() {
         navController.navigate(MyBookMark)
+    }
+
+    fun navigateToCategoryPlace(navOptions: NavOptions, placeType: String) {
+        navController.navigate(CategoryPlace(placeType), navOptions)
+    }
+
+    fun navigateToPlaceDetail(navOption: NavOptions, placeId: Int, placeType: String) {
+        navController.navigate(PlaceDetail(placeId, placeType), navOption)
+    }
+
+    fun navigateToWriteReview(navOption: NavOptions, placeId: Int) {
+        navController.navigate(WriteReview(placeId), navOption)
+    }
+
+    fun navigateToKakaoMap(navOption: NavOptions, placeType: String) {
+        navController.navigate(KakaoMap(placeType), navOption)
+    }
+
+    fun navigateUpAndClearStackToHome() {
+        navController.popBackStack(Home, inclusive = false)
     }
 
     private inline fun <reified T : Route> isSameCurrentDestination(): Boolean =

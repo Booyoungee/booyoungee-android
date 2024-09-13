@@ -101,7 +101,7 @@ fun BookmarkScreen(
 
 @Preview
 @Composable
-fun PreviewBookMarkScreen() {
+fun PreviewBookMarkScreen2() {
     BooTheme {
         BookmarkScreen()
     }
