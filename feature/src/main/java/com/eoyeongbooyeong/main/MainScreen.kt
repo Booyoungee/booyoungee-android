@@ -46,6 +46,7 @@ import com.eoyeongbooyeong.home.homeNavGraph
 import com.eoyeongbooyeong.mypage.myPageNavGraph
 import com.eoyeongbooyeong.place_recommend.placeNavGraph
 import com.eoyeongbooyeong.places.category.categoryPlaceNavGraph
+import com.eoyeongbooyeong.places.details.placeDetailNavGraph
 import com.eoyeongbooyeong.search.searchNavGraph
 import com.eoyeongbooyeong.splash.Splash
 import com.eoyeongbooyeong.splash.splashNavGraph
@@ -136,11 +137,20 @@ internal fun MainScreen(
                     )
                     categoryPlaceNavGraph(
                         navigateUp = navigator::navigateUpIfNotHome,
+                        navigateToPlaceDetail = { placeId, placeType ->
+                            navigator.navigateToPlaceDetail(navOptions { launchSingleTop = true }, placeId = placeId, placeType = placeType)
+                        },
                     )
                     searchNavGraph(
                         navigateUp = navigator::navigateUpIfNotHome,
                     )
                     placeNavGraph()
+                    placeDetailNavGraph(
+                        navigateUp = navigator::navigateUpIfNotHome,
+                        navigateToWriteReview = { placeId ->
+                            navigator.navigateToWriteReview(navOptions { launchSingleTop = true }, placeId = placeId)
+                        },
+                    )
                     stampNavGraph()
                     myPageNavGraph(
                         paddingValues = paddingValue,

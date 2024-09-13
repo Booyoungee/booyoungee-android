@@ -60,6 +60,7 @@ fun PlaceCategoryRoute(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {},
     viewModel: CategoryPlaceViewModel = hiltViewModel(),
+    navigateToPlaceDetail: (Int, String) -> Unit = { _, _ -> },
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
@@ -101,11 +102,6 @@ fun PlaceCategoryRoute(
             }
     }
 
-    Log.d(
-        "PlaceCategoryRoute",
-        "${state.value.placeList}, ${state.value.filter}, ${state.value.placeType}",
-    )
-
     PlaceCategoryScreen(
         placeType = placeType,
         modifier = modifier,
@@ -121,6 +117,7 @@ fun PlaceCategoryRoute(
         },
         navigateToMap = {},
         isLoading = state.value.isLoading,
+        navigateToPlaceDetail = navigateToPlaceDetail,
     )
 }
 
@@ -134,6 +131,7 @@ fun PlaceCategoryScreen(
     placeType: String,
     isLoading: Boolean = false,
     viewModel: CategoryPlaceViewModel = hiltViewModel(),
+    navigateToPlaceDetail: (Int, String) -> Unit = { _, _ -> },
 ) {
     val selectedIndex =
         remember {
@@ -231,6 +229,8 @@ fun PlaceCategoryScreen(
 
         PlaceList(
             searchResultList = placeList,
+            navigateToPlaceDetail = navigateToPlaceDetail,
+            placeType = placeType,
         )
         Spacer(modifier = Modifier.height(12.dp))
         // TODO 플로팅 버튼 Z 축 위로 올리기
@@ -249,7 +249,8 @@ fun PlaceCategoryScreen(
 fun PlaceList(
     modifier: Modifier = Modifier,
     searchResultList: List<PlaceInfoEntity>,
-    onPlaceClick: (PlaceInfoEntity) -> Unit = {},
+    navigateToPlaceDetail: (Int, String) -> Unit = { _, _ -> },
+    placeType: String,
 ) {
     LazyColumn {
         items(searchResultList) { place ->
@@ -261,7 +262,7 @@ fun PlaceList(
                 likedCount = place.likeCount,
                 movieNameList = place.movies ?: ImmutableList.of(),
                 placeImageUrl = place.images.firstOrNull(),
-                onClick = { /* Handle item click */ },
+                onClick = { navigateToPlaceDetail(place.placeId.toInt(), placeType) },
             )
             Spacer(modifier = Modifier.height(16.dp))
         }

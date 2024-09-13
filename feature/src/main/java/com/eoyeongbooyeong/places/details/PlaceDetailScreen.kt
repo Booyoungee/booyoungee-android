@@ -60,7 +60,7 @@ fun PlaceDetailRoute(
     placeId: Int = 898,
     placeType: String = "movie",
     modifier: Modifier = Modifier,
-    onClickWriteReview: () -> Unit = {},
+    onClickWriteReview: (Int) -> Unit = {},
     onClickBackButton: () -> Unit = {},
     viewModel: PlaceDetailsViewModel = hiltViewModel(),
     likeId: Int = -1,
@@ -85,14 +85,13 @@ fun PlaceDetailRoute(
                         context.toast(sideEffect.message)
                     }
 
-                    is PlaceDetailsSideEffect.NavigateToWritingReview -> onClickWriteReview() // TODO
-
                     else -> {}
                 }
             }
     }
 
     PlaceDetailScreen(
+        placeId = placeId,
         modifier = modifier,
         movieList = placeInfoEntity.movies?.joinToString(", ") ?: "",
         movieTitle = placeInfoEntity.name,
@@ -105,7 +104,7 @@ fun PlaceDetailRoute(
         placeDetailStarScore = placeInfoEntity.stars, // TODO
         placeDetailBookmarkCount = placeInfoEntity.bookmarkCount,
         reviewInfoEntityTotalList = state.value.reviewList,
-        onClickWriteReview = onClickWriteReview,
+        onClickWriteReview = { onClickWriteReview(placeId) },
         onClickLike = {
             if (state.value.isLiked) {
                 viewModel.deleteLike(likeId = likeId)
@@ -134,6 +133,7 @@ fun PlaceDetailRoute(
 
 @Composable
 fun PlaceDetailScreen(
+    placeId: Int,
     modifier: Modifier = Modifier,
     movieTitle: String = "",
     imageUrl: String = "",
@@ -146,7 +146,7 @@ fun PlaceDetailScreen(
     placeDetailStarScore: Double = 0.0,
     placeDetailBookmarkCount: Int = 0,
     reviewInfoEntityTotalList: List<ReviewInfoEntity> = emptyList(),
-    onClickWriteReview: () -> Unit = {},
+    onClickWriteReview: (Int) -> Unit = {},
     onClickLike: () -> Unit = {},
     onClickBookmark: () -> Unit = {},
     onClickBackButton: () -> Unit,
@@ -173,7 +173,7 @@ fun PlaceDetailScreen(
             PlaceDetailBottomBar(
                 onClickLike = onClickLike,
                 onClickBookmark = onClickBookmark,
-                onClickWriteReview = onClickWriteReview,
+                onClickWriteReview = { onClickWriteReview(placeId) },
                 likeCount = placeDetailLikedCount,
                 bookmarkCount = placeDetailBookmarkCount,
                 isLike = isLike,
@@ -383,6 +383,7 @@ fun PlaceDetailScreenPreview() {
             onClickBackButton = {},
             isLike = true,
             isBookmark = true,
+            placeId = 1,
         )
     }
 }
