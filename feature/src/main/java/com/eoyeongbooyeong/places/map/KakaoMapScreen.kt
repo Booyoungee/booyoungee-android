@@ -13,6 +13,7 @@ import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -46,6 +47,7 @@ import com.eoyeongbooyeong.category.component.PlaceInfoBox
 import com.eoyeongbooyeong.core.R
 import com.eoyeongbooyeong.core.designsystem.component.topbar.BooTextTopAppBar
 import com.eoyeongbooyeong.core.designsystem.theme.White
+import com.eoyeongbooyeong.core.extension.noRippleClickable
 import com.eoyeongbooyeong.core.extension.toast
 import com.eoyeongbooyeong.domain.entity.PlaceInfoEntity
 import com.eoyeongbooyeong.places.component.FloatingButton
@@ -70,10 +72,12 @@ private const val BUSAN_STATION_LONGTITUDE = 129.03933
 
 @Composable
 fun KakaoMapRoute(
-    placeType: String = "movie",
+    placeType: String,
     paddingValues: PaddingValues = PaddingValues(0.dp),
     navigateToPlaceDetailScreen: () -> Unit = {},
     viewModel: KakaoMapViewModel = hiltViewModel(),
+    onBackClick: () -> Unit,
+    onClickPlaceDetail: (Int, String) -> Unit,
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val state = viewModel.state.collectAsStateWithLifecycle()
@@ -107,13 +111,15 @@ fun KakaoMapRoute(
         }
     }
 
-    if (state.value.placeList.isNotEmpty()) {
+    if (state.value.placeList != null) {
         KakakoMapScreen(
-            placeList = state.value.placeList,
+            placeList = state.value.placeList!!,
             placeType = placeType,
             onClickMarker = viewModel::onMarkerClicked,
             showDetailBox = state.value.showDetailBox,
             selectedPlaceDetailsEntity = state.value.selectedPlace ?: PlaceInfoEntity(),
+            onBackClick = onBackClick,
+            onClickPlaceDetail = onClickPlaceDetail,
         )
     } else {
         Log.d("KakaoMapRoute", "No placeList")
@@ -127,6 +133,8 @@ internal fun KakakoMapScreen(
     onClickMarker: (PlaceInfoEntity) -> Unit,
     showDetailBox: Boolean = false,
     selectedPlaceDetailsEntity: PlaceInfoEntity,
+    onBackClick: () -> Unit,
+    onClickPlaceDetail: (Int, String) -> Unit,
 ) {
     val context = LocalContext.current
     val kakaoMap = remember { mutableStateOf<KakaoMap?>(null) }
@@ -169,8 +177,6 @@ internal fun KakakoMapScreen(
                 .statusBarsPadding()
                 .systemBarsPadding(),
     ) {
-
-        Log.d("tesztes", "shoe:$showDetailBox")
         if(showDetailBox) {
             Box(
                 modifier = Modifier.fillMaxSize().zIndex(1f),
@@ -178,7 +184,7 @@ internal fun KakakoMapScreen(
             ) {
                 PlaceInfoBox(
                     placeEntity = selectedPlaceDetailsEntity,
-                    modifier = Modifier.padding(16.dp).fillMaxWidth(),
+                    modifier = Modifier.padding(16.dp).fillMaxWidth().clickable { onClickPlaceDetail(selectedPlaceDetailsEntity.placeId.toInt(), placeType)},
                 )
             }
         }
@@ -191,6 +197,7 @@ internal fun KakakoMapScreen(
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_left),
                         contentDescription = "left",
+                        modifier = Modifier.noRippleClickable { onBackClick() }
                     )
                 },
                 text = "",

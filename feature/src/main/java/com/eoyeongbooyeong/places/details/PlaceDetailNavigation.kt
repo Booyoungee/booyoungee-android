@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class PlaceDetail(
     val placeId: Int,
-    val placeType: String
+    val placeType: String = "movie",
 )
 
 fun NavGraphBuilder.placeDetailNavGraph(

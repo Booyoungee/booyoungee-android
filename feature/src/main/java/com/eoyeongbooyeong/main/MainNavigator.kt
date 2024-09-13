@@ -21,6 +21,7 @@ import com.eoyeongbooyeong.mypage.MyBookMark
 import com.eoyeongbooyeong.mypage.MyReview
 import com.eoyeongbooyeong.places.category.CategoryPlace
 import com.eoyeongbooyeong.places.details.PlaceDetail
+import com.eoyeongbooyeong.places.map.KakaoMap
 import com.eoyeongbooyeong.search.Search
 import com.eoyeongbooyeong.search.navigateToSearch
 import com.eoyeongbooyeong.splash.Splash
@@ -105,8 +106,16 @@ internal class MainNavigator(
         navController.navigate(PlaceDetail(placeId, placeType), navOption)
     }
 
+    fun navigateToPlaceDetailWhenMapView(navOption: NavOptions, placeId: Int) {
+        navController.navigate(PlaceDetail(placeId), navOption)
+    }
+
     fun navigateToWriteReview(navOption: NavOptions, placeId: Int) {
         navController.navigate(PlaceDetail(placeId, ""), navOption)
+    }
+
+    fun navigateToKakaoMap(navOption: NavOptions, placeType: String) {
+        navController.navigate(KakaoMap(placeType), navOption)
     }
 
     private inline fun <reified T : Route> isSameCurrentDestination(): Boolean =

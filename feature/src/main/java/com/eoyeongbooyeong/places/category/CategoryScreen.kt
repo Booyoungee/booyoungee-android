@@ -61,6 +61,7 @@ fun PlaceCategoryRoute(
     onBackClick: () -> Unit = {},
     viewModel: CategoryPlaceViewModel = hiltViewModel(),
     navigateToPlaceDetail: (Int, String) -> Unit = { _, _ -> },
+    navigateToKakaoMap: (String) -> Unit = {},
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
@@ -68,9 +69,18 @@ fun PlaceCategoryRoute(
 
     LaunchedEffect(key1 = Unit) {
         when (placeType) {
-            "movie" -> viewModel.getMoviePlaceListWitFilter(state.value.filter)
-            "store" -> viewModel.getLocalStorePlaceListWitFilter(state.value.filter)
-            "tour" -> viewModel.getTourPlaceListWitFilter(state.value.filter)
+            "movie" -> {
+                viewModel.getMoviePlaceListWitFilter(state.value.filter)
+                viewModel.updatePlaceType("movie")
+            }
+            "store" -> {
+                viewModel.getLocalStorePlaceListWitFilter(state.value.filter)
+                viewModel.updatePlaceType("store")
+            }
+            "tour" -> {
+                viewModel.getTourPlaceListWitFilter(state.value.filter)
+                viewModel.updatePlaceType("tour")
+            }
         }
     }
 
@@ -83,14 +93,17 @@ fun PlaceCategoryRoute(
 
                     is CategorySideEffect.clickMovieTab -> {
                         viewModel.getMoviePlaceListWitFilter(state.value.filter)
+                        viewModel.updatePlaceType("movie")
                     }
 
                     is CategorySideEffect.clickLocalStoreTab -> {
                         viewModel.getLocalStorePlaceListWitFilter(state.value.filter)
+                        viewModel.updatePlaceType("store")
                     }
 
                     is CategorySideEffect.clickTourTab -> {
                         viewModel.getTourPlaceListWitFilter(state.value.filter)
+                        viewModel.updatePlaceType("tour")
                     }
 
                     is CategorySideEffect.NavigateToBack -> {
@@ -103,7 +116,7 @@ fun PlaceCategoryRoute(
     }
 
     PlaceCategoryScreen(
-        placeType = placeType,
+        placeType = state.value.placeType,
         modifier = modifier,
         onBackClick = onBackClick,
         placeList = state.value.placeList,
@@ -115,9 +128,9 @@ fun PlaceCategoryRoute(
                 "tour" -> viewModel.getTourPlaceListWitFilter(selectedFilter)
             }
         },
-        navigateToMap = {},
         isLoading = state.value.isLoading,
         navigateToPlaceDetail = navigateToPlaceDetail,
+        navigateToKakaoMap = navigateToKakaoMap,
     )
 }
 
@@ -127,11 +140,11 @@ fun PlaceCategoryScreen(
     placeList: List<PlaceInfoEntity>,
     onBackClick: () -> Unit,
     onSortingSelected: (String) -> Unit,
-    navigateToMap: () -> Unit,
     placeType: String,
     isLoading: Boolean = false,
     viewModel: CategoryPlaceViewModel = hiltViewModel(),
     navigateToPlaceDetail: (Int, String) -> Unit = { _, _ -> },
+    navigateToKakaoMap: (String) -> Unit = {},
 ) {
     val selectedIndex =
         remember {
@@ -235,7 +248,7 @@ fun PlaceCategoryScreen(
         Spacer(modifier = Modifier.height(12.dp))
         // TODO 플로팅 버튼 Z 축 위로 올리기
         FloatingButtonContainer(
-            onClick = { navigateToMap() },
+            onClick = { navigateToKakaoMap(placeType) },
         )
     }
 

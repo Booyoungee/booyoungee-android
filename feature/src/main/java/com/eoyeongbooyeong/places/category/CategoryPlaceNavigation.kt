@@ -12,12 +12,14 @@ data class CategoryPlace(
 fun NavGraphBuilder.categoryPlaceNavGraph(
     navigateUp: () -> Unit,
     navigateToPlaceDetail: (Int, String) -> Unit,
-    ) {
+    navigateToKakaoMap: (String) -> Unit,
+) {
     composable<CategoryPlace> { backStackEntry ->
         PlaceCategoryRoute(
             placeType = backStackEntry.arguments?.getString("placeType") ?: "",
             onBackClick = navigateUp,
             navigateToPlaceDetail = navigateToPlaceDetail,
+            navigateToKakaoMap = navigateToKakaoMap,
         )
     }
 }
