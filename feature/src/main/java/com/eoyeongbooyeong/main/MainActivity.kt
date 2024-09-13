@@ -21,11 +21,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navigator: MainNavigator = rememberMainNavigator()
             BooTheme {
-                // MainScreen(navigator = navigator)
-                // PlaceCategoryRoute(placeType = "movie")
-                // PlaceDetailRoute()
-                // ReviewRoute()
-                KakaoMapRoute()
+                MainScreen(navigator = navigator)
             }
         }
     }
