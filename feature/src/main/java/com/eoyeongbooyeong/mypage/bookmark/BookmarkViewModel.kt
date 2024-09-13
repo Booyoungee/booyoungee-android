@@ -40,4 +40,10 @@ class BookmarkViewModel @Inject constructor(
             _sideEffects.emit(BookmarkSideEffect.NavigateUp)
         }
     }
+
+    fun navigateToPlaceDetail(placeId: Int, type: String) {
+        viewModelScope.launch {
+            _sideEffects.emit(BookmarkSideEffect.NavigateToPlaceDetail(placeId, type))
+        }
+    }
 }

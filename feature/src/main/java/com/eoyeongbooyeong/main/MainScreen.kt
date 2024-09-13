@@ -178,6 +178,9 @@ internal fun MainScreen(
                         navigateToEditNickname = navigator::navigateToMyPageEditNickname,
                         navigateToMyReview = navigator::navigateToMyReview,
                         navigateToBookmark = navigator::navigateToBookmark,
+                        navigateToPlaceDetail = { placeId, placeType ->
+                            navigator.navigateToPlaceDetail(navOptions { launchSingleTop = true }, placeId = placeId, placeType = placeType)
+                        },
                     )
                 }
             }

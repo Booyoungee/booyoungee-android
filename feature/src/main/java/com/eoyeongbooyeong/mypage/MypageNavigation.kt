@@ -34,6 +34,7 @@ fun NavGraphBuilder.myPageNavGraph(
     navigateToEditNickname: () -> Unit,
     navigateToMyReview: () -> Unit,
     navigateToBookmark: () -> Unit,
+    navigateToPlaceDetail: (Int, String) -> Unit,
 ) {
     composable<MyPage> {
         MyPageRoute(
@@ -59,7 +60,8 @@ fun NavGraphBuilder.myPageNavGraph(
     composable<MyBookMark> {
         BookmarkRoute(
             paddingValues = paddingValues,
-            navigateUp = navigateUp
+            navigateUp = navigateUp,
+            navigateToPlaceDetail = navigateToPlaceDetail
         )
     }
 }
