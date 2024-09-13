@@ -19,6 +19,7 @@ import com.eoyeongbooyeong.home.Home
 import com.eoyeongbooyeong.home.navigateToHome
 import com.eoyeongbooyeong.mypage.MyBookMark
 import com.eoyeongbooyeong.mypage.MyReview
+import com.eoyeongbooyeong.places.category.CategoryPlace
 import com.eoyeongbooyeong.search.Search
 import com.eoyeongbooyeong.search.navigateToSearch
 import com.eoyeongbooyeong.splash.Splash
@@ -93,6 +94,10 @@ internal class MainNavigator(
 
     fun navigateToBookmark() {
         navController.navigate(MyBookMark)
+    }
+
+    fun navigateToCategoryPlace(navOptions: NavOptions, placeType: String) {
+        navController.navigate(CategoryPlace(placeType), navOptions)
     }
 
     private inline fun <reified T : Route> isSameCurrentDestination(): Boolean =

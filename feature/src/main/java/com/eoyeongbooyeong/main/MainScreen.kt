@@ -45,6 +45,7 @@ import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.home.homeNavGraph
 import com.eoyeongbooyeong.mypage.myPageNavGraph
 import com.eoyeongbooyeong.place_recommend.placeNavGraph
+import com.eoyeongbooyeong.places.category.categoryPlaceNavGraph
 import com.eoyeongbooyeong.search.searchNavGraph
 import com.eoyeongbooyeong.splash.Splash
 import com.eoyeongbooyeong.splash.splashNavGraph
@@ -129,6 +130,12 @@ internal fun MainScreen(
                                 launchSingleTop = true
                             })
                         },
+                        navigateToCategoryPlace = {
+                            navigator.navigateToCategoryPlace(navOptions = navOptions { launchSingleTop = true }, placeType = it)
+                        },
+                    )
+                    categoryPlaceNavGraph(
+                        navigateUp = navigator::navigateUpIfNotHome,
                     )
                     searchNavGraph(
                         navigateUp = navigator::navigateUpIfNotHome,

@@ -45,6 +45,7 @@ import com.eoyeongbooyeong.core.designsystem.theme.Black
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Purple
 import com.eoyeongbooyeong.core.designsystem.theme.White
+import com.eoyeongbooyeong.core.extension.noRippleClickable
 import com.eoyeongbooyeong.core.extension.toast
 import com.eoyeongbooyeong.domain.entity.PlaceInfoEntity
 import com.eoyeongbooyeong.domain.entity.PlaceType
@@ -165,6 +166,7 @@ fun PlaceCategoryScreen(
                 Icon(
                     imageVector = ImageVector.vectorResource(id = com.eoyeongbooyeong.core.R.drawable.ic_left),
                     contentDescription = "left",
+                    modifier = Modifier.noRippleClickable { onBackClick() },
                 )
             },
             text = "",

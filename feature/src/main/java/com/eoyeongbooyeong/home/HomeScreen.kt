@@ -58,6 +58,7 @@ internal fun HomeRoute(
     paddingValues: PaddingValues,
     navigateToSearch: () -> Unit = {},
     viewModel: HomeViewModel = hiltViewModel(),
+    navigateToCategoryPlace: (String) -> Unit = {},
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
@@ -71,8 +72,8 @@ internal fun HomeRoute(
                     is HomeSideEffect.NavigateToWebView -> {
                         context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(sideEffect.url)))
                     }
-
-                    HomeSideEffect.NavigateToSearch -> navigateToSearch()
+                    is HomeSideEffect.NavigateToSearch -> navigateToSearch()
+                    is HomeSideEffect.NavigateToCategoryPlace -> navigateToCategoryPlace(sideEffect.placeType)
                 }
             }
     }
@@ -82,6 +83,7 @@ internal fun HomeRoute(
         recommendedPlace = state.value.recommendedPlace,
         navigateToWebView = viewModel::navigateToWebView,
         navigateToSearch = viewModel::navigateToSearch,
+        navigateToCategoryPlace = viewModel::navigateToCategoryPlace,
     )
 }
 
@@ -91,6 +93,7 @@ private fun HomeScreen(
     recommendedPlace: List<PlaceInfoEntity> = emptyList(),
     navigateToWebView: (String) -> Unit = {},
     navigateToSearch: () -> Unit = {},
+    navigateToCategoryPlace: (String) -> Unit = {},
 ) {
     val verticalScrollState = rememberScrollState()
     val horizontalRecommendedScrollState = rememberScrollState()
@@ -124,7 +127,9 @@ private fun HomeScreen(
                     painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.img_movie_cover),
                     title = "영화",
                     description = "영화와 함께 하는\n부산의 특별한 순간",
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f).noRippleClickable(
+                        onClick = { navigateToCategoryPlace("movie") }
+                    )
                 )
 
                 Spacer(modifier = Modifier.width(12.dp))
@@ -134,14 +139,20 @@ private fun HomeScreen(
                         painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.img_local_cover),
                         title = "지역상생",
                         description = "부산의 매력을 더하는\n숨은 명소들",
-                        alignment = Alignment.TopStart
+                        alignment = Alignment.TopStart,
+                        modifier = Modifier.noRippleClickable(
+                            onClick = { navigateToCategoryPlace("store") }
+                        )
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     ImageWithText(
                         painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.img_tour_cover),
                         title = "관광지",
                         description = "다양한 매력이 숨 쉬는\n부산 필수 관광지",
-                        alignment = Alignment.TopStart
+                        alignment = Alignment.TopStart,
+                        modifier = Modifier.noRippleClickable(
+                            onClick = { navigateToCategoryPlace("tour") }
+                        )
                     )
                 }
             }
