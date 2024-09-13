@@ -13,7 +13,7 @@ data class ReviewDto(
     @SerialName("content")
     val content: String,
     @SerialName("stars")
-    val stars: Float,
+    val stars: Double,
     @SerialName("writerId")
     val writerId: Int,
     @SerialName("writerName")

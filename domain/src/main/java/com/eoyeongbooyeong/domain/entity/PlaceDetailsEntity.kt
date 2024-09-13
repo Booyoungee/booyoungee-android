@@ -6,7 +6,7 @@ data class PlaceDetailsEntity(
     val address: String = "",
     val tel: String = "",
     val type: String = "",
-    val starCount: Float = 0.0f,
+    val starCount: Double = 0.0,
     val reviewCount: Int = 0,
     val imageUrl: List<String> = emptyList(),
     val likeCount: Int = 0,

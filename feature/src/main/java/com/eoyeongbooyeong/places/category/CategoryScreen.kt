@@ -254,7 +254,7 @@ fun PlaceList(
             PlaceInfoListItem(
                 placeName = place.name,
                 address = place.address,
-                star = place.starCount,
+                star = place.stars,
                 reviewCount = place.reviewCount,
                 likedCount = place.likeCount,
                 movieNameList = place.movies ?: ImmutableList.of(),

@@ -67,7 +67,7 @@ fun BookMarkScreen(
                     placeName = it.name,
                     address = it.address,
                     placeImageUrl = it.images.firstOrNull(),
-                    star = it.starCount,
+                    star = it.stars,
                     reviewCount = it.reviewCount,
                     likedCount = it.likeCount,
                     movieNameList = it.movies,

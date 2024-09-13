@@ -34,7 +34,7 @@ data class PlaceDto(
     @SerialName("bookmarkCount")
     val bookmarkCount: Int,
     @SerialName("stars")
-    val stars: Float,
+    val stars: Double,
     @SerialName("me")
     val me: Me,
 ) {
@@ -64,10 +64,10 @@ data class PlaceDto(
         movies = movies,
         posterUrl = posterUrl,
         likeCount = likeCount,
-        starCount = starCount.toFloat(),
+        starCount = starCount,
         stampCount = stampCount,
         reviewCount = reviewCount,
-        stars = stars,
+        stars = String.format("%.1f", stars).toDouble(),
         bookmarkCount = bookmarkCount,
         me = me.toDomain()
     )

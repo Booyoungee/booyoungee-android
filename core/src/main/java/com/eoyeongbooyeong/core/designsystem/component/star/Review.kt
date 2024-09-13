@@ -29,7 +29,7 @@ fun Review(
     reviewId: Int = -1,
     writerId: Int = -1,
     nickName: String = "",
-    reviewScore: Float = 0f,
+    reviewScore: Double = 0.0,
     reviewContent: String = "",
     reviewDate: String = "",
 ) {
@@ -86,7 +86,7 @@ fun ReviewPreview() {
     BooTheme {
         Review(
             nickName = "김보영",
-            reviewScore = 4.5f,
+            reviewScore = 4.5,
             reviewContent = "너무 좋아요",
             reviewDate = "2021.10.10",
             modifier = Modifier.background(White),

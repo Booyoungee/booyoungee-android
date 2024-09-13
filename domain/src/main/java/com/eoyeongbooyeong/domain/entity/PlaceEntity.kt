@@ -10,10 +10,10 @@ data class PlaceInfoEntity(
     val movies: List<String>? = null,
     val posterUrl: List<String>? = null,
     val likeCount: Int = 0,
-    val starCount: Float = 0f,
+    val starCount: Int = 0,
     val stampCount: Int = 0,
     val reviewCount: Int = 0,
-    val stars: Float = 0f,
+    val stars: Double = 0.0,
     val bookmarkCount: Int = 0,
     val me: MeEntity = MeEntity(),
 )

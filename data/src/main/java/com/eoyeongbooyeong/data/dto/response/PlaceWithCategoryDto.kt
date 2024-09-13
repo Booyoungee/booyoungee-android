@@ -13,7 +13,7 @@ data class PlaceWithCategoryDto(
     @SerialName("basicAddress")
     val address: String?,
     @SerialName("stars")
-    val starCount: Float?,
+    val starCount: Double?,
     @SerialName("likes")
     val likeCount: Int?,
     @SerialName("reviews")
@@ -27,7 +27,7 @@ data class PlaceWithCategoryDto(
             name = name ?: "",
             address = address ?: "",
             likeCount = likeCount ?: 0,
-            starCount = starCount ?: 0.0f,
+            stars = starCount ?: 0.0,
             movies = listOf(movieName ?: "")
         )
 }

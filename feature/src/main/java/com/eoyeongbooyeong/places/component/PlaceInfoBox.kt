@@ -89,10 +89,10 @@ internal fun PlaceInfoBox(
                     modifier = Modifier.weight(1f, false),
                 )
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    ReviewStar(placeEntity.starCount)
+                    ReviewStar(placeEntity.stars)
 
                     Text(
-                        text = placeEntity.starCount.toString(),
+                        text = placeEntity.stars.toString(),
                         style = BooTheme.typography.caption1,
                         color = Black,
                         modifier =
