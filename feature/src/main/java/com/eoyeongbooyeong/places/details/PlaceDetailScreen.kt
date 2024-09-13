@@ -63,7 +63,6 @@ fun PlaceDetailRoute(
     onClickWriteReview: (Int) -> Unit = {},
     onClickBackButton: () -> Unit = {},
     viewModel: PlaceDetailsViewModel = hiltViewModel(),
-    likeId: Int = -1,
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
@@ -101,13 +100,13 @@ fun PlaceDetailRoute(
         placeAddress = placeInfoEntity.address,
         placeDetailReviewCount = placeInfoEntity.reviewCount,
         placeDetailLikedCount = state.value.likeCount,
-        placeDetailStarScore = placeInfoEntity.stars, // TODO
-        placeDetailBookmarkCount = placeInfoEntity.bookmarkCount,
+        placeDetailStarScore = placeInfoEntity.stars,
+        placeDetailBookmarkCount = state.value.bookMarkCount,
         reviewInfoEntityTotalList = state.value.reviewList,
         onClickWriteReview = { onClickWriteReview(placeId) },
         onClickLike = {
             if (state.value.isLiked) {
-                viewModel.deleteLike(likeId = likeId)
+                viewModel.deleteLike(placeId = placeId)
             } else {
                 viewModel.postLike(placeId = placeId)
             }

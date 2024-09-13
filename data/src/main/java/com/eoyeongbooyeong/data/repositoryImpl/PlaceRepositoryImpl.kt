@@ -47,9 +47,9 @@ class PlaceRepositoryImpl @Inject constructor(
             placeDataSource.postLike(placeId).toLikeEntity()
         }
 
-    override suspend fun deleteLike(likeId: Int): Result<LikeEntity> =
+    override suspend fun deleteLike(placeId: Int): Result<LikeEntity> =
         runCatching {
-            placeDataSource.deleteLike(likeId).toLikeEntity()
+            placeDataSource.deleteLike(placeId).toLikeEntity()
         }
 
     override suspend fun getMoviePlacesWithCategory(filter: String): Result<List<PlaceInfoEntity>> =
