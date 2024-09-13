@@ -106,16 +106,16 @@ internal class MainNavigator(
         navController.navigate(PlaceDetail(placeId, placeType), navOption)
     }
 
-    fun navigateToPlaceDetailWhenMapView(navOption: NavOptions, placeId: Int) {
-        navController.navigate(PlaceDetail(placeId), navOption)
-    }
-
     fun navigateToWriteReview(navOption: NavOptions, placeId: Int) {
         navController.navigate(PlaceDetail(placeId, ""), navOption)
     }
 
     fun navigateToKakaoMap(navOption: NavOptions, placeType: String) {
         navController.navigate(KakaoMap(placeType), navOption)
+    }
+
+    fun navigateUpAndClearStackToHome() {
+        navController.popBackStack(Home, inclusive = false)
     }
 
     private inline fun <reified T : Route> isSameCurrentDestination(): Boolean =

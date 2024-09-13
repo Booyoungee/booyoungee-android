@@ -115,23 +115,25 @@ fun PlaceCategoryRoute(
             }
     }
 
-    PlaceCategoryScreen(
-        placeType = state.value.placeType,
-        modifier = modifier,
-        onBackClick = onBackClick,
-        placeList = state.value.placeList,
-        onSortingSelected = { selectedFilter ->
-            viewModel.updateState(state.value.copy(filter = selectedFilter))
-            when (placeType) {
-                "movie" -> viewModel.getMoviePlaceListWitFilter(selectedFilter)
-                "store" -> viewModel.getLocalStorePlaceListWitFilter(selectedFilter)
-                "tour" -> viewModel.getTourPlaceListWitFilter(selectedFilter)
-            }
-        },
-        isLoading = state.value.isLoading,
-        navigateToPlaceDetail = navigateToPlaceDetail,
-        navigateToKakaoMap = navigateToKakaoMap,
-    )
+    if(state.value.placeType.isNotBlank()) {
+        PlaceCategoryScreen(
+            placeType = state.value.placeType,
+            modifier = modifier,
+            onBackClick = onBackClick,
+            placeList = state.value.placeList,
+            onSortingSelected = { selectedFilter ->
+                viewModel.updateState(state.value.copy(filter = selectedFilter))
+                when (placeType) {
+                    "movie" -> viewModel.getMoviePlaceListWitFilter(selectedFilter)
+                    "store" -> viewModel.getLocalStorePlaceListWitFilter(selectedFilter)
+                    "tour" -> viewModel.getTourPlaceListWitFilter(selectedFilter)
+                }
+            },
+            isLoading = state.value.isLoading,
+            navigateToPlaceDetail = navigateToPlaceDetail,
+            navigateToKakaoMap = navigateToKakaoMap,
+        )
+    }
 }
 
 @Composable

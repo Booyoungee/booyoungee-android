@@ -14,7 +14,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -177,27 +176,30 @@ internal fun KakakoMapScreen(
                 .statusBarsPadding()
                 .systemBarsPadding(),
     ) {
-        if(showDetailBox) {
+        if (showDetailBox) {
             Box(
-                modifier = Modifier.fillMaxSize().zIndex(1f),
-                contentAlignment = Alignment.BottomCenter
+                modifier =
+                    Modifier.fillMaxSize().zIndex(10f).noRippleClickable {
+                        onClickPlaceDetail(selectedPlaceDetailsEntity.placeId.toInt(), placeType)
+                    },
+                contentAlignment = Alignment.BottomCenter,
             ) {
                 PlaceInfoBox(
                     placeEntity = selectedPlaceDetailsEntity,
-                    modifier = Modifier.padding(16.dp).fillMaxWidth().clickable { onClickPlaceDetail(selectedPlaceDetailsEntity.placeId.toInt(), placeType)},
+                    modifier = Modifier.padding(16.dp).fillMaxWidth(),
                 )
             }
         }
 
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         ) {
             BooTextTopAppBar(
                 leadingIcon = {
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_left),
                         contentDescription = "left",
-                        modifier = Modifier.noRippleClickable { onBackClick() }
+                        modifier = Modifier.noRippleClickable { onBackClick() },
                     )
                 },
                 text = "",
@@ -306,7 +308,7 @@ fun rememberMapView(
 
                                 // 클릭된 place에 대한 정보 업데이트
                                 onClickMarker(selectedPlace)
-                                Log.d("KakaoRoute", "${selectedPlace}")
+                                Log.d("KakaoRoute", "$selectedPlace")
                                 true
                             }
                         }
