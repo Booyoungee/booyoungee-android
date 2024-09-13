@@ -9,6 +9,6 @@ class BookmarkDataSourceImpl @Inject constructor(
     private val bookmarkService: BookmarkService,
 ) : BookmarkDataSource {
     override suspend fun getBookmarkList(): List<PlaceDto> {
-        return bookmarkService.getBookmarkList().data
+        return bookmarkService.getBookmarkList().data.contents
     }
 }

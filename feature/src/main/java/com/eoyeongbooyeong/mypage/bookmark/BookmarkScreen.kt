@@ -81,7 +81,7 @@ fun BookmarkScreen(
         )
 
         LazyColumn(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize().padding(horizontal = 24.dp)
         ) {
             items(bookmarkList) {
                 PlaceInfoListItem(
