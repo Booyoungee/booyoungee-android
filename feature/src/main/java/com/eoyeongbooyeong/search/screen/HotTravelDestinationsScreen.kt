@@ -39,7 +39,7 @@ fun HotTravelDestinationsScreen(
     Column(
         modifier = modifier.fillMaxSize()
     ) {
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = Modifier.height(28.dp))
 
         Row(
             modifier = Modifier
