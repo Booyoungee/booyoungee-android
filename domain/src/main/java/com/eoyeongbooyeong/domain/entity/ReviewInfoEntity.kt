@@ -17,7 +17,7 @@ data class MyReviewEntity(
     val placeId: Int = -1,
     val placeName: String = "",
     val content: String = "",
-    val stars: Int = 1,
+    val stars: Float = 0.0f,
     val writerId: Int = -1,
     val writerName: String = "",
     val createdAt: String = "",

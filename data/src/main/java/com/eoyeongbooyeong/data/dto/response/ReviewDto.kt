@@ -54,7 +54,7 @@ data class MyReviewDto(
         placeId = placeId,
         placeName = placeName ?: "",
         content = content,
-        stars = stars,
+        stars = stars.toFloat(),
         writerId = writerId,
         writerName = writerName,
         createdAt = createdAt,
