@@ -128,7 +128,7 @@ internal fun PlaceInfoListItem(
                     ReviewStar(star)
 
                     Text(
-                        text = star.toString(),
+                        text = star.toString().take(3),
                         style = BooTheme.typography.caption1,
                         color = Black,
                         modifier = Modifier
