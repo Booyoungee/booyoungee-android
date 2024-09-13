@@ -20,7 +20,7 @@ import com.eoyeongbooyeong.core.extension.noRippleClickable
 
 @Composable
 fun ReviewStar(
-    star: Float,
+    star: Double,
     starSize: Dp = 12.dp,
 ) {
     val filledStars = star.toInt()
@@ -97,7 +97,7 @@ fun ClickableReviewStar(
 @Composable
 @Preview
 fun ReviewStarPreview() {
-    ReviewStar(4.5f)
+    ReviewStar(4.5)
 }
 
 @Composable

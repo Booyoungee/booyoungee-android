@@ -22,17 +22,45 @@ import com.eoyeongbooyeong.core.designsystem.theme.Black
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Purple
 import com.eoyeongbooyeong.core.designsystem.theme.White
-import com.eoyeongbooyeong.domain.entity.PlaceEntity
+import com.eoyeongbooyeong.domain.entity.PlaceDetailsEntity
 import com.eoyeongbooyeong.feature.R
 import com.eoyeongbooyeong.search.component.PlaceInfoListItem
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
+fun SearchResultRoute(
+    modifier: Modifier = Modifier,
+    onBackClick: () -> Unit = {},
+    onQueryChange: (String) -> Unit = {},
+    onActiveChange: (Boolean) -> Unit = {},
+    query: String = "",
+    active: Boolean = false,
+    resultCount: Int = 0,
+    searchResultList: List<PlaceDetailsEntity> = emptyList(),
+) {
+    SearchResultScreen(
+        modifier = modifier,
+        onBackClick = onBackClick,
+        onQueryChange = onQueryChange,
+        onActiveChange = onActiveChange,
+        query = query,
+        active = active,
+        resultCount = resultCount,
+        searchResultList = searchResultList,
+    )
+}
+
+@Composable
 fun SearchResultScreen(
     modifier: Modifier = Modifier,
     resultCount: Int = 0,
-    searchResultList: ImmutableList<PlaceEntity>,
+    searchResultList: List<PlaceDetailsEntity>,
+    onBackClick: () -> Unit,
+    onQueryChange: (String) -> Unit,
+    onActiveChange: (Boolean) -> Unit,
+    query: String,
+    active: Boolean,
 ) {
     Column(
         modifier =
@@ -53,10 +81,10 @@ fun SearchResultScreen(
 
 @Composable
 fun SearchResultList(
-    searchResultList: List<PlaceEntity>,
+    searchResultList: List<PlaceDetailsEntity>,
     resultCount: Int,
     modifier: Modifier = Modifier,
-    onPlaceClick: () -> Unit = {},
+    onPlaceClick: (PlaceDetailsEntity) -> Unit = {},
 ) {
     Column(
         modifier = modifier
@@ -103,13 +131,13 @@ fun SearchResultList(
                 PlaceInfoListItem(
                     placeName = place.name,
                     address = place.address,
-                    star = place.star,
+                    star = place.starCount,
                     reviewCount = place.reviewCount,
-                    likedCount = place.likedCount,
+                    likedCount = place.likeCount,
                     movieNameList = place.movieNameList,
-                    placeImageUrl = place.imageUrl,
+                    modifier = Modifier.padding(bottom = 16.dp, start = 24.dp, end = 24.dp),
+                    placeImageUrl = place.imageUrl[0],
                     onClick = onPlaceClick,
-                    modifier = Modifier.padding(bottom = 16.dp),
                 )
             }
         }

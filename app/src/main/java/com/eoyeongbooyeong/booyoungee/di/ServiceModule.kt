@@ -20,23 +20,27 @@ import javax.inject.Singleton
 object ServiceModule {
     @Provides
     @Singleton
-    fun provideAuthService(@NoToken retrofit: Retrofit): AuthService =
-        retrofit.create(AuthService::class.java)
+    fun provideAuthService(
+        @NoToken retrofit: Retrofit,
+    ): AuthService = retrofit.create(AuthService::class.java)
 
     @Provides
     @Singleton
-    fun provideUserService(@JWT retrofit: Retrofit): UserService =
-        retrofit.create(UserService::class.java)
+    fun provideUserService(
+        @JWT retrofit: Retrofit,
+    ): UserService = retrofit.create(UserService::class.java)
 
     @Provides
     @Singleton
-    fun provideReviewService(@JWT retrofit: Retrofit): ReviewService =
-        retrofit.create(ReviewService::class.java)
+    fun provideReviewService(
+        @JWT retrofit: Retrofit,
+    ): ReviewService = retrofit.create(ReviewService::class.java)
 
     @Provides
     @Singleton
-    fun providePlaceService(@JWT retrofit: Retrofit): PlaceService =
-        retrofit.create(PlaceService::class.java)
+    fun providePlaceService(
+        @JWT retrofit: Retrofit,
+    ): PlaceService = retrofit.create(PlaceService::class.java)
 
     @Provides
     @Singleton

@@ -13,4 +13,8 @@ interface UserDataSource {
     suspend fun putNewNickname(
         nickname: String,
     ): NicknameDto
+
+    suspend fun postBlockUser(
+        blockUserId: Int,
+    ): Int
 }

@@ -279,10 +279,10 @@ fun RecommendedPlaceItem(
         Spacer(modifier = Modifier.height(2.dp))
 
         Row(verticalAlignment = Alignment.CenterVertically) {
-            ReviewStar(place.starCount)
+            ReviewStar(place.stars)
 
             Text(
-                text = place.starCount.toString(),
+                text = place.stars.toString(),
                 style = BooTheme.typography.caption1,
                 color = Black,
                 modifier =
