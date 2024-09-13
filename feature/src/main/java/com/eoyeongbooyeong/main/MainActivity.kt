@@ -8,6 +8,7 @@ import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.places.category.CategoryScreenPreview
 import com.eoyeongbooyeong.places.category.PlaceCategoryRoute
 import com.eoyeongbooyeong.places.category.PlaceCategoryScreen
+import com.eoyeongbooyeong.places.map.KakaoMapRoute
 import com.eoyeongbooyeong.places.review.ReviewRoute
 import com.eoyeongbooyeong.search.PlaceDetailRoute
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,8 +23,9 @@ class MainActivity : ComponentActivity() {
             BooTheme {
                 // MainScreen(navigator = navigator)
                 // PlaceCategoryRoute(placeType = "movie")
-                PlaceDetailRoute()
+                // PlaceDetailRoute()
                 // ReviewRoute()
+                KakaoMapRoute()
             }
         }
     }

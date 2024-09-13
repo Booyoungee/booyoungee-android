@@ -3,6 +3,7 @@ package com.eoyeongbooyeong.places.map
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.eoyeongbooyeong.domain.repository.PlaceRepository
+import com.eoyeongbooyeong.places.category.CategorySideEffect
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,22 +29,57 @@ class KakaoMapViewModel
         val sideEffects: SharedFlow<KakaoMapSideEffect>
             get() = _sideEffects.asSharedFlow()
 
-        suspend fun getPlaceDetailsInfo(
-            placeId: Int,
-            placeType: String,
-        ) {
-            viewModelScope.launch {
-                placeRepository
-                    .getPlaceDetails(placeId, placeType)
-                    .onSuccess {
-                        _state.value =
-                            _state.value.copy(
-                                placeDetailsInfo = it,
-                            )
-                        Timber.tag("PlaceDetailsViewModel").d(it.toString())
-                    }.onFailure {
-                        _sideEffects.emit(KakaoMapSideEffect.ShowToast(it.message.toString()))
-                    }
-            }
+    fun getMoviePlaceListWitFilter(filter: String = "star") { //TODO
+        _state.value = _state.value.copy(isLoading = true)
+
+        viewModelScope.launch {
+            placeRepository
+                .getMoviePlacesWithCategory(filter)
+                .onSuccess {
+                    _state.value =
+                        state.value.copy(
+                            placeList = it,
+                            isLoading = false,
+                        )
+                }.onFailure {
+                    _sideEffects.emit(KakaoMapSideEffect.ShowToast(it.message.toString()))
+                }
         }
+    }
+
+    fun getLocalStorePlaceListWitFilter(filter: String = "default") {
+        _state.value = _state.value.copy(isLoading = true)
+
+        viewModelScope.launch {
+            placeRepository
+                .getLocalStorePlacesWithCategory(filter)
+                .onSuccess {
+                    _state.value =
+                        state.value.copy(
+                            placeList = it,
+                            isLoading = false,
+                        )
+                }.onFailure {
+                    _sideEffects.emit(KakaoMapSideEffect.ShowToast(it.message.toString()))
+                }
+        }
+    }
+
+    fun getTourPlaceListWitFilter(filter: String = "default") {
+        _state.value = _state.value.copy(isLoading = true)
+
+        viewModelScope.launch {
+            placeRepository
+                .getTourPlacesWithCategory(filter)
+                .onSuccess {
+                    _state.value =
+                        state.value.copy(
+                            placeList = it,
+                            isLoading = false,
+                        )
+                }.onFailure {
+                    _sideEffects.emit(KakaoMapSideEffect.ShowToast(it.message.toString()))
+                }
+        }
+    }
     }

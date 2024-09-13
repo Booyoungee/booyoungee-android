@@ -15,5 +15,7 @@ data class PlaceInfoEntity(
     val reviewCount: Int = 0,
     val stars: Double = 0.0,
     val bookmarkCount: Int = 0,
+    val mapX: String = "129.03933",
+    val mapY: String = "35.114495",
     val me: MeEntity = MeEntity(),
 )

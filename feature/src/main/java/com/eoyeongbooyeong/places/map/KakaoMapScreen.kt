@@ -7,6 +7,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.provider.Settings
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -69,10 +70,10 @@ private const val BUSAN_STATION_LONGTITUDE = 129.03933
 
 @Composable
 fun KakaoMapRoute(
-    paddingValues: PaddingValues,
-    navigateToPlaceDetailScreen: () -> Unit,
+    placeType: String = "movie",
+    paddingValues: PaddingValues = PaddingValues(0.dp),
+    navigateToPlaceDetailScreen: () -> Unit = {},
     viewModel: KakaoMapViewModel = hiltViewModel(),
-    placeType: String,
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val state = viewModel.state.collectAsStateWithLifecycle()
@@ -95,38 +96,30 @@ fun KakaoMapRoute(
     }
 
     LaunchedEffect(key1 = Unit) {
-        viewModel.getPlaceDetailsInfo(
-            222,
-            PlaceType.STORE.name.lowercase(),
-        ) // TODO: placeId와 placeType을 넘겨주기
+        when(placeType) {
+            "movie" -> viewModel.getMoviePlaceListWitFilter()
+            "store" -> viewModel.getLocalStorePlaceListWitFilter()
+            "tour" -> viewModel.getTourPlaceListWitFilter()
+        }
+        Log.d("KakaoMapRoute", "${state.value.placeList}")
     }
 
-    val dummyList: List<PlaceDetailsEntity> =
-        listOf(
-            PlaceDetailsEntity(
-                latitude = 35.114495,
-                longitude = 129.03941,
-            ),
-            PlaceDetailsEntity(
-                latitude = 35.114496,
-                longitude = 129.03946,
-            ),
-            PlaceDetailsEntity(
-                latitude = 35.114493,
-                longitude = 129.03945,
-            ),
+    if(state.value.placeList.isNotEmpty()){
+        KakakoMapScreen(
+            placeList = state.value.placeList,
+            placeType = placeType,
         )
-    KakakoMapScreen(
-        placeList = dummyList,
-        placeType = PlaceType.MOVIE,
-    )
+    } else {
+        Log.d("KakaoMapRoute", "No placeList")
+    }
 }
 
 @Composable
 internal fun KakakoMapScreen(
-    placeList: List<PlaceDetailsEntity>,
-    placeType: PlaceType,
+    placeList: List<PlaceInfoEntity>,
+    placeType: String,
 ) {
+
     val context = LocalContext.current
     val kakaoMap = remember { mutableStateOf<KakaoMap?>(null) }
     val mapView =
@@ -219,8 +212,8 @@ internal fun KakakoMapScreen(
 fun rememberMapView(
     context: Context,
     onMapReady: (KakaoMap) -> Unit,
-    placeType: PlaceType = PlaceType.MOVIE,
-    placeList: List<PlaceDetailsEntity> = emptyList(),
+    placeType: String = "movie",
+    placeList: List<PlaceInfoEntity> = emptyList(),
 ): MapView {
     val mapView =
         remember {
@@ -239,10 +232,11 @@ fun rememberMapView(
                         override fun getZoomLevel(): Int = 17
 
                         override fun onMapReady(map: KakaoMap) {
-                            onMapReady(map) // KakaoMap 객체를 상태로 업데이트합니다.
+                            onMapReady(map) // KakaoMap 객체를 상태로 업데이트
 
                             placeList.forEach { place ->
-                                val location = LatLng.from(place.latitude, place.longitude)
+                                val location = LatLng.from(place.mapY.toDouble(), place.mapX.toDouble())
+                                Log.d("KakaoMapRoute2", "location: $location")
                                 setMapMarker(map, location)
                             }
 
@@ -251,9 +245,10 @@ fun rememberMapView(
 
                         val markerIconResId =
                             when (placeType) {
-                                PlaceType.MOVIE -> R.drawable.ic_marker_movie
-                                PlaceType.STORE -> R.drawable.ic_marker_local
-                                PlaceType.TOUR -> R.drawable.ic_marker_tour
+                                "movie" -> R.drawable.ic_marker_movie
+                                "store" -> R.drawable.ic_marker_local
+                                "tour" -> R.drawable.ic_marker_tour
+                                else -> R.drawable.ic_marker_movie
                             }
 
                         private fun setMapMarker(
