@@ -18,4 +18,8 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun setUserNickname(nickname: String): Result<Unit> = runCatching {
         userDataSource.putNewNickname(nickname)
     }
+
+    override suspend fun blockUser(blockUserId: Int): Result<Unit> = runCatching {
+        userDataSource.postBlockUser(blockUserId)
+    }
 }

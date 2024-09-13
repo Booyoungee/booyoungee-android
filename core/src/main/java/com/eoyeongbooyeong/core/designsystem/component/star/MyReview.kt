@@ -66,8 +66,9 @@ fun MyReview(
             Column(
                 horizontalAlignment = Alignment.End,
             ) {
-                ReviewDropdownMenu {
-                    Text(text = "신고하기", style = BooTheme.typography.body4)
+                val menuItemList = listOf("신고하기")
+                ReviewDropdownMenu(menuItemList){
+                    // TODO 신고하기 api 붙여야 함
                 }
                 Spacer(modifier = Modifier.size(3.dp))
                 Text(text = reviewDate, style = BooTheme.typography.caption4, color = Black)

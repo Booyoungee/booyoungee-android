@@ -123,6 +123,12 @@ fun PlaceDetailRoute(
         onClickBackButton = onClickBackButton,
         isLike = (state.value.isLiked),
         isBookmark = (state.value.isBookmarked),
+        onBlockClick = { blockUserId ->
+            viewModel.postBlockUser(blockUserId = blockUserId)
+        },
+//        onReportClick = { reviewId ->
+//            viewModel.postReportReview(reviewId = reviewId)
+//        },
     )
 }
 
@@ -146,6 +152,8 @@ fun PlaceDetailScreen(
     onClickBackButton: () -> Unit ,
     isLike: Boolean = false,
     isBookmark: Boolean = false,
+    onBlockClick: (Int) -> Unit = {},
+    onReportClick: (Int) -> Unit = {},
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize().systemBarsPadding().statusBarsPadding(),
@@ -309,6 +317,8 @@ fun PlaceDetailScreen(
                         reviewScore =review.reviewScore,
                         reviewContent = review.reviewContent,
                         reviewDate = formatReviewDate(review.createdAt),
+                        onBlockClick = onBlockClick,
+                        onReportClick = onReportClick
                     )
                 }
             }

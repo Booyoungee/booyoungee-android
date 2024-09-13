@@ -15,4 +15,6 @@ class UserDataSourceImpl @Inject constructor(
     override suspend fun getUserNickname(): UserDto = userService.getUserInfo().data
     override suspend fun putNewNickname(nickname: String): NicknameDto =
         userService.putNewNickname(nickname).data
+
+    override suspend fun postBlockUser(blockUserId: Int): Int = userService.postBlockUser(blockUserId)
 }

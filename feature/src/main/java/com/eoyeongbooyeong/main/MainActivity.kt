@@ -22,7 +22,8 @@ class MainActivity : ComponentActivity() {
             BooTheme {
                 // MainScreen(navigator = navigator)
                 // PlaceCategoryRoute(placeType = "movie")
-                ReviewRoute()
+                PlaceDetailRoute()
+                // ReviewRoute()
             }
         }
     }

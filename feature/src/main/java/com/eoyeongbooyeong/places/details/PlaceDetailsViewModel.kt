@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.eoyeongbooyeong.domain.repository.PlaceRepository
 import com.eoyeongbooyeong.domain.repository.ReviewRepository
+import com.eoyeongbooyeong.domain.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,6 +20,7 @@ import javax.inject.Inject
 class PlaceDetailsViewModel
     @Inject
     constructor(
+        private val userRepository: UserRepository,
         private val placeRepository: PlaceRepository,
         private val reviewRepository: ReviewRepository
     ) : ViewModel() {
@@ -149,6 +151,17 @@ class PlaceDetailsViewModel
             reviewRepository.getReviews(placeId)
                 .onSuccess {
                     _state.value = _state.value.copy(reviewList = it)
+                }.onFailure {
+                    _sideEffects.emit(PlaceDetailsSideEffect.ShowToast(it.message.toString()))
+                }
+        }
+    }
+
+    fun postBlockUser(blockUserId: Int) {
+        viewModelScope.launch {
+            userRepository.blockUser(blockUserId)
+                .onSuccess {
+                    _sideEffects.emit(PlaceDetailsSideEffect.ShowToast("해당 사용자를 차단했습니다."))
                 }.onFailure {
                     _sideEffects.emit(PlaceDetailsSideEffect.ShowToast(it.message.toString()))
                 }
