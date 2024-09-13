@@ -83,7 +83,7 @@ internal fun MyPageRoute(
             positiveButtonContext = "확인",
             onNegativeButtonClicked = viewModel::controlWithDrawDialog,
             onPositiveButtonClicked = viewModel::withDraw,
-            title = "정말로 탈퇴하시겠어요?",
+            title = "회원탈퇴",
             description = "모든 정보가 지워지고 복구할 수 없어요"
         )
     }
@@ -94,7 +94,7 @@ internal fun MyPageRoute(
             positiveButtonContext = "확인",
             onNegativeButtonClicked = viewModel::controlLogoutDialog,
             onPositiveButtonClicked = viewModel::logout,
-            title = "정말로 로그아웃 하시겠어요?",
+            title = "로그아웃",
             description = "더 많은 부산의 매력을 느껴보세요!"
         )
     }
