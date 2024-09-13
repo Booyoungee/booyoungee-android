@@ -32,7 +32,7 @@ interface PlaceService {
 
     @DELETE("api/v1/bookmark")
     suspend fun deleteBookMark(
-        @Query("bookMarkId") bookMarkId: Int,
+        @Query("placeId") placeId: Int,
     ): BaseResponse<BookMarkDto>
 
     @POST("api/v1/like")

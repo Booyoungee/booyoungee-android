@@ -75,8 +75,8 @@ class PlaceDetailsViewModel
                     _state.value =
                         _state.value.copy(
                             isBookmarked = true,
-                            bookMarkId = bookmarkResponse.bookmarkId,
                         )
+                    state.value.bookMarkCount--
                     // 북마크 추가 성공 시 상태 업데이트
                     Timber.tag("PlaceDetailsViewModel").d(bookmarkResponse.toString())
                 }.onFailure {
@@ -86,16 +86,16 @@ class PlaceDetailsViewModel
     }
 
     // 북마크 삭제 요청
-    fun deleteBookMark(bookMarkId: Int) {
+    fun deleteBookMark(placeId: Int) {
         viewModelScope.launch {
             placeRepository
-                .deleteBookMark(bookMarkId)
+                .deleteBookMark(placeId)
                 .onSuccess { bookmarkResponse ->
                     _state.value =
                         _state.value.copy(
                             isBookmarked = false,
-                            bookMarkId = bookmarkResponse.bookmarkId,
                         )
+                    state.value.bookMarkCount++
                     // 북마크 삭제 성공 시 상태 업데이트
                     Timber.tag("PlaceDetailsViewModel").d(bookmarkResponse.toString())
                 }.onFailure {

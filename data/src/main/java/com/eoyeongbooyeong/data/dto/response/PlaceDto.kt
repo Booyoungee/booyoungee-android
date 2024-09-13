@@ -31,6 +31,8 @@ data class PlaceDto(
     val stampCount: Int,
     @SerialName("reviewCount")
     val reviewCount: Int,
+    @SerialName("bookmarkCount")
+    val bookmarkCount: Int,
     @SerialName("stars")
     val stars: Float,
     @SerialName("me")
@@ -66,6 +68,7 @@ data class PlaceDto(
         stampCount = stampCount,
         reviewCount = reviewCount,
         stars = stars,
+        bookmarkCount = bookmarkCount,
         me = me.toDomain()
     )
 }

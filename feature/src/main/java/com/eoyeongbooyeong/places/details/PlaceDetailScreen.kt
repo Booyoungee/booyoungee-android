@@ -63,7 +63,6 @@ fun PlaceDetailRoute(
     onClickWriteReview: () -> Unit = {},
     onClickBackButton: () -> Unit = {},
     viewModel: PlaceDetailsViewModel = hiltViewModel(),
-    bookMarkId: Int = -1,
     likeId: Int = -1,
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -104,7 +103,7 @@ fun PlaceDetailRoute(
         placeDetailReviewCount = placeInfoEntity.reviewCount,
         placeDetailLikedCount = state.value.likeCount,
         placeDetailStarScore = placeInfoEntity.stars, // TODO
-        placeDetailBookmarkCount = -1, // TODO
+        placeDetailBookmarkCount = placeInfoEntity.bookmarkCount,
         reviewInfoEntityTotalList = state.value.reviewList,
         onClickWriteReview = onClickWriteReview,
         onClickLike = {
@@ -116,7 +115,7 @@ fun PlaceDetailRoute(
         },
         onClickBookmark = {
             if (state.value.isBookmarked) {
-                viewModel.deleteBookMark(bookMarkId = bookMarkId)
+                viewModel.deleteBookMark(placeId = placeId)
             } else {
                 viewModel.postBookMark(placeId = placeId, placeType = placeType)
             }

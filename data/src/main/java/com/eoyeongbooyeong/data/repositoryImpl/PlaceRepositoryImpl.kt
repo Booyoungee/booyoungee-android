@@ -38,9 +38,9 @@ class PlaceRepositoryImpl
                 placeDataSource.postBookMark(placeId, placeType).toBookMarkEntity()
             }
 
-        override suspend fun deleteBookMark(bookMarkId: Int): Result<BookMarkEntity> =
+        override suspend fun deleteBookMark(placeId: Int): Result<BookMarkEntity> =
             runCatching {
-                placeDataSource.deleteBookMark(bookMarkId).toBookMarkEntity()
+                placeDataSource.deleteBookMark(placeId).toBookMarkEntity()
             }
 
         override suspend fun postLike(placeId: Int): Result<LikeEntity> =

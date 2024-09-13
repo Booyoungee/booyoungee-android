@@ -19,7 +19,7 @@ interface PlaceDataSource {
         placeType: String,
     ): BookMarkDto
 
-    suspend fun deleteBookMark(bookMarkId: Int): BookMarkDto
+    suspend fun deleteBookMark(placeId: Int): BookMarkDto
 
     suspend fun postLike(placeId: Int): LikeDto
 

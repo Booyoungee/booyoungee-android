@@ -25,7 +25,7 @@ class PlaceDataSourceImpl
             placeType: String,
         ): BookMarkDto = placeService.postBookMark(placeId, placeType).data
 
-        override suspend fun deleteBookMark(bookMarkId: Int): BookMarkDto = placeService.deleteBookMark(bookMarkId).data
+        override suspend fun deleteBookMark(placeId: Int): BookMarkDto = placeService.deleteBookMark(placeId).data
 
         override suspend fun postLike(placeId: Int): LikeDto = placeService.postLike(LikeRequestDto(placeId)).data
 
