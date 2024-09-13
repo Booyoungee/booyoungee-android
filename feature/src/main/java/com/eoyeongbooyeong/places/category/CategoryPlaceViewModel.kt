@@ -38,6 +38,14 @@ class CategoryPlaceViewModel
             _state.value = newState.copy()
         }
 
+    fun updatePlaceType(placeType: String) {
+        updateState(
+            state.value.copy(
+                placeType = placeType,
+            )
+        )
+    }
+
         fun getMoviePlaceListWitFilter(filter: String) {
             _state.value = _state.value.copy(isLoading = true)
 

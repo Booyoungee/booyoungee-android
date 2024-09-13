@@ -3,7 +3,6 @@ package com.eoyeongbooyeong.category.component
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -49,13 +48,14 @@ internal fun PlaceInfoBox(
                     color = Gray200,
                     shape = RoundedCornerShape(10.dp),
                 ).clip(RoundedCornerShape(10.dp))
-                .background(White).padding(start = 31.dp, top = 25.dp, bottom = 25.dp),
-
+                .background(White)
+                .padding(start = 31.dp, top = 25.dp, bottom = 25.dp),
     ) {
         Row(
             modifier =
                 Modifier
                     .fillMaxWidth()
+                    .noRippleClickable(onClick = onClick)
                     .wrapContentHeight()
                     .background(White)
                     .padding(end = 10.dp),
