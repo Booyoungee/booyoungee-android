@@ -29,33 +29,10 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
-fun SearchResultRoute(
-    modifier: Modifier = Modifier,
-    onBackClick: () -> Unit = {},
-    onQueryChange: (String) -> Unit = {},
-    onActiveChange: (Boolean) -> Unit = {},
-    query: String = "",
-    active: Boolean = false,
-    resultCount: Int = 0,
-    searchResultList: List<PlaceDetailsEntity> = emptyList(),
-) {
-    SearchResultScreen(
-        modifier = modifier,
-        onBackClick = onBackClick,
-        onQueryChange = onQueryChange,
-        onActiveChange = onActiveChange,
-        query = query,
-        active = active,
-        resultCount = resultCount,
-        searchResultList = searchResultList,
-    )
-}
-
-@Composable
 fun SearchResultScreen(
     modifier: Modifier = Modifier,
     resultCount: Int = 0,
-    searchResultList: List<PlaceDetailsEntity>,
+    searchResultList: ImmutableList<PlaceDetailsEntity>,
     onBackClick: () -> Unit,
     onQueryChange: (String) -> Unit,
     onActiveChange: (Boolean) -> Unit,
@@ -81,7 +58,7 @@ fun SearchResultScreen(
 
 @Composable
 fun SearchResultList(
-    searchResultList: List<PlaceDetailsEntity>,
+    searchResultList: ImmutableList<PlaceDetailsEntity>,
     resultCount: Int,
     modifier: Modifier = Modifier,
     onPlaceClick: (PlaceDetailsEntity) -> Unit = {},
@@ -136,8 +113,8 @@ fun SearchResultList(
                     likedCount = place.likeCount,
                     movieNameList = place.movieNameList,
                     modifier = Modifier.padding(bottom = 16.dp, start = 24.dp, end = 24.dp),
-                    placeImageUrl = place.imageUrl[0],
-                    onClick = onPlaceClick,
+                    placeImageUrl = place.imageUrl.getOrNull(0),
+                    onClick = { onPlaceClick(place) },
                 )
             }
         }
@@ -149,18 +126,30 @@ fun SearchResultList(
 fun SearchResultScreenPreview() {
     BooTheme {
         SearchResultScreen(
-            resultCount = 10,
-            searchResultList = persistentListOf(
-                PlaceEntity(
-                    name = "플레이스 이름",
-                    address = "주소",
-                    star = 4f,
-                    reviewCount = 100,
-                    likedCount = 100,
-                    movieNameList = listOf("영화1", "영화2"),
-                    imageUrl = "https://place.image.url",
+            modifier = Modifier.fillMaxSize(),
+            resultCount = 20,
+            searchResultList = persistentListOf( // TODO: 임시 데이터
+                PlaceDetailsEntity(
+                    address = "서울특별시 강남구 역삼동 123-456",
+                    reviewCount = 123,
+                    movieNameList = listOf("피자헛"),
+                ),
+                PlaceDetailsEntity(
+                    address = "서울특별시 강남구 역삼동 123-456",
+                    reviewCount = 123,
+                    movieNameList = listOf("피자헛"),
+                ),
+                PlaceDetailsEntity(
+                    address = "서울특별시 강남구 역삼동 123-456",
+                    reviewCount = 123,
+                    movieNameList = listOf("피자헛"),
                 ),
             ),
+            onBackClick = {},
+            onQueryChange = {},
+            onActiveChange = {},
+            query = "",
+            active = false,
         )
     }
 }

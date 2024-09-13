@@ -1,7 +1,6 @@
 package com.eoyeongbooyeong.search
 
 import com.eoyeongbooyeong.domain.entity.HotPlaceEntity
-import com.eoyeongbooyeong.domain.entity.PlaceEntity
 import com.eoyeongbooyeong.domain.entity.PlaceInfoEntity
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf

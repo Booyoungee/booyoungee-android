@@ -1,6 +1,5 @@
 package com.eoyeongbooyeong.search
 
-import android.app.appsearch.SearchResult
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,7 +30,7 @@ import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.core.extension.addFocusCleaner
 import com.eoyeongbooyeong.core.extension.noRippleClickable
 import com.eoyeongbooyeong.domain.entity.HotPlaceEntity
-import com.eoyeongbooyeong.domain.entity.PlaceEntity
+import com.eoyeongbooyeong.domain.entity.PlaceDetailsEntity
 import com.eoyeongbooyeong.domain.entity.PlaceInfoEntity
 import com.eoyeongbooyeong.search.screen.HotTravelDestinationsScreen
 import com.eoyeongbooyeong.search.screen.NoResultScreen
@@ -128,13 +127,27 @@ private fun SearchScreen(
                 modifier = Modifier.fillMaxSize(),
                 resultCount = searchResults.size,
                 searchResultList = persistentListOf( // TODO: 임시 데이터
-                    PlaceEntity(
-                        name = "서울",
-                        address = "서울특별시",
-                        latitude = 37.5665,
-                        longitude = 126.9780,
-                    )
+                    PlaceDetailsEntity(
+                        address = "서울특별시 강남구 역삼동 123-456",
+                        reviewCount = 123,
+                        movieNameList = listOf("피자헛"),
+                    ),
+                    PlaceDetailsEntity(
+                        address = "서울특별시 강남구 역삼동 123-456",
+                        reviewCount = 123,
+                        movieNameList = listOf("피자헛"),
+                    ),
+                    PlaceDetailsEntity(
+                        address = "서울특별시 강남구 역삼동 123-456",
+                        reviewCount = 123,
+                        movieNameList = listOf("피자헛"),
+                    ),
                 ),
+                onBackClick = navigateUp,
+                onQueryChange = {},
+                onActiveChange = {},
+                query = "",
+                active = false,
             )
         }
     }

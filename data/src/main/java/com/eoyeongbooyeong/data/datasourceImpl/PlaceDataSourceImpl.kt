@@ -14,7 +14,6 @@ import javax.inject.Inject
 class PlaceDataSourceImpl @Inject constructor(
     private val placeService: PlaceService,
 ) : PlaceDataSource {
-    override suspend fun getRecommendPlace() = placeService.getRecommendPlace()
     override suspend fun getHotPlace(): BaseResponse<BaseContents<HotPlaceDto>> = placeService.getHotPlace()
 
     override suspend fun getRecommendPlace() = placeService.getRecommendPlace()
