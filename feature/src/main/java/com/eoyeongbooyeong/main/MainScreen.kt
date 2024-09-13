@@ -133,6 +133,9 @@ internal fun MainScreen(
                                 launchSingleTop = true
                             })
                         },
+                        navigateToPlaceDetail = { placeId, placeType ->
+                            navigator.navigateToPlaceDetail(navOptions { launchSingleTop = true }, placeId = placeId, placeType = placeType)
+                        },
                         navigateToCategoryPlace = {
                             navigator.navigateToCategoryPlace(navOptions = navOptions { launchSingleTop = true }, placeType = it)
                         },
