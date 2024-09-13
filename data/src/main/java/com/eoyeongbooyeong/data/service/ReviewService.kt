@@ -3,7 +3,7 @@ package com.eoyeongbooyeong.data.service
 import com.eoyeongbooyeong.data.dto.request.WritingReviewRequestDto
 import com.eoyeongbooyeong.data.dto.response.BaseContents
 import com.eoyeongbooyeong.data.dto.response.BaseResponse
-import com.eoyeongbooyeong.data.dto.response.CreatedReviewResponseDto
+import com.eoyeongbooyeong.data.dto.response.ReviewCommentIdResponseDto
 import com.eoyeongbooyeong.data.dto.response.ReviewDto
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -23,6 +23,11 @@ interface ReviewService {
     @POST("api/v1/review")
     suspend fun writeReview(
         @Body request: WritingReviewRequestDto,
-    ): BaseResponse<CreatedReviewResponseDto>
+    ): BaseResponse<ReviewCommentIdResponseDto>
+
+    @POST("api/v1/review/{commentId}/accuse")
+    suspend fun accuseReview(
+        @Path("commentId") commentId: Int,
+    ): BaseResponse<ReviewCommentIdResponseDto>
 
 }

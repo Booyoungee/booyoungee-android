@@ -157,11 +157,24 @@ class PlaceDetailsViewModel
         }
     }
 
+    // 유저 차단
     fun postBlockUser(blockUserId: Int) {
         viewModelScope.launch {
             userRepository.blockUser(blockUserId)
                 .onSuccess {
                     _sideEffects.emit(PlaceDetailsSideEffect.ShowToast("해당 사용자를 차단했습니다."))
+                }.onFailure {
+                    _sideEffects.emit(PlaceDetailsSideEffect.ShowToast(it.message.toString()))
+                }
+        }
+    }
+
+    // 리뷰 신고
+    fun postAccuseReview(commentId: Int) {
+        viewModelScope.launch {
+            reviewRepository.accuseReview(commentId)
+                .onSuccess {
+                    _sideEffects.emit(PlaceDetailsSideEffect.ShowToast("해당 리뷰를 신고했습니다."))
                 }.onFailure {
                     _sideEffects.emit(PlaceDetailsSideEffect.ShowToast(it.message.toString()))
                 }

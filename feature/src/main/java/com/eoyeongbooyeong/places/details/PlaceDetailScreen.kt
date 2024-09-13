@@ -126,9 +126,9 @@ fun PlaceDetailRoute(
         onBlockClick = { blockUserId ->
             viewModel.postBlockUser(blockUserId = blockUserId)
         },
-//        onReportClick = { reviewId ->
-//            viewModel.postReportReview(reviewId = reviewId)
-//        },
+        onAccuseClick = { reviewId ->
+            viewModel.postAccuseReview(commentId = reviewId)
+        },
     )
 }
 
@@ -149,11 +149,11 @@ fun PlaceDetailScreen(
     onClickWriteReview: () -> Unit = {},
     onClickLike: () -> Unit = {},
     onClickBookmark: () -> Unit = {},
-    onClickBackButton: () -> Unit ,
+    onClickBackButton: () -> Unit,
     isLike: Boolean = false,
     isBookmark: Boolean = false,
     onBlockClick: (Int) -> Unit = {},
-    onReportClick: (Int) -> Unit = {},
+    onAccuseClick: (Int) -> Unit = {},
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize().systemBarsPadding().statusBarsPadding(),
@@ -318,7 +318,7 @@ fun PlaceDetailScreen(
                         reviewContent = review.reviewContent,
                         reviewDate = formatReviewDate(review.createdAt),
                         onBlockClick = onBlockClick,
-                        onReportClick = onReportClick
+                        onReportClick = onAccuseClick
                     )
                 }
             }

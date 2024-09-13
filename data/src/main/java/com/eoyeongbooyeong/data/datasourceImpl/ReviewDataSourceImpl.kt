@@ -12,4 +12,5 @@ class ReviewDataSourceImpl @Inject constructor(
     override suspend fun getMyReviews(): List<ReviewDto> = reviewService.getMyReviewList().data.contents
     override suspend fun getReviews(placeId: Int): List<ReviewDto> = reviewService.getMyReviewList(placeId).data.contents
     override suspend fun writeReview(placeId: Int, content: String, stars: Int): Int = reviewService.writeReview(WritingReviewRequestDto(placeId, content, stars)).data.commentId
+    override suspend fun accuseReview(commentId: Int): Int = reviewService.accuseReview(commentId).data.commentId
 }
