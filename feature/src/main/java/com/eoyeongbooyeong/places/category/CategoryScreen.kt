@@ -1,6 +1,7 @@
-package com.eoyeongbooyeong.category
+package com.eoyeongbooyeong.places.category
 
 import SortingDropdownMenu
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -22,61 +23,124 @@ import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.eoyeongbooyeong.category.component.FloatingButtonContainer
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
+import com.eoyeongbooyeong.core.designsystem.component.LoadingWithProgressIndicator
 import com.eoyeongbooyeong.core.designsystem.component.topbar.BooTextTopAppBar
 import com.eoyeongbooyeong.core.designsystem.theme.Black
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Purple
 import com.eoyeongbooyeong.core.designsystem.theme.White
-import com.eoyeongbooyeong.domain.entity.PlaceEntity
+import com.eoyeongbooyeong.core.extension.toast
+import com.eoyeongbooyeong.domain.entity.PlaceInfoEntity
 import com.eoyeongbooyeong.domain.entity.PlaceType
 import com.eoyeongbooyeong.feature.R
+import com.eoyeongbooyeong.places.component.FloatingButtonContainer
 import com.eoyeongbooyeong.search.component.PlaceInfoListItem
 import com.google.common.collect.ImmutableList
 
 @Composable
 fun PlaceCategoryRoute(
+    placeType: String,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {},
-    searchResultList: ImmutableList<PlaceEntity> = ImmutableList.of(),
-    placeType: String = PlaceType.MOVIE.name,
+    viewModel: CategoryPlaceViewModel = hiltViewModel(),
 ) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val context = LocalContext.current
+    val state = viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(key1 = Unit) {
+        when (placeType) {
+            "movie" -> viewModel.getMoviePlaceListWitFilter(state.value.filter)
+            "store" -> viewModel.getLocalStorePlaceListWitFilter(state.value.filter)
+            "tour" -> viewModel.getTourPlaceListWitFilter(state.value.filter)
+        }
+    }
+
+    LaunchedEffect(viewModel.sideEffects, lifecycleOwner) {
+        viewModel.sideEffects
+            .flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    is CategorySideEffect.ShowToast -> context.toast(sideEffect.message)
+
+                    is CategorySideEffect.clickMovieTab -> {
+                        viewModel.getMoviePlaceListWitFilter(state.value.filter)
+                    }
+
+                    is CategorySideEffect.clickLocalStoreTab -> {
+                        viewModel.getLocalStorePlaceListWitFilter(state.value.filter)
+                    }
+
+                    is CategorySideEffect.clickTourTab -> {
+                        viewModel.getTourPlaceListWitFilter(state.value.filter)
+                    }
+
+                    is CategorySideEffect.NavigateToBack -> {
+                    }
+
+                    is CategorySideEffect.NavigateToDetail -> {
+                    }
+                }
+            }
+    }
+
+    Log.d(
+        "PlaceCategoryRoute",
+        "${state.value.placeList}, ${state.value.filter}, ${state.value.placeType}",
+    )
+
     PlaceCategoryScreen(
+        placeType = placeType,
         modifier = modifier,
         onBackClick = onBackClick,
-        searchResultList = searchResultList,
-        onSortSelected = {},
+        placeList = state.value.placeList,
+        onSortingSelected = { selectedFilter ->
+            viewModel.updateState(state.value.copy(filter = selectedFilter))
+            when (placeType) {
+                "movie" -> viewModel.getMoviePlaceListWitFilter(selectedFilter)
+                "store" -> viewModel.getLocalStorePlaceListWitFilter(selectedFilter)
+                "tour" -> viewModel.getTourPlaceListWitFilter(selectedFilter)
+            }
+        },
         navigateToMap = {},
-        placeType = placeType,
+        isLoading = state.value.isLoading,
     )
 }
 
 @Composable
 fun PlaceCategoryScreen(
     modifier: Modifier,
-    searchResultList: List<PlaceEntity>,
+    placeList: List<PlaceInfoEntity>,
     onBackClick: () -> Unit,
-    onSortSelected: (String) -> Unit,
+    onSortingSelected: (String) -> Unit,
     navigateToMap: () -> Unit,
     placeType: String,
+    isLoading: Boolean = false,
+    viewModel: CategoryPlaceViewModel = hiltViewModel(),
 ) {
     val selectedIndex =
         remember {
             mutableStateOf(
                 when (placeType) {
-                    PlaceType.MOVIE.name -> 0
-                    PlaceType.LOCAL_SUPPORT.name -> 1
-                    PlaceType.TOUR.name -> 2
+                    "movie" -> 0
+                    "store" -> 1
+                    "tour" -> 2
                     else -> 0
                 },
             )
@@ -120,7 +184,14 @@ fun PlaceCategoryScreen(
             tabItemTitle.forEachIndexed { index, _ ->
                 Tab(
                     selected = selectedIndex.value == index,
-                    onClick = { selectedIndex.value = index },
+                    onClick = {
+                        selectedIndex.value = index
+                        when (index) {
+                            0 -> viewModel.sendSideEffect(CategorySideEffect.clickMovieTab)
+                            1 -> viewModel.sendSideEffect(CategorySideEffect.clickLocalStoreTab)
+                            2 -> viewModel.sendSideEffect(CategorySideEffect.clickTourTab)
+                        }
+                    },
                     modifier = Modifier.padding(horizontal = 16.dp),
                 ) {
                     Box(
@@ -129,8 +200,16 @@ fun PlaceCategoryScreen(
                                 .clickable(
                                     interactionSource = remember { MutableInteractionSource() },
                                     indication = null,
-                                ) { selectedIndex.value = index }
-                                .padding(top = 8.dp, start = 24.dp, end = 24.dp, bottom = 6.dp),
+                                ) {
+                                    if (selectedIndex.value != index) {
+                                        selectedIndex.value = index
+                                        when (index) {
+                                            0 -> viewModel.sendSideEffect(CategorySideEffect.clickMovieTab)
+                                            1 -> viewModel.sendSideEffect(CategorySideEffect.clickLocalStoreTab)
+                                            2 -> viewModel.sendSideEffect(CategorySideEffect.clickTourTab)
+                                        }
+                                    }
+                                }.padding(top = 8.dp, start = 24.dp, end = 24.dp, bottom = 6.dp),
                     ) {
                         Text(
                             text = tabItemTitle[index],
@@ -144,12 +223,12 @@ fun PlaceCategoryScreen(
 
         Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
             SortingDropdownMenu(
-                onSortSelected = onSortSelected,
+                onSortSelected = onSortingSelected,
             )
         }
 
         PlaceList(
-            searchResultList = searchResultList,
+            searchResultList = placeList,
         )
         Spacer(modifier = Modifier.height(12.dp))
         // TODO 플로팅 버튼 Z 축 위로 올리기
@@ -157,24 +236,29 @@ fun PlaceCategoryScreen(
             onClick = { navigateToMap() },
         )
     }
+
+    // API 호출 후 loading 상태인 경우
+    if (isLoading) {
+        LoadingWithProgressIndicator()
+    }
 }
 
 @Composable
 fun PlaceList(
     modifier: Modifier = Modifier,
-    searchResultList: List<PlaceEntity>,
-    onPlaceClick: (PlaceEntity) -> Unit = {},
+    searchResultList: List<PlaceInfoEntity>,
+    onPlaceClick: (PlaceInfoEntity) -> Unit = {},
 ) {
     LazyColumn {
         items(searchResultList) { place ->
             PlaceInfoListItem(
                 placeName = place.name,
                 address = place.address,
-                star = place.star,
+                star = place.stars,
                 reviewCount = place.reviewCount,
-                likedCount = place.likedCount,
-                movieNameList = place.movieNameList,
-                placeImageUrl = place.imageUrl,
+                likedCount = place.likeCount,
+                movieNameList = place.movies ?: ImmutableList.of(),
+                placeImageUrl = place.images.firstOrNull(),
                 onClick = { /* Handle item click */ },
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -187,82 +271,7 @@ fun PlaceList(
 fun CategoryScreenPreview() {
     BooTheme {
         PlaceCategoryRoute(
-            searchResultList =
-                ImmutableList.of(
-                    PlaceEntity(
-                        name = "피자헛",
-                        address = "서울특별시 강남구 역삼동 123-456",
-                        star = 4.5f,
-                        reviewCount = 123,
-                        likedCount = 456,
-                        movieNameList = listOf("마블", "DC"),
-                        imageUrl = "https://image.com",
-                    ),
-                    PlaceEntity(
-                        name = "도미노피자",
-                        address = "서울특별시 강남구 역삼동 123-456",
-                        star = 4.5f,
-                        reviewCount = 123,
-                        likedCount = 456,
-                        movieNameList = listOf("마블", "DC"),
-                        imageUrl = "https://image.com",
-                    ),
-                    PlaceEntity(
-                        name = "도미노피자",
-                        address = "서울특별시 강남구 역삼동 123-456",
-                        star = 4.5f,
-                        reviewCount = 123,
-                        likedCount = 456,
-                        movieNameList = listOf("마블", "DC"),
-                        imageUrl = "https://image.com",
-                    ),
-                    PlaceEntity(
-                        name = "도미노피자",
-                        address = "서울특별시 강남구 역삼동 123-456",
-                        star = 4.5f,
-                        reviewCount = 123,
-                        likedCount = 456,
-                        movieNameList = listOf("마블", "DC"),
-                        imageUrl = "https://image.com",
-                    ),
-                    PlaceEntity(
-                        name = "도미노피자",
-                        address = "서울특별시 강남구 역삼동 123-456",
-                        star = 4.5f,
-                        reviewCount = 123,
-                        likedCount = 456,
-                        movieNameList = listOf("마블", "DC"),
-                        imageUrl = "https://image.com",
-                    ),
-                    PlaceEntity(
-                        name = "도미노피자",
-                        address = "서울특별시 강남구 역삼동 123-456",
-                        star = 4.5f,
-                        reviewCount = 123,
-                        likedCount = 456,
-                        movieNameList = listOf("마블", "DC"),
-                        imageUrl = "https://image.com",
-                    ),
-                    PlaceEntity(
-                        name = "도미노피자",
-                        address = "서울특별시 강남구 역삼동 123-456",
-                        star = 4.5f,
-                        reviewCount = 123,
-                        likedCount = 456,
-                        movieNameList = listOf("마블", "DC"),
-                        imageUrl = "https://image.com",
-                    ),
-                    PlaceEntity(
-                        name = "도미노피자",
-                        address = "서울특별시 강남구 역삼동 123-456",
-                        star = 4.5f,
-                        reviewCount = 123,
-                        likedCount = 456,
-                        movieNameList = listOf("마블", "DC"),
-                        imageUrl = "https://image.com",
-                    ),
-                ),
-            onBackClick = {},
+            placeType = PlaceType.MOVIE.name.lowercase(),
         )
     }
 }

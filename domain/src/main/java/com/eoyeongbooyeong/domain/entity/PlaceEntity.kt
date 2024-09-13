@@ -1,17 +1,5 @@
 package com.eoyeongbooyeong.domain.entity
 
-data class PlaceEntity(
-    val name: String = "",
-    val address: String = "",
-    val star: Float = 0.0f,
-    val reviewCount: Int = 0,
-    val imageUrl: String = "",
-    val likedCount: Int = 0,
-    val movieNameList: List<String> = emptyList(),
-    val latitude: Double = 0.0,
-    val longitude: Double = 0.0,
-)
-
 data class PlaceInfoEntity(
     val placeId: String = "",
     val name: String = "",
@@ -22,8 +10,12 @@ data class PlaceInfoEntity(
     val movies: List<String>? = null,
     val posterUrl: List<String>? = null,
     val likeCount: Int = 0,
-    val starCount: Float = 0f,
+    val starCount: Int = 0,
     val stampCount: Int = 0,
     val reviewCount: Int = 0,
+    val stars: Double = 0.0,
+    val bookmarkCount: Int = 0,
+    val mapX: String = "129.03933",
+    val mapY: String = "35.114495",
     val me: MeEntity = MeEntity(),
 )

@@ -11,4 +11,16 @@ class ReviewRepositoryImpl @Inject constructor(
     override suspend fun getMyReviews(): Result<List<ReviewInfoEntity>> = runCatching {
         reviewDataSource.getMyReviews().map { it.toDomain() }
     }
+
+    override suspend fun getReviews(placeId: Int): Result<List<ReviewInfoEntity>> = runCatching {
+        reviewDataSource.getReviews(placeId).map { it.toDomain() }
+    }
+
+    override suspend fun writeReview(placeId: Int, content: String, stars: Int): Result<Int> = runCatching {
+        reviewDataSource.writeReview(placeId, content, stars)
+    }
+
+    override suspend fun accuseReview(commentId: Int): Result<Int> = runCatching {
+        reviewDataSource.accuseReview(commentId)
+    }
 }

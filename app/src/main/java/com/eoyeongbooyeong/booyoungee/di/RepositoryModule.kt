@@ -21,31 +21,21 @@ import javax.inject.Singleton
 internal abstract class RepositoryModule {
     @Binds
     @Singleton
-    abstract fun provideAuthRepository(
-        authRepositoryImpl: AuthRepositoryImpl,
-    ): AuthRepository
+    abstract fun provideAuthRepository(authRepositoryImpl: AuthRepositoryImpl): AuthRepository
 
     @Binds
     @Singleton
-    abstract fun provideUserRepository(
-        userRepositoryImpl: UserRepositoryImpl,
-    ): UserRepository
+    abstract fun provideUserRepository(userRepositoryImpl: UserRepositoryImpl): UserRepository
 
     @Binds
     @Singleton
-    abstract fun provideReviewRepository(
-        reviewRepositoryImpl: ReviewRepositoryImpl,
-    ): ReviewRepository
+    abstract fun provideReviewRepository(reviewRepositoryImpl: ReviewRepositoryImpl): ReviewRepository
 
     @Binds
     @Singleton
-    abstract fun providePlaceRepository(
-        placeRepositoryImpl: PlaceRepositoryImpl,
-    ): PlaceRepository
+    abstract fun providePlaceRepository(placeRepositoryImpl: PlaceRepositoryImpl): PlaceRepository
 
     @Binds
     @Singleton
-    abstract fun provideBookmarkRepository(
-        bookmarkRepositoryImpl: BookmarkRepositoryImpl,
-    ): BookmarkRepository
+    abstract fun provideBookmarkRepository(bookmarkRepositoryImpl: BookmarkRepositoryImpl): BookmarkRepository
 }

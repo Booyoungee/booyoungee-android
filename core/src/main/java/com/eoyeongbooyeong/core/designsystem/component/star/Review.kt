@@ -29,9 +29,11 @@ fun Review(
     reviewId: Int = -1,
     writerId: Int = -1,
     nickName: String = "",
-    reviewScore: Float = 0f,
+    reviewScore: Double = 0.0,
     reviewContent: String = "",
     reviewDate: String = "",
+    onReportClick: (Int) -> Unit,
+    onBlockClick: (Int) -> Unit
 ) {
     Column(
         modifier = modifier.background(White),
@@ -62,11 +64,13 @@ fun Review(
             Column(
                 horizontalAlignment = Alignment.End,
             ) {
-                ReviewDropdownMenu {
-                    Text(text = "신고하기", style = BooTheme.typography.body4)
+                val menuItems = listOf("신고하기", "차단하기")
+                ReviewDropdownMenu(menuItems) { selectedItem ->
+                    when (selectedItem) {
+                        "신고하기" -> onReportClick(reviewId)
+                        "차단하기" -> onBlockClick(writerId)
+                    }
                 }
-                Spacer(modifier = Modifier.size(3.dp))
-                Text(text = reviewDate, style = BooTheme.typography.caption4, color = Black)
             }
         }
 
@@ -86,10 +90,12 @@ fun ReviewPreview() {
     BooTheme {
         Review(
             nickName = "김보영",
-            reviewScore = 4.5f,
+            reviewScore = 4.5,
             reviewContent = "너무 좋아요",
             reviewDate = "2021.10.10",
             modifier = Modifier.background(White),
+            onReportClick = {},
+            onBlockClick = {},
         )
     }
 }

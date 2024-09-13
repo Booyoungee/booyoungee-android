@@ -45,7 +45,7 @@ import com.eoyeongbooyeong.feature.R
 internal fun PlaceInfoListItem(
     placeName: String,
     address: String,
-    star: Float,
+    star: Double,
     reviewCount: Int,
     likedCount: Int,
     movieNameList: List<String>?,
@@ -53,6 +53,7 @@ internal fun PlaceInfoListItem(
     modifier: Modifier = Modifier,
     isBookmarked: Boolean = false,
     onClick: () -> Unit = {},
+    onBookMarkClick: () -> Unit = {},
 ) {
     Box(
         modifier =
@@ -112,7 +113,7 @@ internal fun PlaceInfoListItem(
                             }
                         ),
                         contentDescription = "bookmark icon",
-                        modifier = Modifier.size(20.dp),
+                        modifier = Modifier.size(20.dp).noRippleClickable(onClick = onBookMarkClick),
                         colorFilter = ColorFilter.tint(Blue400)
                     )
                 }
@@ -167,7 +168,7 @@ internal fun PlaceInfoListItem(
                 if (movieNameList != null) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Image(
-                            painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_camera),
+                            painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_film),
                             contentDescription = "camera icon",
                             modifier = modifier.size(20.dp),
                         )
@@ -193,7 +194,7 @@ internal fun PlaceInfoListItem(
 @Composable
 fun PlaceReviewAndLikedCount(
     modifier: Modifier = Modifier,
-    star: Float = 0f,
+    star: Double = 0.0,
     reviewCount: Int = 0,
     likedCount: Int = 0,
 ) {
@@ -245,7 +246,7 @@ fun PlaceInfoResultListPreview() {
                 placeName = "PlaceEntity Name",
                 placeImageUrl = "https://placeimg.com/100/100/any",
                 address = "Address",
-                star = 4.5f,
+                star = 4.5,
                 reviewCount = 100,
                 likedCount = 100,
                 isBookmarked = false,

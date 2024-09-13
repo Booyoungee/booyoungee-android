@@ -7,7 +7,7 @@ interface UserRepository {
 
     suspend fun getUserNickname(): Result<String>
 
-    suspend fun setUserNickname(
-        nickname: String,
-    ): Result<Unit>
+    suspend fun setUserNickname(nickname: String): Result<Unit>
+
+    suspend fun blockUser(blockUserId: Int): Result<Unit>
 }

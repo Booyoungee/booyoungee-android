@@ -31,7 +31,7 @@ fun MyReview(
     reviewId: Int = -1,
     writerId: Int = -1,
     storeName: String = "",
-    reviewScore: Float = 0f,
+    reviewScore: Double = 0.0,
     reviewContent: String = "",
     reviewDate: String = "",
 ) {
@@ -66,8 +66,9 @@ fun MyReview(
             Column(
                 horizontalAlignment = Alignment.End,
             ) {
-                ReviewDropdownMenu {
-                    Text(text = "신고하기", style = BooTheme.typography.body4)
+                val menuItemList = listOf("신고하기")
+                ReviewDropdownMenu(menuItemList){
+                    // TODO 신고하기 api 붙여야 함
                 }
                 Spacer(modifier = Modifier.size(3.dp))
                 Text(text = reviewDate, style = BooTheme.typography.caption4, color = Black)
@@ -90,7 +91,7 @@ fun MyReviewPreview() {
     BooTheme {
         MyReview(
             storeName = "아홉산 숲",
-            reviewScore = 4.5f,
+            reviewScore = 4.5,
             reviewContent = "생각보다 내부가 엄청 넓었어요. 천천히 산책하면서 사진찍으려면 1시간30분~2시간은 잡아야 가능할 곳이에요.",
             reviewDate = "2021.10.10",
             modifier = Modifier.background(White),

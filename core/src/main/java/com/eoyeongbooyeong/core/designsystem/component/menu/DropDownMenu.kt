@@ -23,18 +23,17 @@ import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Gray200
 import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.core.extension.noRippleClickable
-
 @Composable
-fun ReviewDropdownMenu(menuItemText: @Composable () -> Unit) {
+fun ReviewDropdownMenu(menuItems: List<String>, onMenuItemClick: (String) -> Unit) {
     var isDropDownMenuExpanded by remember { mutableStateOf(false) }
 
     Icon(
         painter = painterResource(id = R.drawable.ic_menu),
         contentDescription = "menu icon",
         modifier =
-            Modifier
-                .wrapContentSize()
-                .noRippleClickable { isDropDownMenuExpanded = true },
+        Modifier
+            .wrapContentSize()
+            .noRippleClickable { isDropDownMenuExpanded = true },
     )
 
     DropdownMenu(
@@ -42,13 +41,18 @@ fun ReviewDropdownMenu(menuItemText: @Composable () -> Unit) {
         onDismissRequest = { isDropDownMenuExpanded = false },
         modifier = Modifier.background(White).wrapContentSize(),
     ) {
-        DropdownMenuItem(
-            onClick = {
-                isDropDownMenuExpanded = !isDropDownMenuExpanded
-            },
-            text = menuItemText,
-            modifier = Modifier.border(1.dp, Gray200).background(White),
-        )
+        menuItems.forEach { menuItem ->
+            DropdownMenuItem(
+                onClick = {
+                    onMenuItemClick(menuItem)
+                    isDropDownMenuExpanded = false
+                },
+                text = {
+                    Text(text = menuItem)
+                },
+                modifier = Modifier.border(1.dp, Gray200).background(White),
+            )
+        }
     }
 }
 
@@ -58,13 +62,15 @@ fun ReviewDropdownMenuPreview() {
     BooTheme {
         Column(
             modifier =
-                Modifier
-                    .background(White)
-                    .fillMaxSize(),
+            Modifier
+                .background(White)
+                .fillMaxSize(),
             horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
         ) {
-            ReviewDropdownMenu {
-                Text(text = "신고하기")
+            val menuItems = listOf("신고하기", "차단하기", "기타")
+            ReviewDropdownMenu(menuItems) { selectedItem ->
+                // 메뉴 아이템 클릭 시 처리할 동작
+                println("Selected item: $selectedItem")
             }
         }
     }
