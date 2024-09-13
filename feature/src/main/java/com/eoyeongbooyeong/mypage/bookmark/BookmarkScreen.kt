@@ -1,6 +1,7 @@
 package com.eoyeongbooyeong.mypage.bookmark
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -81,7 +82,8 @@ fun BookmarkScreen(
         )
 
         LazyColumn(
-            modifier = Modifier.fillMaxSize().padding(horizontal = 24.dp)
+            modifier = Modifier.fillMaxSize().padding(horizontal = 24.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(bookmarkList) {
                 PlaceInfoListItem(
