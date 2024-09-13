@@ -20,7 +20,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.eoyeongbooyeong.core.R
-import com.eoyeongbooyeong.core.designsystem.component.menu.ReviewDropdownMenu
 import com.eoyeongbooyeong.core.designsystem.theme.Black
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.White
@@ -63,16 +62,7 @@ fun MyReviewComponent(
                 ReviewStar(star = reviewScore)
             }
 
-            Column(
-                horizontalAlignment = Alignment.End,
-            ) {
-                val menuItemList = listOf("신고하기")
-                ReviewDropdownMenu(menuItemList){
-                    // TODO 신고하기 api 붙여야 함
-                }
-                Spacer(modifier = Modifier.size(3.dp))
-                Text(text = reviewDate, style = BooTheme.typography.caption4, color = Black)
-            }
+            Text(text = reviewDate, style = BooTheme.typography.caption4, color = Black)
         }
 
         Spacer(modifier = Modifier.size(8.dp))
