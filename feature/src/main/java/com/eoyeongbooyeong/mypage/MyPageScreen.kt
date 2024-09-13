@@ -32,6 +32,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
+import androidx.multidex.BuildConfig
 import com.eoyeongbooyeong.core.constant.PrivacyPolicy
 import com.eoyeongbooyeong.core.constant.TermsOfService
 import com.eoyeongbooyeong.core.designsystem.component.dialog.BooDialog
@@ -47,6 +48,8 @@ import com.jakewharton.processphoenix.ProcessPhoenix
 internal fun MyPageRoute(
     paddingValues: PaddingValues,
     navigateToEditNickname: () -> Unit,
+    navigateToMyReview: () -> Unit,
+    navigateToBookmark: () -> Unit,
     viewModel: MyPageViewModel = hiltViewModel(),
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -64,6 +67,8 @@ internal fun MyPageRoute(
                     }
 
                     MyPageSideEffect.NavigateToEditNickname -> navigateToEditNickname()
+                    MyPageSideEffect.NavigateToMyReview -> navigateToMyReview()
+                    MyPageSideEffect.NavigateToBookmark -> navigateToBookmark()
                 }
             }
     }
@@ -99,6 +104,8 @@ internal fun MyPageRoute(
         nickname = state.value.nickname,
         navigateToWebView = viewModel::navigateToWebView,
         navigateToEditNickname = viewModel::navigateToEditNickname,
+        navigateToMyReview = viewModel::navigateToMyReview,
+        navigateToBookmark = viewModel::navigateToBookmark,
         withDraw = viewModel::controlWithDrawDialog,
         logout = viewModel::controlLogoutDialog,
     )
@@ -110,6 +117,8 @@ internal fun MyPageScreen(
     nickname: String,
     navigateToWebView: (String) -> Unit = {},
     navigateToEditNickname: () -> Unit = {},
+    navigateToMyReview: () -> Unit = {},
+    navigateToBookmark: () -> Unit = {},
     withDraw: () -> Unit = {},
     logout: () -> Unit = {},
 ) {
@@ -153,6 +162,7 @@ internal fun MyPageScreen(
             Row {
                 Row(
                     modifier = Modifier
+                        .noRippleClickable(navigateToMyReview)
                         .weight(1f)
                         .clip(RoundedCornerShape(10.dp))
                         .background(Gray100)
@@ -173,6 +183,7 @@ internal fun MyPageScreen(
                 Spacer(modifier = Modifier.width(12.dp))
                 Row(
                     modifier = Modifier
+                        .noRippleClickable(navigateToBookmark)
                         .weight(1f)
                         .clip(RoundedCornerShape(10.dp))
                         .background(Gray100)

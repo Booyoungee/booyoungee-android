@@ -4,11 +4,13 @@ import com.eoyeongbooyeong.data.repositoryImpl.AuthRepositoryImpl
 import com.eoyeongbooyeong.data.repositoryImpl.BookmarkRepositoryImpl
 import com.eoyeongbooyeong.data.repositoryImpl.PlaceRepositoryImpl
 import com.eoyeongbooyeong.data.repositoryImpl.ReviewRepositoryImpl
+import com.eoyeongbooyeong.data.repositoryImpl.TourInfoOpenApiRepositoryImpl
 import com.eoyeongbooyeong.data.repositoryImpl.UserRepositoryImpl
 import com.eoyeongbooyeong.domain.repository.AuthRepository
 import com.eoyeongbooyeong.domain.repository.BookmarkRepository
 import com.eoyeongbooyeong.domain.repository.PlaceRepository
 import com.eoyeongbooyeong.domain.repository.ReviewRepository
+import com.eoyeongbooyeong.domain.repository.TourInfoRepository
 import com.eoyeongbooyeong.domain.repository.UserRepository
 import dagger.Binds
 import dagger.Module
@@ -37,5 +39,13 @@ internal abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun provideBookmarkRepository(bookmarkRepositoryImpl: BookmarkRepositoryImpl): BookmarkRepository
+    abstract fun provideBookmarkRepository(
+        bookmarkRepositoryImpl: BookmarkRepositoryImpl,
+    ): BookmarkRepository
+
+    @Binds
+    @Singleton
+    abstract fun provideTourInfoOpenApiRepository(
+        tourInfoOpenApiRepositoryImpl: TourInfoOpenApiRepositoryImpl
+    ): TourInfoRepository
 }

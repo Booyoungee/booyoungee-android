@@ -3,6 +3,7 @@ package com.eoyeongbooyeong.data.service
 import com.eoyeongbooyeong.data.dto.request.WritingReviewRequestDto
 import com.eoyeongbooyeong.data.dto.response.BaseContents
 import com.eoyeongbooyeong.data.dto.response.BaseResponse
+import com.eoyeongbooyeong.data.dto.response.MyReviewDto
 import com.eoyeongbooyeong.data.dto.response.ReviewCommentIdResponseDto
 import com.eoyeongbooyeong.data.dto.response.ReviewDto
 import retrofit2.http.Body
@@ -12,7 +13,7 @@ import retrofit2.http.Path
 
 interface ReviewService {
     @GET("api/v1/review/my")
-    suspend fun getMyReviewList(): BaseResponse<BaseContents<ReviewDto>>
+    suspend fun getMyReviewList(): BaseResponse<BaseContents<MyReviewDto>>
 
 
     @GET("api/v1/review/{placeId}")

@@ -26,7 +26,7 @@ import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.White
 
 @Composable
-fun MyReview(
+fun MyReviewComponent(
     modifier: Modifier = Modifier,
     reviewId: Int = -1,
     writerId: Int = -1,
@@ -89,7 +89,7 @@ fun MyReview(
 @Preview
 fun MyReviewPreview() {
     BooTheme {
-        MyReview(
+        MyReviewComponent(
             storeName = "아홉산 숲",
             reviewScore = 4.5,
             reviewContent = "생각보다 내부가 엄청 넓었어요. 천천히 산책하면서 사진찍으려면 1시간30분~2시간은 잡아야 가능할 곳이에요.",

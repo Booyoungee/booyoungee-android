@@ -40,6 +40,18 @@ class MyPageViewModel @Inject constructor(
         }
     }
 
+    fun navigateToMyReview() {
+        viewModelScope.launch {
+            _sideEffects.emit(MyPageSideEffect.NavigateToMyReview)
+        }
+    }
+
+    fun navigateToBookmark() {
+        viewModelScope.launch {
+            _sideEffects.emit(MyPageSideEffect.NavigateToBookmark)
+        }
+    }
+
     fun controlLogoutDialog() {
         _state.value =
             _state.value.copy(isLogoutDialogVisible = !_state.value.isLogoutDialogVisible)

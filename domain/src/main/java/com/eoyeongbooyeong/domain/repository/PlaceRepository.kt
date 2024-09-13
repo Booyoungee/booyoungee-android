@@ -1,5 +1,6 @@
 package com.eoyeongbooyeong.domain.repository
 
+import com.eoyeongbooyeong.domain.entity.HotPlaceEntity
 import com.eoyeongbooyeong.domain.entity.BookMarkEntity
 import com.eoyeongbooyeong.domain.entity.LikeEntity
 import com.eoyeongbooyeong.domain.entity.PlaceDetailsEntity
@@ -7,6 +8,7 @@ import com.eoyeongbooyeong.domain.entity.PlaceInfoEntity
 
 interface PlaceRepository {
     suspend fun getRecommendPlace(): Result<List<PlaceInfoEntity>>
+    suspend fun getHotPlace(): Result<List<HotPlaceEntity>>
     suspend fun getPlaceDetails(placeId: Int, placeType: String): Result<PlaceInfoEntity>
     suspend fun postBookMark(placeId: Int, placeType: String): Result<BookMarkEntity>
     suspend fun deleteBookMark(placeId: Int): Result<BookMarkEntity>

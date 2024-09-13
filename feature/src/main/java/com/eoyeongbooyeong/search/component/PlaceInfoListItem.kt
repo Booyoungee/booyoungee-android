@@ -56,33 +56,28 @@ internal fun PlaceInfoListItem(
     onBookMarkClick: () -> Unit = {},
 ) {
     Box(
-        modifier =
-        modifier
+        modifier = modifier
             .noRippleClickable(onClick = onClick)
             .fillMaxWidth()
-            .padding(horizontal = 24.dp)
             .background(White),
     ) {
         Row(
-            modifier =
-            modifier
+            modifier = Modifier
                 .wrapContentSize()
-                .height(IntrinsicSize.Min)
-                .padding(end = 10.dp),
+                .height(IntrinsicSize.Min),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             AsyncImage(
                 model = placeImageUrl ?: com.eoyeongbooyeong.core.R.drawable.img_default_5,
                 contentDescription = null,
-                modifier =
-                modifier
+                modifier = Modifier
                     .size(100.dp)
                     .clip(RoundedCornerShape(5.dp)),
                 placeholder = painterResource(id = com.eoyeongbooyeong.core.R.drawable.img_default_5),
                 error = painterResource(id = com.eoyeongbooyeong.core.R.drawable.img_default_5),
             )
 
-            Spacer(modifier = modifier.width(10.dp))
+            Spacer(modifier = Modifier.width(10.dp))
 
             Column(
                 modifier = Modifier
@@ -113,7 +108,9 @@ internal fun PlaceInfoListItem(
                             }
                         ),
                         contentDescription = "bookmark icon",
-                        modifier = Modifier.size(20.dp).noRippleClickable(onClick = onBookMarkClick),
+                        modifier = Modifier
+                            .size(20.dp)
+                            .noRippleClickable(onClick = onBookMarkClick),
                         colorFilter = ColorFilter.tint(Blue400)
                     )
                 }
@@ -134,8 +131,7 @@ internal fun PlaceInfoListItem(
                         text = star.toString(),
                         style = BooTheme.typography.caption1,
                         color = Black,
-                        modifier =
-                        modifier
+                        modifier = Modifier
                             .weight(1f, false)
                             .padding(start = 4.dp),
                     )
@@ -143,8 +139,7 @@ internal fun PlaceInfoListItem(
                         text = stringResource(R.string.placeReviewAndPoint, reviewCount),
                         style = BooTheme.typography.caption2,
                         color = Gray400,
-                        modifier =
-                        modifier
+                        modifier = Modifier
                             .weight(1f, false)
                             .padding(start = 4.dp),
                     )
@@ -159,8 +154,7 @@ internal fun PlaceInfoListItem(
                         color = Black,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        modifier =
-                        modifier
+                        modifier = Modifier
                             .weight(1f, false)
                             .padding(start = 4.dp),
                     )
@@ -170,15 +164,14 @@ internal fun PlaceInfoListItem(
                         Image(
                             painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_film),
                             contentDescription = "camera icon",
-                            modifier = modifier.size(20.dp),
+                            modifier = Modifier.size(20.dp),
                         )
                         Text(
                             text = movieNameList.listToBracketedString(),
                             style = BooTheme.typography.caption1,
                             color = Black,
                             maxLines = 1,
-                            modifier =
-                            modifier
+                            modifier = Modifier
                                 .padding(start = 8.dp)
                                 .align(Alignment.CenterVertically),
                             textAlign = TextAlign.Center,
@@ -186,7 +179,7 @@ internal fun PlaceInfoListItem(
                     }
                 }
             }
-            Spacer(modifier = modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(8.dp))
         }
     }
 }

@@ -36,7 +36,13 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun getRecommendPlace() {
+    fun navigateToSearch() {
+        viewModelScope.launch {
+            _sideEffects.emit(HomeSideEffect.NavigateToSearch)
+        }
+    }
+
+    private fun getRecommendPlace() {
         viewModelScope.launch {
             placeRepository.getRecommendPlace()
                 .onSuccess {

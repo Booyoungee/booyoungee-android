@@ -10,3 +10,16 @@ data class ReviewInfoEntity(
     val createdAt: String = "",
     val updatedAt: String = "",
 )
+
+
+data class MyReviewEntity(
+    val id: Int = -1,
+    val placeId: Int = -1,
+    val placeName: String = "",
+    val content: String = "",
+    val stars: Int = 1,
+    val writerId: Int = -1,
+    val writerName: String = "",
+    val createdAt: String = "",
+    val updatedAt: String = "",
+)

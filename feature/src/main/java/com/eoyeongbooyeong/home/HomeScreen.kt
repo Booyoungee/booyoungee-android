@@ -56,6 +56,7 @@ import com.eoyeongbooyeong.feature.R
 @Composable
 internal fun HomeRoute(
     paddingValues: PaddingValues,
+    navigateToSearch: () -> Unit = {},
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -70,6 +71,8 @@ internal fun HomeRoute(
                     is HomeSideEffect.NavigateToWebView -> {
                         context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(sideEffect.url)))
                     }
+
+                    HomeSideEffect.NavigateToSearch -> navigateToSearch()
                 }
             }
     }
@@ -78,6 +81,7 @@ internal fun HomeRoute(
         paddingValues = paddingValues,
         recommendedPlace = state.value.recommendedPlace,
         navigateToWebView = viewModel::navigateToWebView,
+        navigateToSearch = viewModel::navigateToSearch,
     )
 }
 
@@ -86,6 +90,7 @@ private fun HomeScreen(
     paddingValues: PaddingValues,
     recommendedPlace: List<PlaceInfoEntity> = emptyList(),
     navigateToWebView: (String) -> Unit = {},
+    navigateToSearch: () -> Unit = {},
 ) {
     val verticalScrollState = rememberScrollState()
     val horizontalRecommendedScrollState = rememberScrollState()
@@ -107,7 +112,7 @@ private fun HomeScreen(
             BooSearchTextField(
                 modifier = Modifier.padding(vertical = 12.dp),
                 isActive = false,
-                onClick = {}, // navigate to search screen
+                onClick = navigateToSearch
             )
 
             Spacer(modifier = Modifier.height(20.dp))

@@ -17,6 +17,10 @@ import com.eoyeongbooyeong.mypage.navigateToMyPage
 import com.eoyeongbooyeong.navigation.Route
 import com.eoyeongbooyeong.home.Home
 import com.eoyeongbooyeong.home.navigateToHome
+import com.eoyeongbooyeong.mypage.MyBookMark
+import com.eoyeongbooyeong.mypage.MyReview
+import com.eoyeongbooyeong.search.Search
+import com.eoyeongbooyeong.search.navigateToSearch
 import com.eoyeongbooyeong.splash.Splash
 import com.eoyeongbooyeong.stamp.navigateToStamp
 
@@ -75,8 +79,20 @@ internal class MainNavigator(
         navController.navigate(Home, navOptions)
     }
 
+    fun navigateToSearch(navOptions: NavOptions) {
+        navController.navigateToSearch(navOptions)
+    }
+
     fun navigateToMyPageEditNickname() {
         navController.navigate(MyPageEditNickname)
+    }
+
+    fun navigateToMyReview() {
+        navController.navigate(MyReview)
+    }
+
+    fun navigateToBookmark() {
+        navController.navigate(MyBookMark)
     }
 
     private inline fun <reified T : Route> isSameCurrentDestination(): Boolean =
