@@ -56,7 +56,7 @@ class KakaoMapViewModel
             )
         }
 
-        fun getMoviePlaceListWitFilter(filter: String = "star") { // TODO
+        fun getMoviePlaceListWitFilter(filter: String = "default") {
             _state.value = _state.value.copy(isLoading = true)
 
             viewModelScope.launch {

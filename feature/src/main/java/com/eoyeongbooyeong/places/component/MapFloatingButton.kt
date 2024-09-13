@@ -109,7 +109,7 @@ fun FloatingButtonContainer(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .padding(end = 16.dp, bottom = 56.dp)
+            .padding(end = 16.dp, bottom = 56.dp).zIndex(1f)
     ) {
         NavigateToMapFloatingButton(
             modifier = Modifier

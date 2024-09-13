@@ -53,6 +53,7 @@ internal fun PlaceInfoListItem(
     modifier: Modifier = Modifier,
     isBookmarked: Boolean = false,
     onClick: () -> Unit = {},
+    onBookMarkClick: () -> Unit = {},
 ) {
     Box(
         modifier =
@@ -112,7 +113,7 @@ internal fun PlaceInfoListItem(
                             }
                         ),
                         contentDescription = "bookmark icon",
-                        modifier = Modifier.size(20.dp),
+                        modifier = Modifier.size(20.dp).noRippleClickable(onClick = onBookMarkClick),
                         colorFilter = ColorFilter.tint(Blue400)
                     )
                 }

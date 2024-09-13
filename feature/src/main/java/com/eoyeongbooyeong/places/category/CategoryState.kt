@@ -8,4 +8,5 @@ data class CategoryState(
     val placeList: List<PlaceInfoEntity> = emptyList(),
     val isLoading: Boolean = false,
     val error: Throwable? = null,
+    val isBookmarked: Boolean = false,
 )
