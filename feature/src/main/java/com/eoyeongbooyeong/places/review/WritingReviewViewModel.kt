@@ -35,6 +35,7 @@ class WritingReviewViewModel @Inject constructor(
                 reviewRepository.writeReview(placeId, content, stars)
                     .onSuccess {
                         _sideEffects.emit(WritingReviewSideEffect.ShowToast("리뷰가 작성되었습니다."))
+                        _sideEffects.emit(WritingReviewSideEffect.NavigateReviewFinish)
                     }.onFailure {
                         _sideEffects.emit(WritingReviewSideEffect.ShowToast(it.message.toString()))
                     }

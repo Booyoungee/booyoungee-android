@@ -48,6 +48,7 @@ import com.eoyeongbooyeong.place_recommend.placeNavGraph
 import com.eoyeongbooyeong.places.category.categoryPlaceNavGraph
 import com.eoyeongbooyeong.places.details.placeDetailNavGraph
 import com.eoyeongbooyeong.places.map.kakaoMapNavGraph
+import com.eoyeongbooyeong.places.review.writeReviewNavGraph
 import com.eoyeongbooyeong.search.searchNavGraph
 import com.eoyeongbooyeong.splash.Splash
 import com.eoyeongbooyeong.splash.splashNavGraph
@@ -155,12 +156,18 @@ internal fun MainScreen(
                             navigator.navigateToWriteReview(navOptions { launchSingleTop = true }, placeId = placeId)
                         },
                     )
+
                     kakaoMapNavGraph(
                         navigateUp = navigator::navigateUpAndClearStackToHome,
                         navigateToPlaceDetail = { placeId, placeType ->
                             navigator.navigateToPlaceDetail(navOptions { launchSingleTop = true }, placeId = placeId, placeType = placeType)
                         },
                     )
+
+                    writeReviewNavGraph(
+                        navigateUp = navigator::navigateUpIfNotHome,
+                    )
+
                     stampNavGraph()
                     myPageNavGraph(
                         paddingValues = paddingValue,

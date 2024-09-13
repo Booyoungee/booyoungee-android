@@ -22,6 +22,7 @@ import com.eoyeongbooyeong.mypage.MyReview
 import com.eoyeongbooyeong.places.category.CategoryPlace
 import com.eoyeongbooyeong.places.details.PlaceDetail
 import com.eoyeongbooyeong.places.map.KakaoMap
+import com.eoyeongbooyeong.places.review.WriteReview
 import com.eoyeongbooyeong.search.Search
 import com.eoyeongbooyeong.search.navigateToSearch
 import com.eoyeongbooyeong.splash.Splash
@@ -107,7 +108,7 @@ internal class MainNavigator(
     }
 
     fun navigateToWriteReview(navOption: NavOptions, placeId: Int) {
-        navController.navigate(PlaceDetail(placeId, ""), navOption)
+        navController.navigate(WriteReview(placeId), navOption)
     }
 
     fun navigateToKakaoMap(navOption: NavOptions, placeType: String) {
