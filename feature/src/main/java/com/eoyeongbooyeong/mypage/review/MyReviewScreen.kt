@@ -33,6 +33,7 @@ import kotlinx.collections.immutable.persistentListOf
 fun MyReviewRoute(
     paddingValues: PaddingValues,
     navigateUp: () -> Unit,
+    navigateToPlaceDetail: (Int, String) -> Unit,
     viewModel: MyReviewViewModel = hiltViewModel(),
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -43,6 +44,10 @@ fun MyReviewRoute(
             .collect { sideEffect ->
                 when (sideEffect) {
                     is MyReviewSideEffect.NavigateUp -> navigateUp()
+                    is MyReviewSideEffect.NavigateToPlaceDetail -> navigateToPlaceDetail(
+                        sideEffect.placeId,
+                        sideEffect.type
+                    )
                 }
             }
     }
@@ -59,6 +64,7 @@ fun MyReviewScreen(
     paddingValues: PaddingValues = PaddingValues(0.dp),
     reviewList: ImmutableList<MyReviewEntity> = persistentListOf(),
     navigateUp: () -> Unit = {},
+    navigateToPlaceDetail: (Int, String) -> Unit = { _, _ -> }
 ) {
     Column(
         modifier = Modifier

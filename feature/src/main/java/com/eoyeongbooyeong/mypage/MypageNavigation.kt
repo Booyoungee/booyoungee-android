@@ -53,7 +53,8 @@ fun NavGraphBuilder.myPageNavGraph(
     composable<MyReview> {
         MyReviewRoute(
             paddingValues = paddingValues,
-            navigateUp = navigateUp
+            navigateUp = navigateUp,
+            navigateToPlaceDetail = navigateToPlaceDetail
         )
     }
 

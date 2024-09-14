@@ -23,6 +23,7 @@ import com.eoyeongbooyeong.core.R
 import com.eoyeongbooyeong.core.designsystem.theme.Black
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.White
+import com.eoyeongbooyeong.core.extension.noRippleClickable
 
 @Composable
 fun MyReviewComponent(
@@ -33,9 +34,10 @@ fun MyReviewComponent(
     reviewScore: Double = 0.0,
     reviewContent: String = "",
     reviewDate: String = "",
+    onClick: (Int) -> Unit = {},
 ) {
     Column(
-        modifier = modifier.background(White),
+        modifier = modifier.background(White).noRippleClickable { onClick(reviewId) },
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,

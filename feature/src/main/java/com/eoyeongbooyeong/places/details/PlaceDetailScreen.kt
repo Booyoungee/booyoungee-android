@@ -1,6 +1,5 @@
-package com.eoyeongbooyeong.search
+package com.eoyeongbooyeong.places.details
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -50,8 +49,6 @@ import com.eoyeongbooyeong.core.extension.formatReviewDate
 import com.eoyeongbooyeong.core.extension.noRippleClickable
 import com.eoyeongbooyeong.core.extension.toast
 import com.eoyeongbooyeong.domain.entity.ReviewInfoEntity
-import com.eoyeongbooyeong.places.details.PlaceDetailsSideEffect
-import com.eoyeongbooyeong.places.details.PlaceDetailsViewModel
 import com.eoyeongbooyeong.search.component.PlaceDetailBottomBar
 import com.eoyeongbooyeong.search.component.PlaceDetailInfo
 import com.eoyeongbooyeong.search.component.PlaceReviewAndLikedCount
@@ -60,7 +57,6 @@ import com.eoyeongbooyeong.search.component.PlaceReviewAndLikedCount
 fun PlaceDetailRoute(
     placeId: Int = 898,
     placeType: String = "movie",
-    modifier: Modifier = Modifier,
     onClickWriteReview: (Int) -> Unit = {},
     onClickBackButton: () -> Unit = {},
     viewModel: PlaceDetailsViewModel = hiltViewModel(),
@@ -92,7 +88,7 @@ fun PlaceDetailRoute(
 
     PlaceDetailScreen(
         placeId = placeId,
-        modifier = modifier,
+        modifier = Modifier,
         movieList = placeInfoEntity.movies?.joinToString(", ") ?: "",
         movieTitle = placeInfoEntity.name,
         tel = placeInfoEntity.tel,
