@@ -57,7 +57,7 @@ import com.eoyeongbooyeong.search.component.PlaceReviewAndLikedCount
 fun PlaceDetailRoute(
     placeId: Int = 898,
     placeType: String = "movie",
-    onClickWriteReview: (Int) -> Unit = {},
+    onClickWriteReview: (Int, String) -> Unit = { _, _ -> },
     onClickBackButton: () -> Unit = {},
     viewModel: PlaceDetailsViewModel = hiltViewModel(),
 ) {
@@ -100,7 +100,7 @@ fun PlaceDetailRoute(
         placeDetailStarScore = placeInfoEntity.stars,
         placeDetailBookmarkCount = state.value.bookMarkCount,
         reviewInfoEntityTotalList = state.value.reviewList,
-        onClickWriteReview = { onClickWriteReview(placeId) },
+        onClickWriteReview = { onClickWriteReview(placeId, placeType) },
         onClickLike = {
             if (state.value.isLiked) {
                 viewModel.deleteLike(placeId = placeId)

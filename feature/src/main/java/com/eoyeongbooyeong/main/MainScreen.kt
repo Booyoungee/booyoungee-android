@@ -134,19 +134,32 @@ internal fun MainScreen(
                             })
                         },
                         navigateToPlaceDetail = { placeId, placeType ->
-                            navigator.navigateToPlaceDetail(navOptions { launchSingleTop = true }, placeId = placeId, placeType = placeType)
+                            navigator.navigateToPlaceDetail(
+                                navOptions { launchSingleTop = true },
+                                placeId = placeId,
+                                placeType = placeType
+                            )
                         },
                         navigateToCategoryPlace = {
-                            navigator.navigateToCategoryPlace(navOptions = navOptions { launchSingleTop = true }, placeType = it)
+                            navigator.navigateToCategoryPlace(navOptions = navOptions {
+                                launchSingleTop = true
+                            }, placeType = it)
                         },
                     )
                     categoryPlaceNavGraph(
                         navigateUp = navigator::navigateUpIfNotHome,
                         navigateToPlaceDetail = { placeId, placeType ->
-                            navigator.navigateToPlaceDetail(navOptions { launchSingleTop = true }, placeId = placeId, placeType = placeType)
+                            navigator.navigateToPlaceDetail(
+                                navOptions { launchSingleTop = true },
+                                placeId = placeId,
+                                placeType = placeType
+                            )
                         },
                         navigateToKakaoMap = { placeType ->
-                            navigator.navigateToKakaoMap(navOptions { launchSingleTop = true }, placeType)
+                            navigator.navigateToKakaoMap(
+                                navOptions { launchSingleTop = true },
+                                placeType
+                            )
                         },
                     )
                     searchNavGraph(
@@ -155,15 +168,23 @@ internal fun MainScreen(
                     placeNavGraph()
                     placeDetailNavGraph(
                         navigateUp = navigator::navigateUpIfNotHome,
-                        navigateToWriteReview = { placeId ->
-                            navigator.navigateToWriteReview(navOptions { launchSingleTop = true }, placeId = placeId)
+                        navigateToWriteReview = { placeId, type ->
+                            navigator.navigateToWriteReview(
+                                navOptions { launchSingleTop = true },
+                                placeId = placeId,
+                                type = type
+                            )
                         },
                     )
 
                     kakaoMapNavGraph(
                         navigateUp = navigator::navigateUpAndClearStackToHome,
                         navigateToPlaceDetail = { placeId, placeType ->
-                            navigator.navigateToPlaceDetail(navOptions { launchSingleTop = true }, placeId = placeId, placeType = placeType)
+                            navigator.navigateToPlaceDetail(
+                                navOptions { launchSingleTop = true },
+                                placeId = placeId,
+                                placeType = placeType
+                            )
                         },
                     )
 
@@ -179,7 +200,11 @@ internal fun MainScreen(
                         navigateToMyReview = navigator::navigateToMyReview,
                         navigateToBookmark = navigator::navigateToBookmark,
                         navigateToPlaceDetail = { placeId, placeType ->
-                            navigator.navigateToPlaceDetail(navOptions { launchSingleTop = true }, placeId = placeId, placeType = placeType)
+                            navigator.navigateToPlaceDetail(
+                                navOptions { launchSingleTop = true },
+                                placeId = placeId,
+                                placeType = placeType
+                            )
                         },
                     )
                 }

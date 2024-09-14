@@ -12,7 +12,7 @@ data class PlaceDetail(
 
 fun NavGraphBuilder.placeDetailNavGraph(
     navigateUp: () -> Unit,
-    navigateToWriteReview: (Int) -> Unit,
+    navigateToWriteReview: (Int, String) -> Unit,
 ) {
     composable<PlaceDetail> { backStackEntry ->
         PlaceDetailRoute(

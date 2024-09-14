@@ -46,6 +46,7 @@ import timber.log.Timber
 @Composable
 fun ReviewRoute(
     placeId: Int,
+    type: String,
     viewModel: WritingReviewViewModel = hiltViewModel(),
     onBackClick: () -> Unit,
     finishWritingReview: () -> Unit,

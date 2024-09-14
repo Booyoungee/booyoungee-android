@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class WriteReview(
     val placeId: Int,
+    val type: String,
 )
 
 fun NavGraphBuilder.writeReviewNavGraph(
@@ -15,6 +16,7 @@ fun NavGraphBuilder.writeReviewNavGraph(
     composable<WriteReview> { backStackEntry ->
         ReviewRoute(
             placeId = backStackEntry.arguments?.getInt("placeId") ?: 0,
+            type = backStackEntry.arguments?.getString("type") ?: "",
             onBackClick = navigateUp,
             finishWritingReview = navigateUp,
         )

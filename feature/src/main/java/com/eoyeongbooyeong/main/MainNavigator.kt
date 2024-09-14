@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -12,18 +11,17 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.eoyeongbooyeong.auth.login.Login
 import com.eoyeongbooyeong.auth.signup.SignUp
-import com.eoyeongbooyeong.mypage.MyPageEditNickname
-import com.eoyeongbooyeong.mypage.navigateToMyPage
-import com.eoyeongbooyeong.navigation.Route
 import com.eoyeongbooyeong.home.Home
 import com.eoyeongbooyeong.home.navigateToHome
 import com.eoyeongbooyeong.mypage.MyBookMark
+import com.eoyeongbooyeong.mypage.MyPageEditNickname
 import com.eoyeongbooyeong.mypage.MyReview
+import com.eoyeongbooyeong.mypage.navigateToMyPage
+import com.eoyeongbooyeong.navigation.Route
 import com.eoyeongbooyeong.places.category.CategoryPlace
 import com.eoyeongbooyeong.places.details.PlaceDetail
 import com.eoyeongbooyeong.places.map.KakaoMap
 import com.eoyeongbooyeong.places.review.WriteReview
-import com.eoyeongbooyeong.search.Search
 import com.eoyeongbooyeong.search.navigateToSearch
 import com.eoyeongbooyeong.splash.Splash
 import com.eoyeongbooyeong.stamp.navigateToStamp
@@ -107,8 +105,8 @@ internal class MainNavigator(
         navController.navigate(PlaceDetail(placeId, placeType), navOption)
     }
 
-    fun navigateToWriteReview(navOption: NavOptions, placeId: Int) {
-        navController.navigate(WriteReview(placeId), navOption)
+    fun navigateToWriteReview(navOption: NavOptions, placeId: Int, type: String) {
+        navController.navigate(WriteReview(placeId, type), navOption)
     }
 
     fun navigateToKakaoMap(navOption: NavOptions, placeType: String) {
