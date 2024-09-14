@@ -60,7 +60,14 @@ fun BookmarkRoute(
         paddingValues = paddingValues,
         bookmarkList = state.value.myBookmarkList,
         navigateUp = viewModel::navigateUp,
-        navigateToPlaceDetail = viewModel::navigateToPlaceDetail
+        navigateToPlaceDetail = viewModel::navigateToPlaceDetail,
+        bookmarkControl = { isBookmarked, placeId, type ->
+            if (isBookmarked) {
+                viewModel.deleteBookMark(placeId)
+            } else {
+                viewModel.postBookMark(placeId, type)
+            }
+        }
     )
 }
 
@@ -70,6 +77,7 @@ fun BookmarkScreen(
     bookmarkList: ImmutableList<PlaceInfoEntity> = persistentListOf(),
     navigateUp: () -> Unit = {},
     navigateToPlaceDetail: (Int, String) -> Unit = { _, _ -> },
+    bookmarkControl: (Boolean, Int, String) -> Unit = { _, _, _ -> }
 ) {
     Column(
         modifier = Modifier
@@ -104,7 +112,8 @@ fun BookmarkScreen(
                     likedCount = it.likeCount,
                     movieNameList = it.movies,
                     isBookmarked = it.me.hasBookmark,
-                    onClick = { navigateToPlaceDetail(it.placeId.toIntOrNull() ?: 0, it.type) }
+                    onClick = { navigateToPlaceDetail(it.placeId.toIntOrNull() ?: 0, it.type) },
+                    onBookMarkClick = { bookmarkControl(it.me.hasBookmark, it.placeId.toIntOrNull() ?: 0, it.type) }
                 )
             }
         }
