@@ -1,5 +1,6 @@
 package com.eoyeongbooyeong.search
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -252,18 +253,22 @@ fun PlaceDetailScreen(
                     )
 
                     Spacer(modifier = Modifier.height(26.dp))
-                    PlaceDetailInfo(
-                        icon = painterResource(id = R.drawable.ic_film),
-                        iconDescription = "film icon",
-                        text = movieList,
-                        style = BooTheme.typography.body3,
-                    )
+                    if (movieList.isNotEmpty()) {
+                        PlaceDetailInfo(
+                            icon = painterResource(id = R.drawable.ic_film),
+                            iconDescription = "film icon",
+                            text = movieList,
+                            style = BooTheme.typography.body3,
+                        )
+                    }
 
-                    PlaceDetailInfo(
-                        icon = painterResource(id = R.drawable.ic_call),
-                        iconDescription = "call info",
-                        text = tel ?: "",
-                    )
+                    if (tel?.isNotBlank() == true) {
+                        PlaceDetailInfo(
+                            icon = painterResource(id = R.drawable.ic_call),
+                            iconDescription = "call info",
+                            text = tel,
+                        )
+                    }
                 }
             }
 

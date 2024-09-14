@@ -57,6 +57,7 @@ class PlaceDetailsViewModel
                                 isLiked = it.me.hasLike,
                                 isBookmarked = it.me.hasBookmark,
                                 likeCount = it.likeCount,
+                                bookMarkCount = it.bookmarkCount,
                             )
                         Timber.tag("PlaceDetailsViewModel").d(it.toString())
                     }.onFailure {
