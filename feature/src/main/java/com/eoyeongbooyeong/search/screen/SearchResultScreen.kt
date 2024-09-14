@@ -110,6 +110,7 @@ fun SearchResultList(
                     movieNameList = place.movieNameList,
                     modifier = Modifier.padding(bottom = 16.dp, start = 24.dp, end = 24.dp),
                     placeImageUrl = place.imageUrl.getOrNull(0),
+                    showBookmarkIcon = false,
                     onClick = { onPlaceClick(place) },
                 )
             }
