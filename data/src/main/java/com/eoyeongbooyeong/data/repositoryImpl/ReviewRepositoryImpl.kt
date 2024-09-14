@@ -17,8 +17,8 @@ class ReviewRepositoryImpl @Inject constructor(
         reviewDataSource.getReviews(placeId).map { it.toDomain() }
     }
 
-    override suspend fun writeReview(placeId: Int, content: String, stars: Int): Result<Int> = runCatching {
-        reviewDataSource.writeReview(placeId, content, stars)
+    override suspend fun writeReview(placeId: Int, content: String, stars: Int, type: String): Result<Int> = runCatching {
+        reviewDataSource.writeReview(placeId, content, stars, type)
     }
 
     override suspend fun accuseReview(commentId: Int): Result<Int> = runCatching {

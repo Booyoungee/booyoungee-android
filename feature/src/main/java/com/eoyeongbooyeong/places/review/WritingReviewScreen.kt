@@ -87,6 +87,7 @@ fun ReviewRoute(
                 placeId = placeId,
                 content = state.value.reviewTextContent,
                 stars = state.value.reviewStars,
+                type = type,
             )
         },
         isStarWarning = isStarWarning,
