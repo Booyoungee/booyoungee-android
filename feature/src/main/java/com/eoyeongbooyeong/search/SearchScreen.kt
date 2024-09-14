@@ -41,6 +41,7 @@ import kotlinx.collections.immutable.persistentListOf
 @Composable
 internal fun SearchRoute(
     navigateUp: () -> Unit,
+    navigateToPlaceDetail: (Int, String) -> Unit,
     viewModel: SearchViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -52,6 +53,10 @@ internal fun SearchRoute(
             .collect { sideEffect ->
                 when (sideEffect) {
                     SearchSideEffect.NavigateUp -> navigateUp()
+                    is SearchSideEffect.NavigateToPlaceDetail -> navigateToPlaceDetail(
+                        sideEffect.placeId,
+                        sideEffect.type
+                    )
                 }
             }
     }
@@ -65,6 +70,7 @@ internal fun SearchRoute(
         clickHotPlace = viewModel::clickHotPlace,
         queryValueChanged = viewModel::queryValueChanged,
         navigateUp = viewModel::navigateUp,
+        navigateToPlaceDetail = viewModel::navigateToPlaceDetail,
     )
 }
 
@@ -78,6 +84,7 @@ private fun SearchScreen(
     clickHotPlace: (String) -> Unit = {},
     queryValueChanged: (String) -> Unit = {},
     navigateUp: () -> Unit = {},
+    navigateToPlaceDetail: (Int, String) -> Unit = { _, _ -> },
 ) {
     val focusManager = LocalFocusManager.current
 
@@ -131,7 +138,9 @@ private fun SearchScreen(
                 modifier = Modifier.fillMaxSize(),
                 resultCount = searchResults.size,
                 searchResultList = searchResults,
-            )
+            ) { id, type ->
+                navigateToPlaceDetail(id, type)
+            }
         }
     }
 }

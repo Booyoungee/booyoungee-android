@@ -16,10 +16,12 @@ fun NavController.navigateToSearch(navOptions: NavOptions) {
 
 fun NavGraphBuilder.searchNavGraph(
     navigateUp: () -> Unit,
+    navigateToPlaceDetail: (Int, String) -> Unit,
 ) {
     composable<Search> {
         SearchRoute(
             navigateUp = navigateUp,
+            navigateToPlaceDetail = navigateToPlaceDetail,
         )
     }
 }

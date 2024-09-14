@@ -164,6 +164,13 @@ internal fun MainScreen(
                     )
                     searchNavGraph(
                         navigateUp = navigator::navigateUpIfNotHome,
+                        navigateToPlaceDetail = { placeId, placeType ->
+                            navigator.navigateToPlaceDetail(
+                                navOptions { launchSingleTop = true },
+                                placeId = placeId,
+                                placeType = placeType
+                            )
+                        },
                     )
                     placeNavGraph()
                     placeDetailNavGraph(

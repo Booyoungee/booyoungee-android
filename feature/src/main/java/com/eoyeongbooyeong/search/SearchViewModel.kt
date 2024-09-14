@@ -104,6 +104,12 @@ class SearchViewModel @Inject constructor(
         }
     }
 
+    fun navigateToPlaceDetail(placeId: Int, type: String) {
+        viewModelScope.launch {
+            _sideEffect.emit(SearchSideEffect.NavigateToPlaceDetail(placeId, type))
+        }
+    }
+
     companion object {
         private const val DEBOUNCE_DURATION: Long = 300
     }
