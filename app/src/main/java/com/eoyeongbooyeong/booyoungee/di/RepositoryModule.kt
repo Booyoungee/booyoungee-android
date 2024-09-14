@@ -2,12 +2,14 @@ package com.eoyeongbooyeong.booyoungee.di
 
 import com.eoyeongbooyeong.data.repositoryImpl.AuthRepositoryImpl
 import com.eoyeongbooyeong.data.repositoryImpl.BookmarkRepositoryImpl
+import com.eoyeongbooyeong.data.repositoryImpl.MovieRepositoryImpl
 import com.eoyeongbooyeong.data.repositoryImpl.PlaceRepositoryImpl
 import com.eoyeongbooyeong.data.repositoryImpl.ReviewRepositoryImpl
 import com.eoyeongbooyeong.data.repositoryImpl.TourInfoOpenApiRepositoryImpl
 import com.eoyeongbooyeong.data.repositoryImpl.UserRepositoryImpl
 import com.eoyeongbooyeong.domain.repository.AuthRepository
 import com.eoyeongbooyeong.domain.repository.BookmarkRepository
+import com.eoyeongbooyeong.domain.repository.MovieRepository
 import com.eoyeongbooyeong.domain.repository.PlaceRepository
 import com.eoyeongbooyeong.domain.repository.ReviewRepository
 import com.eoyeongbooyeong.domain.repository.TourInfoRepository
@@ -46,6 +48,12 @@ internal abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun provideTourInfoOpenApiRepository(
-        tourInfoOpenApiRepositoryImpl: TourInfoOpenApiRepositoryImpl
+        tourInfoOpenApiRepositoryImpl: TourInfoOpenApiRepositoryImpl,
     ): TourInfoRepository
+
+    @Binds
+    @Singleton
+    abstract fun provideMovieRepository(
+        movieRepositoryImpl: MovieRepositoryImpl,
+    ): MovieRepository
 }

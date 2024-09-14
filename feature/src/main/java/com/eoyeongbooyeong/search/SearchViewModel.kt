@@ -2,6 +2,7 @@ package com.eoyeongbooyeong.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.eoyeongbooyeong.domain.repository.MovieRepository
 import com.eoyeongbooyeong.domain.repository.PlaceRepository
 import com.eoyeongbooyeong.domain.repository.TourInfoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,6 +25,7 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(
     private val placeRepository: PlaceRepository,
     private val tourInfoRepository: TourInfoRepository,
+    private val movieRepository: MovieRepository,
 ) : ViewModel() {
     private val _query: MutableStateFlow<String> = MutableStateFlow("")
     val query: StateFlow<String>
@@ -75,7 +77,7 @@ class SearchViewModel @Inject constructor(
 
     private fun searchOnKeyword(query: String) {
         viewModelScope.launch {
-            tourInfoRepository.searchOnKeyword(
+            movieRepository.searchOnKeyword(
                 numOfRows = 10,
                 pageNo = 1,
                 keyword = query,
