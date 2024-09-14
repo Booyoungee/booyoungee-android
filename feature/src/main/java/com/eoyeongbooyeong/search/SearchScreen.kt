@@ -24,15 +24,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
+import com.eoyeongbooyeong.core.designsystem.component.LoadingWithProgressIndicator
 import com.eoyeongbooyeong.core.designsystem.component.textfield.BooSearchTextField
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.core.extension.addFocusCleaner
 import com.eoyeongbooyeong.core.extension.noRippleClickable
 import com.eoyeongbooyeong.domain.entity.HotPlaceEntity
-import com.eoyeongbooyeong.domain.entity.MoviePlaceEntity
 import com.eoyeongbooyeong.domain.entity.PlaceDetailsEntity
-import com.eoyeongbooyeong.domain.entity.PlaceInfoEntity
 import com.eoyeongbooyeong.search.screen.HotTravelDestinationsScreen
 import com.eoyeongbooyeong.search.screen.NoResultScreen
 import com.eoyeongbooyeong.search.screen.SearchResultScreen
@@ -59,6 +58,7 @@ internal fun SearchRoute(
 
     SearchScreen(
         query = query,
+        isLoading = state.isLoading,
         hotTravelDestinationsFetchTime = state.hotTravelDestinationsFetchTime,
         hotTravelDestinations = state.hotTravelDestinations,
         searchResults = state.searchResults,
@@ -72,6 +72,7 @@ internal fun SearchRoute(
 private fun SearchScreen(
     query: String = "",
     hotTravelDestinationsFetchTime: String = "2024년 10월 01일 08:00 기준",
+    isLoading: Boolean = false,
     hotTravelDestinations: ImmutableList<HotPlaceEntity> = persistentListOf(),
     searchResults: ImmutableList<PlaceDetailsEntity> = persistentListOf(),
     clickHotPlace: (String) -> Unit = {},
@@ -118,6 +119,8 @@ private fun SearchScreen(
                 hotTravelDestinations = hotTravelDestinations,
                 clickHotPlace = clickHotPlace,
             )
+        } else if (isLoading) {
+            LoadingWithProgressIndicator()
         } else if (searchResults.isEmpty()) {
             NoResultScreen(
                 query = query,

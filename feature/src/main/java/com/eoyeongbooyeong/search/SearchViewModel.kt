@@ -77,13 +77,17 @@ class SearchViewModel @Inject constructor(
 
     private fun searchOnKeyword(query: String) {
         viewModelScope.launch {
+            _state.value = _state.value.copy(isLoading = true)
             movieRepository.searchOnKeyword(
                 numOfRows = 10,
                 pageNo = 1,
                 keyword = query,
             ).onSuccess {
-                _state.value = _state.value.copy(searchResults = it.map { it.toPlaceDetailsEntity() }
-                    .toImmutableList())
+                _state.value = _state.value.copy(
+                    searchResults = it.map { it.toPlaceDetailsEntity() }
+                        .toImmutableList(),
+                    isLoading = false,
+                )
             }.onFailure(Timber::e)
         }
     }
