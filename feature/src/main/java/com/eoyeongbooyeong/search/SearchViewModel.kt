@@ -82,8 +82,8 @@ class SearchViewModel @Inject constructor(
                 pageNo = 1,
                 keyword = query,
             ).onSuccess {
-                Timber.tag("SearchViewModel").d("searchOnKeyword: $it")
-                // TODO: 서버에서 데이터 정제 작업중. 추후 수정 예정
+                _state.value = _state.value.copy(searchResults = it.map { it.toPlaceDetailsEntity() }
+                    .toImmutableList())
             }.onFailure(Timber::e)
         }
     }

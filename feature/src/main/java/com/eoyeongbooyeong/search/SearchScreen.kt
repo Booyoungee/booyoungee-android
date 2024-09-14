@@ -30,6 +30,7 @@ import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.core.extension.addFocusCleaner
 import com.eoyeongbooyeong.core.extension.noRippleClickable
 import com.eoyeongbooyeong.domain.entity.HotPlaceEntity
+import com.eoyeongbooyeong.domain.entity.MoviePlaceEntity
 import com.eoyeongbooyeong.domain.entity.PlaceDetailsEntity
 import com.eoyeongbooyeong.domain.entity.PlaceInfoEntity
 import com.eoyeongbooyeong.search.screen.HotTravelDestinationsScreen
@@ -72,7 +73,7 @@ private fun SearchScreen(
     query: String = "",
     hotTravelDestinationsFetchTime: String = "2024년 10월 01일 08:00 기준",
     hotTravelDestinations: ImmutableList<HotPlaceEntity> = persistentListOf(),
-    searchResults: ImmutableList<PlaceInfoEntity> = persistentListOf(),
+    searchResults: ImmutableList<PlaceDetailsEntity> = persistentListOf(),
     clickHotPlace: (String) -> Unit = {},
     queryValueChanged: (String) -> Unit = {},
     navigateUp: () -> Unit = {},
@@ -126,28 +127,7 @@ private fun SearchScreen(
             SearchResultScreen(
                 modifier = Modifier.fillMaxSize(),
                 resultCount = searchResults.size,
-                searchResultList = persistentListOf( // TODO: 임시 데이터
-                    PlaceDetailsEntity(
-                        address = "서울특별시 강남구 역삼동 123-456",
-                        reviewCount = 123,
-                        movieNameList = listOf("피자헛"),
-                    ),
-                    PlaceDetailsEntity(
-                        address = "서울특별시 강남구 역삼동 123-456",
-                        reviewCount = 123,
-                        movieNameList = listOf("피자헛"),
-                    ),
-                    PlaceDetailsEntity(
-                        address = "서울특별시 강남구 역삼동 123-456",
-                        reviewCount = 123,
-                        movieNameList = listOf("피자헛"),
-                    ),
-                ),
-                onBackClick = navigateUp,
-                onQueryChange = {},
-                onActiveChange = {},
-                query = "",
-                active = false,
+                searchResultList = searchResults,
             )
         }
     }

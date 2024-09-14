@@ -33,11 +33,6 @@ fun SearchResultScreen(
     modifier: Modifier = Modifier,
     resultCount: Int = 0,
     searchResultList: ImmutableList<PlaceDetailsEntity>,
-    onBackClick: () -> Unit,
-    onQueryChange: (String) -> Unit,
-    onActiveChange: (Boolean) -> Unit,
-    query: String,
-    active: Boolean,
 ) {
     Column(
         modifier =
@@ -145,11 +140,6 @@ fun SearchResultScreenPreview() {
                     movieNameList = listOf("피자헛"),
                 ),
             ),
-            onBackClick = {},
-            onQueryChange = {},
-            onActiveChange = {},
-            query = "",
-            active = false,
         )
     }
 }

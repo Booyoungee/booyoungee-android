@@ -12,4 +12,16 @@ data class MoviePlaceEntity(
     val movieName: String,
     val type: String,
     val images: List<String>
-)
+) {
+    fun toPlaceDetailsEntity() = PlaceDetailsEntity(
+        placeId = id.toString(),
+        name = name,
+        address = basicAddress,
+        starCount = stars.toDouble(),
+        likeCount = likes,
+        reviewCount = reviews,
+        type = type,
+        imageUrl = images,
+        movieNameList = listOf(movieName)
+    )
+}
