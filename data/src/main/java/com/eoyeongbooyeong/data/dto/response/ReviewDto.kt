@@ -48,6 +48,7 @@ data class MyReviewDto(
     val writerName: String,
     val createdAt: String,
     val updatedAt: String,
+    val type: String,
 ) {
     fun toDomain() = MyReviewEntity(
         id = id,
@@ -59,5 +60,6 @@ data class MyReviewDto(
         writerName = writerName,
         createdAt = createdAt,
         updatedAt = updatedAt,
+        type = type,
     )
 }

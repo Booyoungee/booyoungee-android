@@ -34,10 +34,12 @@ fun MyReviewComponent(
     reviewScore: Double = 0.0,
     reviewContent: String = "",
     reviewDate: String = "",
-    onClick: (Int) -> Unit = {},
+    onClick: () -> Unit = {},
 ) {
     Column(
-        modifier = modifier.background(White).noRippleClickable { onClick(reviewId) },
+        modifier = modifier
+            .background(White)
+            .noRippleClickable(onClick),
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,

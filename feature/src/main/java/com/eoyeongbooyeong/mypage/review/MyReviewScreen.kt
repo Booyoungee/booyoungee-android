@@ -55,7 +55,8 @@ fun MyReviewRoute(
     MyReviewScreen(
         paddingValues = paddingValues,
         reviewList = state.value.myReviewList,
-        navigateUp = viewModel::navigateUp
+        navigateUp = viewModel::navigateUp,
+        navigateToPlaceDetail = viewModel::navigateToPlaceDetail
     )
 }
 
@@ -100,7 +101,9 @@ fun MyReviewScreen(
                     reviewScore = review.stars.toDouble(),
                     reviewContent = review.content,
                     reviewDate = review.updatedAt.slice(0..10)
-                )
+                ){
+                    navigateToPlaceDetail(review.placeId, review.type)
+                }
             }
         }
     }

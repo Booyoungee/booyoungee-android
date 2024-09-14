@@ -22,4 +22,5 @@ data class MyReviewEntity(
     val writerName: String = "",
     val createdAt: String = "",
     val updatedAt: String = "",
+    val type: String = "",
 )
