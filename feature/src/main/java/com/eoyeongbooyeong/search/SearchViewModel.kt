@@ -2,6 +2,7 @@ package com.eoyeongbooyeong.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.eoyeongbooyeong.domain.repository.MovieRepository
 import com.eoyeongbooyeong.domain.repository.PlaceRepository
 import com.eoyeongbooyeong.domain.repository.TourInfoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,6 +25,7 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(
     private val placeRepository: PlaceRepository,
     private val tourInfoRepository: TourInfoRepository,
+    private val movieRepository: MovieRepository,
 ) : ViewModel() {
     private val _query: MutableStateFlow<String> = MutableStateFlow("")
     val query: StateFlow<String>
@@ -75,13 +77,17 @@ class SearchViewModel @Inject constructor(
 
     private fun searchOnKeyword(query: String) {
         viewModelScope.launch {
-            tourInfoRepository.searchOnKeyword(
+            _state.value = _state.value.copy(isLoading = true)
+            movieRepository.searchOnKeyword(
                 numOfRows = 10,
                 pageNo = 1,
                 keyword = query,
             ).onSuccess {
-                Timber.tag("SearchViewModel").d("searchOnKeyword: $it")
-                // TODO: 서버에서 데이터 정제 작업중. 추후 수정 예정
+                _state.value = _state.value.copy(
+                    searchResults = it.map { it.toPlaceDetailsEntity() }
+                        .toImmutableList(),
+                    isLoading = false,
+                )
             }.onFailure(Timber::e)
         }
     }
@@ -95,6 +101,12 @@ class SearchViewModel @Inject constructor(
     fun navigateUp() {
         viewModelScope.launch {
             _sideEffect.emit(SearchSideEffect.NavigateUp)
+        }
+    }
+
+    fun navigateToPlaceDetail(placeId: Int, type: String) {
+        viewModelScope.launch {
+            _sideEffect.emit(SearchSideEffect.NavigateToPlaceDetail(placeId, type))
         }
     }
 

@@ -52,6 +52,7 @@ internal fun PlaceInfoListItem(
     placeImageUrl: String?,
     modifier: Modifier = Modifier,
     isBookmarked: Boolean = false,
+    showBookmarkIcon: Boolean = true,
     onClick: () -> Unit = {},
     onBookMarkClick: () -> Unit = {},
 ) {
@@ -99,20 +100,22 @@ internal fun PlaceInfoListItem(
                         modifier = Modifier.weight(1f, false)
                     )
 
-                    Image(
-                        imageVector = ImageVector.vectorResource(
-                            id = if (isBookmarked) {
-                                com.eoyeongbooyeong.core.R.drawable.ic_bookmark_20
-                            } else {
-                                com.eoyeongbooyeong.core.R.drawable.ic_bookmark_empty_20
-                            }
-                        ),
-                        contentDescription = "bookmark icon",
-                        modifier = Modifier
-                            .size(20.dp)
-                            .noRippleClickable(onClick = onBookMarkClick),
-                        colorFilter = ColorFilter.tint(Blue400)
-                    )
+                    if (showBookmarkIcon) {
+                        Image(
+                            imageVector = ImageVector.vectorResource(
+                                id = if (isBookmarked) {
+                                    com.eoyeongbooyeong.core.R.drawable.ic_bookmark_20
+                                } else {
+                                    com.eoyeongbooyeong.core.R.drawable.ic_bookmark_empty_20
+                                }
+                            ),
+                            contentDescription = "bookmark icon",
+                            modifier = Modifier
+                                .size(20.dp)
+                                .noRippleClickable(onClick = onBookMarkClick),
+                            colorFilter = ColorFilter.tint(Blue400)
+                        )
+                    }
                 }
 
 

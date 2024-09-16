@@ -7,5 +7,5 @@ import retrofit2.http.GET
 
 interface BookmarkService {
     @GET("api/v1/bookmark/me")
-    suspend fun getBookmarkList(): BaseResponse<List<PlaceDto>>
+    suspend fun getBookmarkList(): BaseResponse<BaseContents<PlaceDto>>
 }

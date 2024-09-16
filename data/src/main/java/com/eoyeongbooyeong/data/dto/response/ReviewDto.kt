@@ -48,16 +48,18 @@ data class MyReviewDto(
     val writerName: String,
     val createdAt: String,
     val updatedAt: String,
+    val type: String,
 ) {
     fun toDomain() = MyReviewEntity(
         id = id,
         placeId = placeId,
         placeName = placeName ?: "",
         content = content,
-        stars = stars,
+        stars = stars.toFloat(),
         writerId = writerId,
         writerName = writerName,
         createdAt = createdAt,
         updatedAt = updatedAt,
+        type = type,
     )
 }

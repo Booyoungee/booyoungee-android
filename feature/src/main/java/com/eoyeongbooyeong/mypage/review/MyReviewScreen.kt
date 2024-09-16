@@ -1,15 +1,14 @@
 package com.eoyeongbooyeong.mypage.review
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -26,7 +25,7 @@ import com.eoyeongbooyeong.core.designsystem.component.topbar.BooTextTopAppBar
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.core.extension.noRippleClickable
-import com.eoyeongbooyeong.mypage.MyReview
+import com.eoyeongbooyeong.domain.entity.MyReviewEntity
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -34,6 +33,7 @@ import kotlinx.collections.immutable.persistentListOf
 fun MyReviewRoute(
     paddingValues: PaddingValues,
     navigateUp: () -> Unit,
+    navigateToPlaceDetail: (Int, String) -> Unit,
     viewModel: MyReviewViewModel = hiltViewModel(),
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -44,21 +44,28 @@ fun MyReviewRoute(
             .collect { sideEffect ->
                 when (sideEffect) {
                     is MyReviewSideEffect.NavigateUp -> navigateUp()
+                    is MyReviewSideEffect.NavigateToPlaceDetail -> navigateToPlaceDetail(
+                        sideEffect.placeId,
+                        sideEffect.type
+                    )
                 }
             }
     }
 
     MyReviewScreen(
         paddingValues = paddingValues,
-        navigateUp = viewModel::navigateUp
+        reviewList = state.value.myReviewList,
+        navigateUp = viewModel::navigateUp,
+        navigateToPlaceDetail = viewModel::navigateToPlaceDetail
     )
 }
 
 @Composable
 fun MyReviewScreen(
     paddingValues: PaddingValues = PaddingValues(0.dp),
-    reviewList: ImmutableList<String> = persistentListOf(),
+    reviewList: ImmutableList<MyReviewEntity> = persistentListOf(),
     navigateUp: () -> Unit = {},
+    navigateToPlaceDetail: (Int, String) -> Unit = { _, _ -> }
 ) {
     Column(
         modifier = Modifier
@@ -78,12 +85,25 @@ fun MyReviewScreen(
         )
 
         LazyColumn(
-            modifier = Modifier.fillMaxSize()
-        ) { // 리뷰 아이템 적용 예정
-            items(reviewList) {
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 24.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            items(
+                items = reviewList,
+                key = { review -> review.id }
+            ) { review ->
                 MyReviewComponent(
-
-                )
+                    reviewId = review.id,
+                    writerId = review.writerId,
+                    storeName = review.placeName,
+                    reviewScore = review.stars.toDouble(),
+                    reviewContent = review.content,
+                    reviewDate = review.updatedAt.slice(0..10)
+                ){
+                    navigateToPlaceDetail(review.placeId, review.type)
+                }
             }
         }
     }

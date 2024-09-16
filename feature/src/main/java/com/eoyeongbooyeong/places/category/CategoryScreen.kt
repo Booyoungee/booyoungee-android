@@ -246,6 +246,7 @@ fun PlaceCategoryScreen(
             searchResultList = placeList,
             navigateToPlaceDetail = navigateToPlaceDetail,
             placeType = placeType,
+            modifier = Modifier.padding(horizontal = 24.dp)
         )
         Spacer(modifier = Modifier.height(12.dp))
         // TODO 플로팅 버튼 Z 축 위로 올리기
@@ -267,7 +268,9 @@ fun PlaceList(
     navigateToPlaceDetail: (Int, String) -> Unit = { _, _ -> },
     placeType: String,
 ) {
-    LazyColumn {
+    LazyColumn(
+        modifier = modifier
+    ) {
         items(searchResultList) { place ->
             PlaceInfoListItem(
                 placeName = place.name,
@@ -275,7 +278,7 @@ fun PlaceList(
                 star = place.stars,
                 reviewCount = place.reviewCount,
                 likedCount = place.likeCount,
-                movieNameList = place.movies ?: ImmutableList.of(),
+                movieNameList = place.movies,
                 placeImageUrl = place.images.firstOrNull(),
                 onClick = { navigateToPlaceDetail(place.placeId.toInt(), placeType) },
             )

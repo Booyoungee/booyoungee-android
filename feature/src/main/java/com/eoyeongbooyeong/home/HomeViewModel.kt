@@ -42,6 +42,12 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun navigateToPlaceDetail(placeId: Int, placeName: String) {
+        viewModelScope.launch {
+            _sideEffects.emit(HomeSideEffect.NavigateToPlaceDetail(placeId, placeName))
+        }
+    }
+
     fun navigateToCategoryPlace(placeType: String) {
         viewModelScope.launch {
             _sideEffects.emit(HomeSideEffect.NavigateToCategoryPlace(placeType))

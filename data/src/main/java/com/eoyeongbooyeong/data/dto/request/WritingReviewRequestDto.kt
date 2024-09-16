@@ -11,4 +11,6 @@ data class WritingReviewRequestDto(
     val content: String,
     @SerialName("stars")
     val stars: Int,
+    @SerialName("type")
+    val type: String,
 )

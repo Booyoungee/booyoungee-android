@@ -30,9 +30,9 @@ class WritingReviewViewModel @Inject constructor(
             _state.value = newState.copy()
         }
 
-        fun postReview(placeId: Int, content: String, stars: Int) {
+        fun postReview(placeId: Int, content: String, stars: Int, type: String) {
             viewModelScope.launch {
-                reviewRepository.writeReview(placeId, content, stars)
+                reviewRepository.writeReview(placeId, content, stars, type)
                     .onSuccess {
                         _sideEffects.emit(WritingReviewSideEffect.ShowToast("리뷰가 작성되었습니다."))
                         _sideEffects.emit(WritingReviewSideEffect.NavigateReviewFinish)

@@ -49,7 +49,7 @@ fun BooDialog(
                 if (title != null) {
                     Text(
                         text = title,
-                        textAlign = TextAlign.Start,
+                        textAlign = TextAlign.Center,
                         style = BooTheme.typography.head2,
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -60,7 +60,7 @@ fun BooDialog(
 
                     Text(
                         text = description,
-                        textAlign = TextAlign.Start,
+                        textAlign = TextAlign.Center,
                         style = BooTheme.typography.body4,
                         modifier = Modifier.fillMaxWidth()
                     )

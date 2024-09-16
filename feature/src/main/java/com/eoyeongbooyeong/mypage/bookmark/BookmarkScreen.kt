@@ -1,6 +1,7 @@
 package com.eoyeongbooyeong.mypage.bookmark
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,6 +33,7 @@ import kotlinx.collections.immutable.persistentListOf
 fun BookmarkRoute(
     paddingValues: PaddingValues,
     navigateUp: () -> Unit,
+    navigateToPlaceDetail: (Int, String) -> Unit = { _, _ -> },
     viewModel: BookmarkViewModel = hiltViewModel(),
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -42,6 +44,10 @@ fun BookmarkRoute(
             .collect { sideEffect ->
                 when (sideEffect) {
                     is BookmarkSideEffect.NavigateUp -> navigateUp()
+                    is BookmarkSideEffect.NavigateToPlaceDetail -> navigateToPlaceDetail(
+                        sideEffect.placeId,
+                        sideEffect.type
+                    )
                 }
             }
     }
@@ -53,7 +59,15 @@ fun BookmarkRoute(
     BookmarkScreen(
         paddingValues = paddingValues,
         bookmarkList = state.value.myBookmarkList,
-        navigateUp = viewModel::navigateUp
+        navigateUp = viewModel::navigateUp,
+        navigateToPlaceDetail = viewModel::navigateToPlaceDetail,
+        bookmarkControl = { isBookmarked, placeId, type ->
+            if (isBookmarked) {
+                viewModel.deleteBookMark(placeId)
+            } else {
+                viewModel.postBookMark(placeId, type)
+            }
+        }
     )
 }
 
@@ -62,6 +76,8 @@ fun BookmarkScreen(
     paddingValues: PaddingValues = PaddingValues(0.dp),
     bookmarkList: ImmutableList<PlaceInfoEntity> = persistentListOf(),
     navigateUp: () -> Unit = {},
+    navigateToPlaceDetail: (Int, String) -> Unit = { _, _ -> },
+    bookmarkControl: (Boolean, Int, String) -> Unit = { _, _, _ -> }
 ) {
     Column(
         modifier = Modifier
@@ -81,7 +97,10 @@ fun BookmarkScreen(
         )
 
         LazyColumn(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 24.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(bookmarkList) {
                 PlaceInfoListItem(
@@ -92,7 +111,9 @@ fun BookmarkScreen(
                     reviewCount = it.reviewCount,
                     likedCount = it.likeCount,
                     movieNameList = it.movies,
-                    isBookmarked = it.me.hasBookmark
+                    isBookmarked = it.me.hasBookmark,
+                    onClick = { navigateToPlaceDetail(it.placeId.toIntOrNull() ?: 0, it.type) },
+                    onBookMarkClick = { bookmarkControl(it.me.hasBookmark, it.placeId.toIntOrNull() ?: 0, it.type) }
                 )
             }
         }

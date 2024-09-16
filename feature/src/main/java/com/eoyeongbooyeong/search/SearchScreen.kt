@@ -24,6 +24,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
+import com.eoyeongbooyeong.core.designsystem.component.LoadingWithProgressIndicator
 import com.eoyeongbooyeong.core.designsystem.component.textfield.BooSearchTextField
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.White
@@ -31,7 +32,6 @@ import com.eoyeongbooyeong.core.extension.addFocusCleaner
 import com.eoyeongbooyeong.core.extension.noRippleClickable
 import com.eoyeongbooyeong.domain.entity.HotPlaceEntity
 import com.eoyeongbooyeong.domain.entity.PlaceDetailsEntity
-import com.eoyeongbooyeong.domain.entity.PlaceInfoEntity
 import com.eoyeongbooyeong.search.screen.HotTravelDestinationsScreen
 import com.eoyeongbooyeong.search.screen.NoResultScreen
 import com.eoyeongbooyeong.search.screen.SearchResultScreen
@@ -41,6 +41,7 @@ import kotlinx.collections.immutable.persistentListOf
 @Composable
 internal fun SearchRoute(
     navigateUp: () -> Unit,
+    navigateToPlaceDetail: (Int, String) -> Unit,
     viewModel: SearchViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -52,18 +53,24 @@ internal fun SearchRoute(
             .collect { sideEffect ->
                 when (sideEffect) {
                     SearchSideEffect.NavigateUp -> navigateUp()
+                    is SearchSideEffect.NavigateToPlaceDetail -> navigateToPlaceDetail(
+                        sideEffect.placeId,
+                        sideEffect.type
+                    )
                 }
             }
     }
 
     SearchScreen(
         query = query,
+        isLoading = state.isLoading,
         hotTravelDestinationsFetchTime = state.hotTravelDestinationsFetchTime,
         hotTravelDestinations = state.hotTravelDestinations,
         searchResults = state.searchResults,
         clickHotPlace = viewModel::clickHotPlace,
         queryValueChanged = viewModel::queryValueChanged,
         navigateUp = viewModel::navigateUp,
+        navigateToPlaceDetail = viewModel::navigateToPlaceDetail,
     )
 }
 
@@ -71,11 +78,13 @@ internal fun SearchRoute(
 private fun SearchScreen(
     query: String = "",
     hotTravelDestinationsFetchTime: String = "2024년 10월 01일 08:00 기준",
+    isLoading: Boolean = false,
     hotTravelDestinations: ImmutableList<HotPlaceEntity> = persistentListOf(),
-    searchResults: ImmutableList<PlaceInfoEntity> = persistentListOf(),
+    searchResults: ImmutableList<PlaceDetailsEntity> = persistentListOf(),
     clickHotPlace: (String) -> Unit = {},
     queryValueChanged: (String) -> Unit = {},
     navigateUp: () -> Unit = {},
+    navigateToPlaceDetail: (Int, String) -> Unit = { _, _ -> },
 ) {
     val focusManager = LocalFocusManager.current
 
@@ -117,6 +126,8 @@ private fun SearchScreen(
                 hotTravelDestinations = hotTravelDestinations,
                 clickHotPlace = clickHotPlace,
             )
+        } else if (isLoading) {
+            LoadingWithProgressIndicator()
         } else if (searchResults.isEmpty()) {
             NoResultScreen(
                 query = query,
@@ -126,29 +137,10 @@ private fun SearchScreen(
             SearchResultScreen(
                 modifier = Modifier.fillMaxSize(),
                 resultCount = searchResults.size,
-                searchResultList = persistentListOf( // TODO: 임시 데이터
-                    PlaceDetailsEntity(
-                        address = "서울특별시 강남구 역삼동 123-456",
-                        reviewCount = 123,
-                        movieNameList = listOf("피자헛"),
-                    ),
-                    PlaceDetailsEntity(
-                        address = "서울특별시 강남구 역삼동 123-456",
-                        reviewCount = 123,
-                        movieNameList = listOf("피자헛"),
-                    ),
-                    PlaceDetailsEntity(
-                        address = "서울특별시 강남구 역삼동 123-456",
-                        reviewCount = 123,
-                        movieNameList = listOf("피자헛"),
-                    ),
-                ),
-                onBackClick = navigateUp,
-                onQueryChange = {},
-                onActiveChange = {},
-                query = "",
-                active = false,
-            )
+                searchResultList = searchResults,
+            ) { id, type ->
+                navigateToPlaceDetail(id, type)
+            }
         }
     }
 }

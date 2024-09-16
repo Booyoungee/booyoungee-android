@@ -44,4 +44,10 @@ class MyReviewViewModel @Inject constructor(
             _sideEffects.emit(MyReviewSideEffect.NavigateUp)
         }
     }
+
+    fun navigateToPlaceDetail(placeId: Int, type: String) {
+        viewModelScope.launch {
+            _sideEffects.emit(MyReviewSideEffect.NavigateToPlaceDetail(placeId, type))
+        }
+    }
 }

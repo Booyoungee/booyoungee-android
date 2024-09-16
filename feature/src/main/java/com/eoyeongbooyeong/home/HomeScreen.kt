@@ -57,6 +57,7 @@ import com.eoyeongbooyeong.feature.R
 internal fun HomeRoute(
     paddingValues: PaddingValues,
     navigateToSearch: () -> Unit = {},
+    navigateToPlaceDetail: (Int, String) -> Unit = { _, _ -> },
     viewModel: HomeViewModel = hiltViewModel(),
     navigateToCategoryPlace: (String) -> Unit = {},
 ) {
@@ -72,8 +73,10 @@ internal fun HomeRoute(
                     is HomeSideEffect.NavigateToWebView -> {
                         context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(sideEffect.url)))
                     }
+
                     is HomeSideEffect.NavigateToSearch -> navigateToSearch()
                     is HomeSideEffect.NavigateToCategoryPlace -> navigateToCategoryPlace(sideEffect.placeType)
+                    is HomeSideEffect.NavigateToPlaceDetail -> navigateToPlaceDetail(sideEffect.placeId, sideEffect.placeName)
                 }
             }
     }
@@ -83,6 +86,7 @@ internal fun HomeRoute(
         recommendedPlace = state.value.recommendedPlace,
         navigateToWebView = viewModel::navigateToWebView,
         navigateToSearch = viewModel::navigateToSearch,
+        navigateToPlaceDetail = viewModel::navigateToPlaceDetail,
         navigateToCategoryPlace = viewModel::navigateToCategoryPlace,
     )
 }
@@ -93,6 +97,7 @@ private fun HomeScreen(
     recommendedPlace: List<PlaceInfoEntity> = emptyList(),
     navigateToWebView: (String) -> Unit = {},
     navigateToSearch: () -> Unit = {},
+    navigateToPlaceDetail: (Int, String) -> Unit = { _, _ -> },
     navigateToCategoryPlace: (String) -> Unit = {},
 ) {
     val verticalScrollState = rememberScrollState()
@@ -127,9 +132,11 @@ private fun HomeScreen(
                     painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.img_movie_cover),
                     title = "영화",
                     description = "영화와 함께 하는\n부산의 특별한 순간",
-                    modifier = Modifier.weight(1f).noRippleClickable(
-                        onClick = { navigateToCategoryPlace("movie") }
-                    )
+                    modifier = Modifier
+                        .weight(1f)
+                        .noRippleClickable(
+                            onClick = { navigateToCategoryPlace("movie") }
+                        )
                 )
 
                 Spacer(modifier = Modifier.width(12.dp))
@@ -179,7 +186,9 @@ private fun HomeScreen(
                 }
                 RecommendedPlaceItem(
                     place = recommendedPlace[index],
-                )
+                ){
+                    navigateToPlaceDetail(recommendedPlace[index].placeId.toIntOrNull()?:0, recommendedPlace[index].type)
+                }
                 if (index == recommendedPlace.size - 1) {
                     Spacer(modifier = Modifier.width(12.dp))
                 }
@@ -266,9 +275,10 @@ fun ImageWithText(
 fun RecommendedPlaceItem(
     place: PlaceInfoEntity,
     modifier: Modifier = Modifier,
+    onClick: () -> Unit = {},
 ) {
     Column(
-        modifier = modifier.width(160.dp),
+        modifier = modifier.width(160.dp).noRippleClickable(onClick),
     ) {
         AsyncImage(
             place.images.firstOrNull() ?: com.eoyeongbooyeong.core.R.drawable.img_default_5,

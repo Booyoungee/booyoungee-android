@@ -46,6 +46,7 @@ import timber.log.Timber
 @Composable
 fun ReviewRoute(
     placeId: Int,
+    type: String,
     viewModel: WritingReviewViewModel = hiltViewModel(),
     onBackClick: () -> Unit,
     finishWritingReview: () -> Unit,
@@ -86,6 +87,7 @@ fun ReviewRoute(
                 placeId = placeId,
                 content = state.value.reviewTextContent,
                 stars = state.value.reviewStars,
+                type = type,
             )
         },
         isStarWarning = isStarWarning,

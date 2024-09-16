@@ -33,11 +33,7 @@ fun SearchResultScreen(
     modifier: Modifier = Modifier,
     resultCount: Int = 0,
     searchResultList: ImmutableList<PlaceDetailsEntity>,
-    onBackClick: () -> Unit,
-    onQueryChange: (String) -> Unit,
-    onActiveChange: (Boolean) -> Unit,
-    query: String,
-    active: Boolean,
+    onClickPlace: (Int, String) -> Unit,
 ) {
     Column(
         modifier =
@@ -51,7 +47,7 @@ fun SearchResultScreen(
             searchResultList = searchResultList,
             resultCount = resultCount,
         ) {
-            // Handle item click
+            onClickPlace(it.placeId.toIntOrNull() ?: 0, it.type)
         }
     }
 }
@@ -114,6 +110,7 @@ fun SearchResultList(
                     movieNameList = place.movieNameList,
                     modifier = Modifier.padding(bottom = 16.dp, start = 24.dp, end = 24.dp),
                     placeImageUrl = place.imageUrl.getOrNull(0),
+                    showBookmarkIcon = false,
                     onClick = { onPlaceClick(place) },
                 )
             }
@@ -128,7 +125,8 @@ fun SearchResultScreenPreview() {
         SearchResultScreen(
             modifier = Modifier.fillMaxSize(),
             resultCount = 20,
-            searchResultList = persistentListOf( // TODO: 임시 데이터
+            searchResultList = persistentListOf(
+                // TODO: 임시 데이터
                 PlaceDetailsEntity(
                     address = "서울특별시 강남구 역삼동 123-456",
                     reviewCount = 123,
@@ -145,11 +143,7 @@ fun SearchResultScreenPreview() {
                     movieNameList = listOf("피자헛"),
                 ),
             ),
-            onBackClick = {},
-            onQueryChange = {},
-            onActiveChange = {},
-            query = "",
-            active = false,
+            onClickPlace = { _, _ -> },
         )
     }
 }
