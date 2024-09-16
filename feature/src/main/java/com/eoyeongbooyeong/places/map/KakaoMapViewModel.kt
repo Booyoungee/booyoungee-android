@@ -47,18 +47,8 @@ class KakaoMapViewModel
             )
         }
 
-        fun onMapClicked() {
-            updateState(
-                state.value.copy(
-                    showDetailBox = state.value.showDetailBox.not(),
-                    selectedPlace = null,
-                )
-            )
-        }
-
         fun getMoviePlaceListWitFilter(filter: String = "star") {
             _state.value = _state.value.copy(isLoading = true)
-
             viewModelScope.launch {
                 placeRepository
                     .getMoviePlacesWithCategory(filter)
