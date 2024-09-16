@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">feature</string>
+    <string name="movieSearchBarHint">영화 제목으로 위치를 검색해보세요!</string>
+</resources>
