@@ -41,8 +41,17 @@ class KakaoMapViewModel
         fun onMarkerClicked(place: PlaceInfoEntity) {
             updateState(
                 state.value.copy(
-                    showDetailBox = state.value.showDetailBox.not(),
+                    showDetailBox = true,
                     selectedPlace = place,
+                )
+            )
+        }
+
+        fun onMapClicked() {
+            updateState(
+                state.value.copy(
+                    showDetailBox = false,
+                    selectedPlace = null,
                 )
             )
         }

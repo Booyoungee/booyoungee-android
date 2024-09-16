@@ -3,7 +3,6 @@ package com.eoyeongbooyeong.category.component
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -39,112 +38,104 @@ internal fun PlaceInfoBox(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
 ) {
-    Box(
+    Row(
         modifier =
-            modifier
-                .noRippleClickable(onClick = onClick)
+            Modifier
                 .border(
                     width = 1.dp,
                     color = Gray200,
                     shape = RoundedCornerShape(10.dp),
                 ).clip(RoundedCornerShape(10.dp))
+                .wrapContentHeight()
+                .fillMaxWidth()
+                .noRippleClickable(onClick = onClick)
                 .background(White)
-                .padding(start = 31.dp, top = 25.dp, bottom = 25.dp),
+                .padding(start = 31.dp, top = 25.dp, bottom = 25.dp, end = 10.dp),
     ) {
-        Row(
+        AsyncImage(
+            model = placeEntity.images.firstOrNull(),
+            contentDescription = null,
             modifier =
                 Modifier
-                    .fillMaxWidth()
-                    .noRippleClickable(onClick = onClick)
-                    .wrapContentHeight()
-                    .background(White)
-                    .padding(end = 10.dp),
+                    .size(90.dp)
+                    .clip(RoundedCornerShape(5.dp)),
+            placeholder = painterResource(id = com.eoyeongbooyeong.core.R.drawable.img_default_5),
+            error = painterResource(id = com.eoyeongbooyeong.core.R.drawable.img_default_5),
+        )
+        Column(
+            modifier = Modifier.padding(start = 10.dp),
         ) {
-            AsyncImage(
-                model = placeEntity.images.firstOrNull(),
-                contentDescription = null,
-                modifier =
-                    Modifier
-                        .size(90.dp)
-                        .clip(RoundedCornerShape(5.dp)),
-                placeholder = painterResource(id = com.eoyeongbooyeong.core.R.drawable.img_default_5),
-                error = painterResource(id = com.eoyeongbooyeong.core.R.drawable.img_default_5),
+            Text(
+                text = placeEntity.name,
+                style = BooTheme.typography.body3,
+                color = Black,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1f, false),
             )
-            Column(
-                modifier = Modifier.padding(start = 10.dp),
-            ) {
-                Text(
-                    text = placeEntity.name,
-                    style = BooTheme.typography.body3,
-                    color = Black,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1f, false),
-                )
-                Text(
-                    text = placeEntity.address,
-                    style = BooTheme.typography.caption2,
-                    color = Black,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1f, false),
-                )
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    ReviewStar(placeEntity.stars)
+            Text(
+                text = placeEntity.address,
+                style = BooTheme.typography.caption2,
+                color = Black,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1f, false),
+            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                ReviewStar(placeEntity.stars)
 
-                    Text(
-                        text = String.format("%.1f", placeEntity.stars),
-                        style = BooTheme.typography.caption1,
-                        color = Black,
-                        modifier =
-                            Modifier
-                                .weight(1f, false)
-                                .padding(start = 4.dp),
-                    )
-                    Text(
-                        text =
-                            stringResource(
-                                R.string.placeReviewAndPoint,
-                                placeEntity.reviewCount,
-                            ),
-                        style = BooTheme.typography.caption2,
-                        color = Gray400,
-                        modifier =
-                            Modifier
-                                .weight(1f, false)
-                                .padding(start = 4.dp),
-                    )
-                    Image(
-                        painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_like),
-                        contentDescription = "liked icon",
-                        modifier = Modifier.size(12.dp),
-                    )
-                    Text(
-                        text = placeEntity.likeCount.toString(),
-                        style = BooTheme.typography.caption1,
-                        color = Black,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier =
-                            Modifier
-                                .weight(1f, false)
-                                .padding(start = 4.dp),
-                    )
-                }
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Image(
-                        painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_film),
-                        contentDescription = "movie icon",
-                        modifier = Modifier.size(20.dp),
-                    )
-                    Text(
-                        text = placeEntity.movies?.listToBracketedString() ?: "",
-                        style = BooTheme.typography.caption1,
-                        color = Black,
-                        maxLines = 1,
-                        modifier = Modifier.padding(start = 8.dp),
-                    )
-                }
+                Text(
+                    text = String.format("%.1f", placeEntity.stars),
+                    style = BooTheme.typography.caption1,
+                    color = Black,
+                    modifier =
+                        Modifier
+                            .weight(1f, false)
+                            .padding(start = 4.dp),
+                )
+                Text(
+                    text =
+                        stringResource(
+                            R.string.placeReviewAndPoint,
+                            placeEntity.reviewCount,
+                        ),
+                    style = BooTheme.typography.caption2,
+                    color = Gray400,
+                    modifier =
+                        Modifier
+                            .weight(1f, false)
+                            .padding(start = 4.dp),
+                )
+                Image(
+                    painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_like),
+                    contentDescription = "liked icon",
+                    modifier = Modifier.size(12.dp),
+                )
+                Text(
+                    text = placeEntity.likeCount.toString(),
+                    style = BooTheme.typography.caption1,
+                    color = Black,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier =
+                        Modifier
+                            .weight(1f, false)
+                            .padding(start = 4.dp),
+                )
+            }
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Image(
+                    painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_film),
+                    contentDescription = "movie icon",
+                    modifier = Modifier.size(20.dp),
+                )
+                Text(
+                    text = placeEntity.movies?.listToBracketedString() ?: "",
+                    style = BooTheme.typography.caption1,
+                    color = Black,
+                    maxLines = 1,
+                    modifier = Modifier.padding(start = 8.dp),
+                )
             }
         }
     }
