@@ -47,18 +47,8 @@ class KakaoMapViewModel
             )
         }
 
-        fun onMapClicked() {
-            updateState(
-                state.value.copy(
-                    showDetailBox = state.value.showDetailBox.not(),
-                    selectedPlace = null,
-                )
-            )
-        }
-
-        fun getMoviePlaceListWitFilter(filter: String = "default") {
+        fun getMoviePlaceListWitFilter(filter: String = "star") {
             _state.value = _state.value.copy(isLoading = true)
-
             viewModelScope.launch {
                 placeRepository
                     .getMoviePlacesWithCategory(filter)
@@ -74,9 +64,8 @@ class KakaoMapViewModel
             }
         }
 
-        fun getLocalStorePlaceListWitFilter(filter: String = "default") {
+        fun getLocalStorePlaceListWitFilter(filter: String = "star") {
             _state.value = _state.value.copy(isLoading = true)
-
             viewModelScope.launch {
                 placeRepository
                     .getLocalStorePlacesWithCategory(filter)
@@ -92,9 +81,8 @@ class KakaoMapViewModel
             }
         }
 
-        fun getTourPlaceListWitFilter(filter: String = "default") {
+        fun getTourPlaceListWitFilter(filter: String = "star") {
             _state.value = _state.value.copy(isLoading = true)
-
             viewModelScope.launch {
                 placeRepository
                     .getTourPlacesWithCategory(filter)
