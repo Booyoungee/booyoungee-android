@@ -35,10 +35,6 @@ data class PlaceDto(
     val bookmarkCount: Int,
     @SerialName("stars")
     val stars: Double,
-    //@SerialName("mapX")
-    //val mapX: String,
-    //@SerialName("mapY")
-    //val mapY: String,
     @SerialName("me")
     val me: Me,
 ) {
@@ -73,8 +69,6 @@ data class PlaceDto(
         reviewCount = reviewCount,
         stars = String.format("%.1f", stars).toDouble(),
         bookmarkCount = bookmarkCount,
-        //mapX = mapX,
-        //mapY = mapY,
         me = me.toDomain()
     )
 }

@@ -20,6 +20,10 @@ data class PlaceWithCategoryDto(
     val reviewCount: Int?,
     @SerialName("movieName")
     val movieName: String?,
+    @SerialName("mapX")
+    val mapX: String?,
+    @SerialName("mapY")
+    val mapY: String?,
 ) {
     fun toDomain() =
         PlaceInfoEntity(
@@ -30,6 +34,8 @@ data class PlaceWithCategoryDto(
             stars = starCount ?: 0.0,
             movies = if (movieName == null) {
                 null
-            } else listOf(movieName)
+            } else listOf(movieName),
+            mapX = mapX ?: "129.03933",
+            mapY = mapY ?: "35.114495",
         )
 }

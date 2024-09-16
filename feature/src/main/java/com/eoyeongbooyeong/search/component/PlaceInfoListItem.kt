@@ -131,7 +131,7 @@ internal fun PlaceInfoListItem(
                     ReviewStar(star)
 
                     Text(
-                        text = star.toString().take(3),
+                        text = String.format("%.1f", star),
                         style = BooTheme.typography.caption1,
                         color = Black,
                         modifier = Modifier
@@ -242,7 +242,7 @@ fun PlaceInfoResultListPreview() {
                 placeName = "PlaceEntity Name",
                 placeImageUrl = "https://placeimg.com/100/100/any",
                 address = "Address",
-                star = 4.5,
+                star = 4.3335,
                 reviewCount = 100,
                 likedCount = 100,
                 isBookmarked = false,
