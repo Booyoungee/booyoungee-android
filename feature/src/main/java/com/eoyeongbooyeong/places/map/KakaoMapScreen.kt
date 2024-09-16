@@ -271,7 +271,7 @@ fun rememberMapView(
                                     LatLng.from(place.mapY.toDouble(), place.mapX.toDouble())
                                 setMapMarker(map, location, place)
 
-                                markerClickListener(map, place)
+                                markerClickListener(map)
                             }
                         }
 
@@ -286,12 +286,12 @@ fun rememberMapView(
                         private fun setMapMarker(
                             map: KakaoMap,
                             location: LatLng,
-                            selectedPlace: PlaceInfoEntity,
+                            place: PlaceInfoEntity,
                         ): Label {
                             val label = map.labelManager?.layer
 
                             val styles = LabelStyles.from(LabelStyle.from(markerIconResId))
-                            val labelOptions = LabelOptions.from(location).setStyles(styles).setTag(selectedPlace)
+                            val labelOptions = LabelOptions.from(location).setStyles(styles).setTag(place) // place로 설정
 
                             return label?.addLabel(labelOptions)
                                 ?: error("Label creation failed")
@@ -299,13 +299,11 @@ fun rememberMapView(
 
                         private fun markerClickListener(
                             map: KakaoMap,
-                            selectedPlace: PlaceInfoEntity,
                         ) {
                             val markerStateMap = mutableMapOf<Label, Boolean>()
                             var previousClickedLabel: Label? = null
 
                             map.setOnLabelClickListener { _, _, label ->
-
                                 previousClickedLabel?.let { prevLabel ->
                                     prevLabel.changeStyles(
                                         LabelStyles.from(LabelStyle.from(markerIconResId))
@@ -321,7 +319,11 @@ fun rememberMapView(
 
                                 previousClickedLabel = label
 
-                                onClickMarker(selectedPlace)
+                                // 태그에서 PlaceInfoEntity를 추출
+                                val placeInfo = label.getTag() as? PlaceInfoEntity
+                                placeInfo?.let {
+                                    onClickMarker(it)
+                                }
 
                                 map.setOnMapClickListener { _, _, _, _ ->
                                     previousClickedLabel?.let { prevLabel ->
