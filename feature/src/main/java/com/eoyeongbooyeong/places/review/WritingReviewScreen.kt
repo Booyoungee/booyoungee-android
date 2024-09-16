@@ -40,12 +40,15 @@ import com.eoyeongbooyeong.core.designsystem.theme.Gray100
 import com.eoyeongbooyeong.core.designsystem.theme.Gray400
 import com.eoyeongbooyeong.core.designsystem.theme.Red
 import com.eoyeongbooyeong.core.designsystem.theme.White
+import com.eoyeongbooyeong.core.extension.noRippleClickable
 import timber.log.Timber
 
 @Composable
 fun ReviewRoute(
-    placeId: Int = 898,
+    placeId: Int,
     viewModel: WritingReviewViewModel = hiltViewModel(),
+    onBackClick: () -> Unit,
+    finishWritingReview: () -> Unit,
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
@@ -59,7 +62,7 @@ fun ReviewRoute(
             .collect { sideEffect ->
                 when (sideEffect) {
                     is WritingReviewSideEffect.NavigateReviewFinish -> {
-                        // 리뷰 작성 완료 후 화면 종료
+                        finishWritingReview()
                     }
 
                     else -> {
@@ -87,6 +90,7 @@ fun ReviewRoute(
         },
         isStarWarning = isStarWarning,
         isTextWarning = isTextWarning,
+        onBackClick = onBackClick,
     )
 }
 
@@ -98,6 +102,7 @@ fun ReviewScreen(
     isStarWarning: Boolean,
     isTextWarning: Boolean,
     onClickReviewScore: (Int) -> Unit,
+    onBackClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -111,6 +116,7 @@ fun ReviewScreen(
                 Icon(
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_cancel),
                     contentDescription = "left",
+                    modifier = Modifier.noRippleClickable(onBackClick)
                 )
             },
             text = "리뷰 작성하기",
@@ -211,6 +217,7 @@ fun ReviewScreenPreview() {
             isStarWarning = false,
             isTextWarning = false,
             onClickReviewScore = {},
+            onBackClick = {},
         )
     }
 }

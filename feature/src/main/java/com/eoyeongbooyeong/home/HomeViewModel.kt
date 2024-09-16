@@ -42,6 +42,12 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun navigateToCategoryPlace(placeType: String) {
+        viewModelScope.launch {
+            _sideEffects.emit(HomeSideEffect.NavigateToCategoryPlace(placeType))
+        }
+    }
+
     private fun getRecommendPlace() {
         viewModelScope.launch {
             placeRepository.getRecommendPlace()
