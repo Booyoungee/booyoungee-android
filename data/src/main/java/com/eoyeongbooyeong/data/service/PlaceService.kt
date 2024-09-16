@@ -44,9 +44,9 @@ interface PlaceService {
         @Body placeId: LikeRequestDto,
     ): BaseResponse<LikeDto>
 
-    @DELETE("api/v1/like/{likeId}")
+    @DELETE("api/v1/like/{placeId}")
     suspend fun deleteLike(
-        @Path("likeId") likeId: Int,
+        @Path("placeId") placeId: Int,
     ): BaseResponse<LikeDto>
 
     @GET("api/v1/place/movie")

@@ -2,6 +2,7 @@ package com.eoyeongbooyeong.domain.entity
 
 data class PlaceInfoEntity(
     val placeId: String = "",
+    val placeType: String = "",
     val name: String = "",
     val address: String = "",
     val tel: String? = null,

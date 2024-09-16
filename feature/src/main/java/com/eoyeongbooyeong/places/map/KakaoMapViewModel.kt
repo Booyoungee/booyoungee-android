@@ -66,6 +66,7 @@ class KakaoMapViewModel
 
         fun getLocalStorePlaceListWitFilter(filter: String = "star") {
             _state.value = _state.value.copy(isLoading = true)
+
             viewModelScope.launch {
                 placeRepository
                     .getLocalStorePlacesWithCategory(filter)
@@ -83,6 +84,7 @@ class KakaoMapViewModel
 
         fun getTourPlaceListWitFilter(filter: String = "star") {
             _state.value = _state.value.copy(isLoading = true)
+
             viewModelScope.launch {
                 placeRepository
                     .getTourPlacesWithCategory(filter)

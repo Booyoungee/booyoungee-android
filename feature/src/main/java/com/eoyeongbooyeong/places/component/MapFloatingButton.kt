@@ -109,7 +109,8 @@ fun FloatingButtonContainer(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .padding(end = 16.dp, bottom = 56.dp).zIndex(1f)
+            .padding(end = 16.dp, bottom = 56.dp).zIndex(1f),
+        contentAlignment = Alignment.BottomCenter
     ) {
         NavigateToMapFloatingButton(
             modifier = Modifier
@@ -124,7 +125,10 @@ fun FloatingButtonContainer(
 @Preview
 fun MapFloatingButtonPreview() {
     BooTheme {
-        Column {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            FloatingButtonContainer()
             MapFloatingButton(
                 buttonState = FloatingButton(isMyLocationButton = true),
             )

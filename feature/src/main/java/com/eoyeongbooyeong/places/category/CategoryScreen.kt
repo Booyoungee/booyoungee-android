@@ -45,6 +45,7 @@ import com.eoyeongbooyeong.core.designsystem.theme.Black
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Purple
 import com.eoyeongbooyeong.core.designsystem.theme.White
+import com.eoyeongbooyeong.core.extension.noRippleClickable
 import com.eoyeongbooyeong.core.extension.toast
 import com.eoyeongbooyeong.domain.entity.PlaceInfoEntity
 import com.eoyeongbooyeong.domain.entity.PlaceType
@@ -59,6 +60,8 @@ fun PlaceCategoryRoute(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {},
     viewModel: CategoryPlaceViewModel = hiltViewModel(),
+    navigateToPlaceDetail: (Int, String) -> Unit = { _, _ -> },
+    navigateToKakaoMap: (String) -> Unit = {},
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
@@ -66,9 +69,18 @@ fun PlaceCategoryRoute(
 
     LaunchedEffect(key1 = Unit) {
         when (placeType) {
-            "movie" -> viewModel.getMoviePlaceListWitFilter(state.value.filter)
-            "store" -> viewModel.getLocalStorePlaceListWitFilter(state.value.filter)
-            "tour" -> viewModel.getTourPlaceListWitFilter(state.value.filter)
+            "movie" -> {
+                viewModel.getMoviePlaceListWitFilter(state.value.filter)
+                viewModel.updatePlaceType("movie")
+            }
+            "store" -> {
+                viewModel.getLocalStorePlaceListWitFilter(state.value.filter)
+                viewModel.updatePlaceType("store")
+            }
+            "tour" -> {
+                viewModel.getTourPlaceListWitFilter(state.value.filter)
+                viewModel.updatePlaceType("tour")
+            }
         }
     }
 
@@ -81,14 +93,17 @@ fun PlaceCategoryRoute(
 
                     is CategorySideEffect.clickMovieTab -> {
                         viewModel.getMoviePlaceListWitFilter(state.value.filter)
+                        viewModel.updatePlaceType("movie")
                     }
 
                     is CategorySideEffect.clickLocalStoreTab -> {
                         viewModel.getLocalStorePlaceListWitFilter(state.value.filter)
+                        viewModel.updatePlaceType("store")
                     }
 
                     is CategorySideEffect.clickTourTab -> {
                         viewModel.getTourPlaceListWitFilter(state.value.filter)
+                        viewModel.updatePlaceType("tour")
                     }
 
                     is CategorySideEffect.NavigateToBack -> {
@@ -100,27 +115,25 @@ fun PlaceCategoryRoute(
             }
     }
 
-    Log.d(
-        "PlaceCategoryRoute",
-        "${state.value.placeList}, ${state.value.filter}, ${state.value.placeType}",
-    )
-
-    PlaceCategoryScreen(
-        placeType = placeType,
-        modifier = modifier,
-        onBackClick = onBackClick,
-        placeList = state.value.placeList,
-        onSortingSelected = { selectedFilter ->
-            viewModel.updateState(state.value.copy(filter = selectedFilter))
-            when (placeType) {
-                "movie" -> viewModel.getMoviePlaceListWitFilter(selectedFilter)
-                "store" -> viewModel.getLocalStorePlaceListWitFilter(selectedFilter)
-                "tour" -> viewModel.getTourPlaceListWitFilter(selectedFilter)
-            }
-        },
-        navigateToMap = {},
-        isLoading = state.value.isLoading,
-    )
+    if(state.value.placeType.isNotBlank()) {
+        PlaceCategoryScreen(
+            placeType = state.value.placeType,
+            modifier = modifier,
+            onBackClick = onBackClick,
+            placeList = state.value.placeList,
+            onSortingSelected = { selectedFilter ->
+                viewModel.updateState(state.value.copy(filter = selectedFilter))
+                when (placeType) {
+                    "movie" -> viewModel.getMoviePlaceListWitFilter(selectedFilter)
+                    "store" -> viewModel.getLocalStorePlaceListWitFilter(selectedFilter)
+                    "tour" -> viewModel.getTourPlaceListWitFilter(selectedFilter)
+                }
+            },
+            isLoading = state.value.isLoading,
+            navigateToPlaceDetail = navigateToPlaceDetail,
+            navigateToKakaoMap = navigateToKakaoMap,
+        )
+    }
 }
 
 @Composable
@@ -129,10 +142,11 @@ fun PlaceCategoryScreen(
     placeList: List<PlaceInfoEntity>,
     onBackClick: () -> Unit,
     onSortingSelected: (String) -> Unit,
-    navigateToMap: () -> Unit,
     placeType: String,
     isLoading: Boolean = false,
     viewModel: CategoryPlaceViewModel = hiltViewModel(),
+    navigateToPlaceDetail: (Int, String) -> Unit = { _, _ -> },
+    navigateToKakaoMap: (String) -> Unit = {},
 ) {
     val selectedIndex =
         remember {
@@ -165,6 +179,7 @@ fun PlaceCategoryScreen(
                 Icon(
                     imageVector = ImageVector.vectorResource(id = com.eoyeongbooyeong.core.R.drawable.ic_left),
                     contentDescription = "left",
+                    modifier = Modifier.noRippleClickable { onBackClick() },
                 )
             },
             text = "",
@@ -229,11 +244,13 @@ fun PlaceCategoryScreen(
 
         PlaceList(
             searchResultList = placeList,
+            navigateToPlaceDetail = navigateToPlaceDetail,
+            placeType = placeType,
         )
         Spacer(modifier = Modifier.height(12.dp))
         // TODO 플로팅 버튼 Z 축 위로 올리기
         FloatingButtonContainer(
-            onClick = { navigateToMap() },
+            onClick = { navigateToKakaoMap(placeType) },
         )
     }
 
@@ -247,7 +264,8 @@ fun PlaceCategoryScreen(
 fun PlaceList(
     modifier: Modifier = Modifier,
     searchResultList: List<PlaceInfoEntity>,
-    onPlaceClick: (PlaceInfoEntity) -> Unit = {},
+    navigateToPlaceDetail: (Int, String) -> Unit = { _, _ -> },
+    placeType: String,
 ) {
     LazyColumn {
         items(searchResultList) { place ->
@@ -259,7 +277,7 @@ fun PlaceList(
                 likedCount = place.likeCount,
                 movieNameList = place.movies ?: ImmutableList.of(),
                 placeImageUrl = place.images.firstOrNull(),
-                onClick = { /* Handle item click */ },
+                onClick = { navigateToPlaceDetail(place.placeId.toInt(), placeType) },
             )
             Spacer(modifier = Modifier.height(16.dp))
         }
