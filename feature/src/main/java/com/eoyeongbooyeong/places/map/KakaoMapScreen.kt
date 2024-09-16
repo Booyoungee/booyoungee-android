@@ -13,7 +13,6 @@ import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -22,6 +21,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -45,6 +45,7 @@ import androidx.lifecycle.flowWithLifecycle
 import com.eoyeongbooyeong.category.component.PlaceInfoBox
 import com.eoyeongbooyeong.core.R
 import com.eoyeongbooyeong.core.designsystem.component.topbar.BooTextTopAppBar
+import com.eoyeongbooyeong.core.designsystem.theme.Black
 import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.core.extension.noRippleClickable
 import com.eoyeongbooyeong.core.extension.toast
@@ -119,6 +120,7 @@ fun KakaoMapRoute(
             selectedPlaceDetailsEntity = state.value.selectedPlace ?: PlaceInfoEntity(),
             onBackClick = onBackClick,
             onClickPlaceDetail = onClickPlaceDetail,
+            onMapClicked = viewModel::onMapClicked,
         )
     } else {
         Log.d("KakaoMapRoute", "No placeList")
@@ -134,13 +136,14 @@ internal fun KakakoMapScreen(
     selectedPlaceDetailsEntity: PlaceInfoEntity,
     onBackClick: () -> Unit,
     onClickPlaceDetail: (Int, String) -> Unit,
+    onMapClicked: () -> Unit = {},
 ) {
     val context = LocalContext.current
     val kakaoMap = remember { mutableStateOf<KakaoMap?>(null) }
     val mapView =
         rememberMapView(context = context, onMapReady = { map ->
             kakaoMap.value = map
-        }, placeList = placeList, placeType = placeType, onClickMarker = onClickMarker)
+        }, placeList = placeList, placeType = placeType, onClickMarker = onClickMarker, onMapClicked = onMapClicked)
 
     val locationPermissionGranted = remember { mutableStateOf(false) }
     val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
@@ -168,7 +171,7 @@ internal fun KakakoMapScreen(
         locationPermissionGranted.value = hasFineLocationPermission && hasCoarseLocationPermission
     }
 
-    Box(
+    Column(
         modifier =
             Modifier
                 .fillMaxSize()
@@ -176,55 +179,58 @@ internal fun KakakoMapScreen(
                 .statusBarsPadding()
                 .systemBarsPadding(),
     ) {
-        if (showDetailBox) {
-            Box(
-                modifier =
-                    Modifier.fillMaxSize().zIndex(10f).noRippleClickable {
-                        onClickPlaceDetail(selectedPlaceDetailsEntity.placeId.toInt(), placeType)
-                    },
-                contentAlignment = Alignment.BottomCenter,
+
+        BooTextTopAppBar(
+            leadingIcon = {
+                Icon(
+                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_left),
+                    contentDescription = "left",
+                    modifier = Modifier.noRippleClickable { onBackClick() },
+                )
+            },
+            text = "",
+        )
+
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.BottomCenter,
+        ) {
+            AndroidView(factory = { mapView })
+
+            Column(
+                modifier = Modifier.align(Alignment.BottomEnd),
             ) {
-                PlaceInfoBox(
-                    placeEntity = selectedPlaceDetailsEntity,
-                    modifier = Modifier.padding(16.dp).fillMaxWidth(),
+                MapFloatingButton(
+                    modifier = Modifier.padding(end = 24.dp, bottom = 30.dp),
+                    onClick = {
+                        requestPermissionAndMoveToCurrentLocation(
+                            locationPermissionGranted,
+                            fusedLocationClient,
+                            kakaoMap,
+                            requestLocationPermissionLauncher,
+                            context,
+                        )
+                    },
+                    buttonState = FloatingButton(isMyLocationButton = true),
                 )
             }
-        }
 
-        Column(
-            modifier = Modifier.fillMaxSize(),
-        ) {
-            BooTextTopAppBar(
-                leadingIcon = {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_left),
-                        contentDescription = "left",
-                        modifier = Modifier.noRippleClickable { onBackClick() },
-                    )
-                },
-                text = "",
-            )
-
-            Box(
-                modifier = Modifier.fillMaxSize(),
-            ) {
-                AndroidView(factory = { mapView })
-
-                Column(
-                    modifier = Modifier.align(Alignment.BottomEnd),
+            if (showDetailBox) {
+                Box(
+                    modifier =
+                    Modifier.wrapContentSize().zIndex(2f).padding(16.dp),
+                    contentAlignment = Alignment.BottomCenter,
                 ) {
-                    MapFloatingButton(
-                        modifier = Modifier.padding(end = 24.dp, bottom = 30.dp),
+                    PlaceInfoBox(
+                        placeEntity = selectedPlaceDetailsEntity,
+                        modifier = Modifier.padding(16.dp).fillMaxWidth(),
                         onClick = {
-                            requestPermissionAndMoveToCurrentLocation(
-                                locationPermissionGranted,
-                                fusedLocationClient,
-                                kakaoMap,
-                                requestLocationPermissionLauncher,
-                                context,
-                            )
-                        },
-                        buttonState = FloatingButton(isMyLocationButton = true),
+                        Log.d(
+                            "KakaoMapRoute",
+                            "selectedPlaceDetailsEntity: $selectedPlaceDetailsEntity"
+                        )
+                        onClickPlaceDetail(selectedPlaceDetailsEntity.placeId.toInt(), placeType)
+                    }
                     )
                 }
             }
@@ -239,6 +245,7 @@ fun rememberMapView(
     placeType: String = "movie",
     placeList: List<PlaceInfoEntity> = emptyList(),
     onClickMarker: (PlaceInfoEntity) -> Unit,
+    onMapClicked: () -> Unit = {},
 ): MapView {
     val mapView =
         remember {
@@ -254,7 +261,7 @@ fun rememberMapView(
                     object : KakaoMapReadyCallback() {
                         override fun getPosition(): LatLng = LatLng.from(BUSAN_STATION_LATITUDE, BUSAN_STATION_LONGTITUDE)
 
-                        override fun getZoomLevel(): Int = 17
+                        override fun getZoomLevel(): Int = 11
 
                         override fun onMapReady(map: KakaoMap) {
                             onMapReady(map) // KakaoMap 객체를 상태로 업데이트
@@ -262,7 +269,7 @@ fun rememberMapView(
                             placeList.forEach { place ->
                                 val location =
                                     LatLng.from(place.mapY.toDouble(), place.mapX.toDouble())
-                                setMapMarker(map, location)
+                                setMapMarker(map, location, place)
 
                                 markerClickListener(map, place)
                             }
@@ -279,11 +286,12 @@ fun rememberMapView(
                         private fun setMapMarker(
                             map: KakaoMap,
                             location: LatLng,
+                            selectedPlace: PlaceInfoEntity,
                         ): Label {
                             val label = map.labelManager?.layer
 
                             val styles = LabelStyles.from(LabelStyle.from(markerIconResId))
-                            val labelOptions = LabelOptions.from(location).setStyles(styles)
+                            val labelOptions = LabelOptions.from(location).setStyles(styles).setTag(selectedPlace)
 
                             return label?.addLabel(labelOptions)
                                 ?: error("Label creation failed")
@@ -294,21 +302,37 @@ fun rememberMapView(
                             selectedPlace: PlaceInfoEntity,
                         ) {
                             val markerStateMap = mutableMapOf<Label, Boolean>()
+                            var previousClickedLabel: Label? = null
 
                             map.setOnLabelClickListener { _, _, label ->
-                                val currentStyle = markerStateMap[label] ?: false
-                                val newStyleResId =
-                                    if (currentStyle) markerIconResId else R.drawable.ic_marker_clicked
 
+                                previousClickedLabel?.let { prevLabel ->
+                                    prevLabel.changeStyles(
+                                        LabelStyles.from(LabelStyle.from(markerIconResId))
+                                    )
+                                }
+
+                                val newStyleResId = R.drawable.ic_marker_clicked
                                 label.changeStyles(
                                     LabelStyles.from(LabelStyle.from(newStyleResId)),
                                 )
 
-                                markerStateMap[label] = !currentStyle
+                                markerStateMap[label] = true
 
-                                // 클릭된 place에 대한 정보 업데이트
+                                previousClickedLabel = label
+
                                 onClickMarker(selectedPlace)
-                                Log.d("KakaoRoute", "$selectedPlace")
+
+                                map.setOnMapClickListener { _, _, _, _ ->
+                                    previousClickedLabel?.let { prevLabel ->
+                                        prevLabel.changeStyles(
+                                            LabelStyles.from(LabelStyle.from(markerIconResId))
+                                        )
+                                        previousClickedLabel = null
+                                    }
+
+                                    onMapClicked()
+                                }
                                 true
                             }
                         }
