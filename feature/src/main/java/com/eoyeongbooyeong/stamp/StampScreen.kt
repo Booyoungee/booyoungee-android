@@ -109,7 +109,9 @@ private fun StampScreen(
                 CollectedStampCard()
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(3),
-                    modifier = Modifier.padding(horizontal = 24.dp),
+                    modifier = Modifier
+                        .padding(horizontal = 24.dp)
+                        .fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(28.dp),
                     horizontalArrangement = Arrangement.spacedBy(13.dp),
                 ) {
@@ -117,6 +119,7 @@ private fun StampScreen(
                         StampItem(
                             imageUrl = null,
                             text = "아홉산 숲",
+                            isLocked = it % 2 == 0
                         )
                     }
                     item(
