@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Card
@@ -22,6 +23,8 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,26 +33,39 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.eoyeongbooyeong.core.designsystem.component.topbar.BooTextTopAppBar
 import com.eoyeongbooyeong.core.designsystem.theme.Black
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Gray400
 import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.stamp.component.StampItem
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 
 @Composable
 internal fun StampRoute(
     paddingValues: PaddingValues,
+    viewModel: StampViewModel = hiltViewModel(),
 ) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
     StampScreen(
         paddingValues = paddingValues,
+        userName = state.userName,
+        stampList = state.stampList,
+        collectedStampList = state.collectedStampList,
     )
 }
 
 @Composable
 private fun StampScreen(
     paddingValues: PaddingValues = PaddingValues(0.dp),
+    userName: String = "부영이",
+    stampList: ImmutableList<String> = persistentListOf(),
+    collectedStampList: ImmutableList<String> = persistentListOf(),
 ) {
     Column(
         modifier = Modifier
@@ -60,7 +76,7 @@ private fun StampScreen(
             text = "스탬프",
         )
 
-        val tabData = listOf("만날 수 있는 부영이", "햄깅이22 님의 부영이")
+        val tabData = listOf("만날 수 있는 부영이", "${userName}님의 부영이")
         val pagerState = rememberPagerState(initialPage = 0) { tabData.size }
         val coroutineScope = rememberCoroutineScope()
 
@@ -106,7 +122,9 @@ private fun StampScreen(
                     .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                CollectedStampCard()
+                CollectedStampCard(
+                    stampCount = collectedStampList.size
+                )
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(3),
                     modifier = Modifier
@@ -115,11 +133,13 @@ private fun StampScreen(
                     verticalArrangement = Arrangement.spacedBy(28.dp),
                     horizontalArrangement = Arrangement.spacedBy(13.dp),
                 ) {
-                    items(22) {
+                    items(
+                        if (index == 0) stampList else collectedStampList
+                    ) { item ->
                         StampItem(
                             imageUrl = null,
-                            text = "아홉산 숲",
-                            isLocked = it % 2 == 0
+                            text = item,
+                            isLocked = index == 1
                         )
                     }
                     item(
@@ -136,9 +156,12 @@ private fun StampScreen(
 }
 
 @Composable
-fun CollectedStampCard() {
+fun CollectedStampCard(
+    stampCount: Int,
+    modifier: Modifier = Modifier,
+) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .padding(24.dp)
             .fillMaxWidth(),
         colors = CardDefaults.cardColors().copy(
@@ -160,7 +183,7 @@ fun CollectedStampCard() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "8",
+                text = stampCount.toString(),
                 style = BooTheme.typography.head1,
             )
             Spacer(modifier = Modifier.width(4.dp))
