@@ -7,10 +7,10 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -199,7 +199,9 @@ internal fun MainScreen(
                         navigateUp = navigator::navigateUpIfNotHome,
                     )
 
-                    stampNavGraph()
+                    stampNavGraph(
+                        paddingValues = paddingValue,
+                    )
                     myPageNavGraph(
                         paddingValues = paddingValue,
                         navigateUp = navigator::navigateUpIfNotHome,
@@ -241,14 +243,12 @@ private fun MainBottomBar(
         ) {
             HorizontalDivider(color = Gray100)
             Row(
-                modifier =
-                Modifier
+                modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
                     .navigationBarsPadding()
                     .height(86.dp),
                 verticalAlignment = Alignment.Bottom,
-                horizontalArrangement = Arrangement.SpaceEvenly,
             ) {
                 tabs.forEach { tab ->
                     MainBottomBarItem(
@@ -263,7 +263,7 @@ private fun MainBottomBar(
 }
 
 @Composable
-private fun MainBottomBarItem(
+private fun RowScope.MainBottomBarItem(
     tab: MainTab,
     isSelected: Boolean,
     onClick: () -> Unit,
@@ -278,7 +278,8 @@ private fun MainBottomBarItem(
                 role = null,
                 interactionSource = remember { MutableInteractionSource() },
                 onClick = onClick,
-            ),
+            )
+            .weight(1f),
         contentAlignment = Alignment.Center,
     ) {
         Column {
