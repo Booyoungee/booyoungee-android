@@ -21,6 +21,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
+import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -39,6 +41,7 @@ import com.eoyeongbooyeong.core.designsystem.component.topbar.BooTextTopAppBar
 import com.eoyeongbooyeong.core.designsystem.theme.Black
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Gray400
+import com.eoyeongbooyeong.core.designsystem.theme.Purple
 import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.stamp.component.StampItem
 import kotlinx.collections.immutable.ImmutableList
@@ -84,6 +87,12 @@ private fun StampScreen(
             selectedTabIndex = pagerState.currentPage,
             modifier = Modifier,
             containerColor = White,
+            indicator = { tabPositions ->
+                TabRowDefaults.SecondaryIndicator(
+                    modifier = Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]),
+                    color = Purple
+                )
+            }
         ) {
             tabData.forEachIndexed { index, text ->
                 Tab(
