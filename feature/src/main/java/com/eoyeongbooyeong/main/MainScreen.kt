@@ -199,7 +199,9 @@ internal fun MainScreen(
                         navigateUp = navigator::navigateUpIfNotHome,
                     )
 
-                    stampNavGraph()
+                    stampNavGraph(
+                        paddingValues = paddingValue,
+                    )
                     myPageNavGraph(
                         paddingValues = paddingValue,
                         navigateUp = navigator::navigateUpIfNotHome,
