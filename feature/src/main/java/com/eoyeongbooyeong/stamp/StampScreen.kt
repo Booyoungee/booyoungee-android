@@ -1,6 +1,7 @@
 package com.eoyeongbooyeong.stamp
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -10,10 +11,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -32,6 +35,7 @@ import com.eoyeongbooyeong.core.designsystem.theme.Black
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Gray400
 import com.eoyeongbooyeong.core.designsystem.theme.White
+import com.eoyeongbooyeong.stamp.component.StampItem
 import kotlinx.coroutines.launch
 
 @Composable
@@ -102,43 +106,66 @@ private fun StampScreen(
                     .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Card(
-                    modifier = Modifier
-                        .padding(24.dp)
-                        .fillMaxWidth(),
-                    colors = CardDefaults.cardColors().copy(
-                        containerColor = White
-                    )
+                CollectedStampCard()
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(3),
+                    modifier = Modifier.padding(horizontal = 24.dp),
+                    verticalArrangement = Arrangement.spacedBy(28.dp)
                 ) {
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    Text(
-                        modifier = Modifier.align(Alignment.CenterHorizontally),
-                        text = "내가 모은 부영이",
-                        style = BooTheme.typography.body3,
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    Row(
-                        modifier = Modifier.align(Alignment.CenterHorizontally),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = "8",
-                            style = BooTheme.typography.head1,
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            text = "마리",
-                            style = BooTheme.typography.body2,
+                    items(22) {
+                        StampItem(
+                            imageUrl = null,
+                            text = "아홉산 숲",
                         )
                     }
-                    Spacer(modifier = Modifier.height(10.dp))
+                    item(
+                        span = {
+                            GridItemSpan(maxLineSpan)
+                        }
+                    ) {
+                        Spacer(modifier = Modifier.height(24.dp))
+                    }
                 }
-                Text(if (index == 0) "1번 스탬프" else "2번 스탬프")
             }
         }
+    }
+}
+
+@Composable
+fun CollectedStampCard() {
+    Card(
+        modifier = Modifier
+            .padding(24.dp)
+            .fillMaxWidth(),
+        colors = CardDefaults.cardColors().copy(
+            containerColor = White
+        )
+    ) {
+        Spacer(modifier = Modifier.height(10.dp))
+
+        Text(
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            text = "내가 모은 부영이",
+            style = BooTheme.typography.body3,
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Row(
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "8",
+                style = BooTheme.typography.head1,
+            )
+            Spacer(modifier = Modifier.width(4.dp))
+            Text(
+                text = "마리",
+                style = BooTheme.typography.body2,
+            )
+        }
+        Spacer(modifier = Modifier.height(10.dp))
     }
 }
 
