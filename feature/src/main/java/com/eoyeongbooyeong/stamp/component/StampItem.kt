@@ -3,6 +3,8 @@ package com.eoyeongbooyeong.stamp.component
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -34,7 +36,8 @@ fun StampItem(
             contentDescription = "스템프 이미지",
             contentScale = ContentScale.Crop,
             modifier = Modifier
-                .size(76.dp)
+                .fillMaxWidth(0.8f)
+                .aspectRatio(1f)
                 .clip(CircleShape),
         )
         Spacer(modifier = Modifier.height(8.dp))
