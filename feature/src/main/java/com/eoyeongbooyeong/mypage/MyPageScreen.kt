@@ -232,7 +232,7 @@ internal fun MyPageScreen(
                     style = BooTheme.typography.caption2
                 )
                 Text(
-                    text = "1.0.0",
+                    text = "1.0.1",
                     color = Gray400,
                     style = BooTheme.typography.caption2
                 )
