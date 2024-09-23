@@ -6,8 +6,10 @@ import com.eoyeongbooyeong.domain.repository.StampRepository
 import com.eoyeongbooyeong.domain.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -16,16 +18,17 @@ import javax.inject.Inject
 @HiltViewModel
 class StampViewModel @Inject constructor(
     private val userRepository: UserRepository,
-    private val stampRepository: StampRepository
+    private val stampRepository: StampRepository,
 ) : ViewModel() {
     private val _state = MutableStateFlow(StampState())
     val state: StateFlow<StampState>
         get() = _state.asStateFlow()
 
+    private val _sideEffect = MutableSharedFlow<StampSideEffect>()
+    val sideEffect = _sideEffect.asSharedFlow()
+
     init {
         getUserNickname()
-        getMyStampList()
-        getNearbyStampList()
     }
 
     private fun getUserNickname() {
@@ -36,7 +39,7 @@ class StampViewModel @Inject constructor(
         }
     }
 
-    private fun getMyStampList() {
+    fun getMyStampList() {
         viewModelScope.launch {
             stampRepository.getMyStampList().onSuccess { stampList ->
                 _state.value = _state.value.copy(myStampList = stampList.toPersistentList())
@@ -44,15 +47,45 @@ class StampViewModel @Inject constructor(
         }
     }
 
-    private fun getNearbyStampList() {
+    fun getNearbyStampList() {
         viewModelScope.launch {
             stampRepository.getNearbyStampList(
                 userX = 129.1709112.toString(),
                 userY = 35.1593662.toString(),
-                radius = 1000
+                radius = RADIUS
             ).onSuccess { stampList ->
                 _state.value = _state.value.copy(nearbyStampList = stampList.toPersistentList())
             }.onFailure(Timber::e)
         }
+    }
+
+    fun stampPlace(
+        placeName: String,
+        placeId: Int,
+        type: String,
+        mapX: String,
+        mapY: String,
+    ) {
+        viewModelScope.launch {
+            stampRepository.stampPlace(
+                placeId = placeId,
+                type = type,
+                userX = 129.1709112.toString(),
+                userY = 35.1593662.toString(),
+                x = mapX,
+                y = mapY
+            ).onSuccess {
+                _sideEffect.emit(StampSideEffect.ShowToast(placeName))
+                getMyStampList()
+                _state.value = _state.value.copy(
+                    nearbyStampList = state.value.nearbyStampList.filter { it.placeId != placeId }
+                        .toPersistentList()
+                )
+            }.onFailure(Timber::e)
+        }
+    }
+
+    companion object {
+        private const val RADIUS = 100
     }
 }

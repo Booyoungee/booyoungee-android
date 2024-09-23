@@ -16,10 +16,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
 import com.eoyeongbooyeong.core.designsystem.theme.Blue100
-import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Gray400
 import com.eoyeongbooyeong.core.designsystem.theme.White
-import com.eoyeongbooyeong.main.ui.theme.BooyoungeeTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable

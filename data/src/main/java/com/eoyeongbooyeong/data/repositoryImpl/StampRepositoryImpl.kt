@@ -12,6 +12,24 @@ class StampRepositoryImpl @Inject constructor(
         stampDataSource.getMyStampList().map { it.toDomain() }
     }
 
+    override suspend fun stampPlace(
+        placeId: Int,
+        type: String,
+        userX: String,
+        userY: String,
+        x: String,
+        y: String,
+    ): Result<Int> = runCatching {
+        stampDataSource.stampPlace(
+            placeId,
+            type,
+            userX = userX,
+            userY = userY,
+            x,
+            y
+        )
+    }
+
     override suspend fun getNearbyStampList(
         userX: String,
         userY: String,

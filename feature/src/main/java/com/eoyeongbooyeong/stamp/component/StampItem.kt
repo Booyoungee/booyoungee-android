@@ -35,11 +35,7 @@ fun StampItem(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .clickable {
-                if (!isLocked) {
-                    onClick()
-                }
-            },
+            .clickable(onClick = onClick),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Box {
