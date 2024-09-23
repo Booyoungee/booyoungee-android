@@ -47,7 +47,14 @@ class StampViewModel @Inject constructor(
         }
     }
 
-    fun getNearbyStampList() {
+    fun setMyLocation(userX: String, userY: String) {
+        _state.value = _state.value.copy(myX = userX, myY = userY)
+    }
+
+    fun getNearbyStampList(
+        userX: String,
+        userY: String
+    ) {
         viewModelScope.launch {
             stampRepository.getNearbyStampList(
                 userX = 129.1709112.toString(),
@@ -83,6 +90,10 @@ class StampViewModel @Inject constructor(
                 )
             }.onFailure(Timber::e)
         }
+    }
+
+    fun setMyLocationError(isLocationError: Boolean = true) {
+        _state.value = _state.value.copy(isLocationError = isLocationError)
     }
 
     companion object {
