@@ -51,6 +51,7 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun StampRoute(
     paddingValues: PaddingValues,
+    navigateToPlaceDetail: (Int, String) -> Unit,
     viewModel: StampViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -60,6 +61,15 @@ internal fun StampRoute(
         userName = state.userName,
         stampList = state.nearbyStampList,
         collectedStampList = state.myStampList,
+        stampPlace = { placeId, type, mapX, mapY ->
+            viewModel.stampPlace(
+                placeId,
+                type,
+                mapX,
+                mapY
+            )
+        },
+        navigateToPlaceDetail = navigateToPlaceDetail,
     )
 }
 
@@ -69,6 +79,8 @@ private fun StampScreen(
     userName: String = "부영이",
     stampList: ImmutableList<StampEntity> = persistentListOf(),
     collectedStampList: ImmutableList<StampEntity> = persistentListOf(),
+    stampPlace: (Int, String, String, String) -> Unit = { _, _, _, _ -> },
+    navigateToPlaceDetail: (Int, String) -> Unit = { _, _ -> },
 ) {
     Column(
         modifier = Modifier
@@ -149,7 +161,21 @@ private fun StampScreen(
                             imageUrl = item.images.firstOrNull(),
                             text = item.placeName,
                             isLocked = index == 1
-                        )
+                        ) {
+                            if (index == 0) {
+                                stampPlace(
+                                    item.placeId,
+                                    item.type,
+                                    item.mapX.toString(),
+                                    item.mapY.toString()
+                                )
+                            } else {
+                                navigateToPlaceDetail(
+                                    item.placeId,
+                                    item.type
+                                )
+                            }
+                        }
                     }
                     item(
                         span = {

@@ -17,10 +17,12 @@ fun NavController.navigateToStamp(navOptions: NavOptions) {
 
 fun NavGraphBuilder.stampNavGraph(
     paddingValues: PaddingValues,
+    navigateToPlaceDetail: (Int, String) -> Unit,
 ) {
     composable<Stamp> {
         StampRoute(
             paddingValues = paddingValues,
+            navigateToPlaceDetail = navigateToPlaceDetail,
         )
     }
 }

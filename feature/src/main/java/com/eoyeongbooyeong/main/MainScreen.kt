@@ -201,6 +201,13 @@ internal fun MainScreen(
 
                     stampNavGraph(
                         paddingValues = paddingValue,
+                        navigateToPlaceDetail = { placeId, placeType ->
+                            navigator.navigateToPlaceDetail(
+                                navOptions { launchSingleTop = true },
+                                placeId = placeId,
+                                placeType = placeType
+                            )
+                        },
                     )
                     myPageNavGraph(
                         paddingValues = paddingValue,
