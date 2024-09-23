@@ -53,12 +53,12 @@ class StampViewModel @Inject constructor(
 
     fun getNearbyStampList(
         userX: String,
-        userY: String
+        userY: String,
     ) {
         viewModelScope.launch {
             stampRepository.getNearbyStampList(
-                userX = 129.1709112.toString(),
-                userY = 35.1593662.toString(),
+                userX = userX,
+                userY = userY,
                 radius = RADIUS
             ).onSuccess { stampList ->
                 _state.value = _state.value.copy(nearbyStampList = stampList.toPersistentList())
@@ -77,8 +77,8 @@ class StampViewModel @Inject constructor(
             stampRepository.stampPlace(
                 placeId = placeId,
                 type = type,
-                userX = 129.1709112.toString(),
-                userY = 35.1593662.toString(),
+                userX = state.value.myX,
+                userY = state.value.myY,
                 x = mapX,
                 y = mapY
             ).onSuccess {
