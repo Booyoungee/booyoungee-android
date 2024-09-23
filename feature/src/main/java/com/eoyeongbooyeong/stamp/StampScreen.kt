@@ -25,7 +25,6 @@ import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -43,6 +42,7 @@ import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Gray400
 import com.eoyeongbooyeong.core.designsystem.theme.Purple
 import com.eoyeongbooyeong.core.designsystem.theme.White
+import com.eoyeongbooyeong.domain.entity.StampEntity
 import com.eoyeongbooyeong.stamp.component.StampItem
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -58,8 +58,8 @@ internal fun StampRoute(
     StampScreen(
         paddingValues = paddingValues,
         userName = state.userName,
-        stampList = state.stampList,
-        collectedStampList = state.collectedStampList,
+        stampList = state.nearbyStampList,
+        collectedStampList = state.myStampList,
     )
 }
 
@@ -67,8 +67,8 @@ internal fun StampRoute(
 private fun StampScreen(
     paddingValues: PaddingValues = PaddingValues(0.dp),
     userName: String = "부영이",
-    stampList: ImmutableList<String> = persistentListOf(),
-    collectedStampList: ImmutableList<String> = persistentListOf(),
+    stampList: ImmutableList<StampEntity> = persistentListOf(),
+    collectedStampList: ImmutableList<StampEntity> = persistentListOf(),
 ) {
     Column(
         modifier = Modifier
@@ -146,8 +146,8 @@ private fun StampScreen(
                         if (index == 0) stampList else collectedStampList
                     ) { item ->
                         StampItem(
-                            imageUrl = null,
-                            text = item,
+                            imageUrl = item.images.firstOrNull(),
+                            text = item.placeName,
                             isLocked = index == 1
                         )
                     }

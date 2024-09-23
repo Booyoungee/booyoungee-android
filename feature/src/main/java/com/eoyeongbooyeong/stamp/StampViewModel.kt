@@ -1,13 +1,11 @@
 package com.eoyeongbooyeong.stamp
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.eoyeongbooyeong.domain.repository.PlaceRepository
 import com.eoyeongbooyeong.domain.repository.StampRepository
 import com.eoyeongbooyeong.domain.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,22 +25,7 @@ class StampViewModel @Inject constructor(
     init {
         getUserNickname()
         getMyStampList()
-        // getNearbyStampList()
-        _state.value = StampState(
-            stampList = persistentListOf("1", "2", "3", "4"),
-            collectedStampList = persistentListOf(
-                "1",
-                "2",
-                "3",
-                "4",
-                "5",
-                "6",
-                "7",
-                "8",
-                "9",
-                "10"
-            ),
-        )
+        getNearbyStampList()
     }
 
     private fun getUserNickname() {
@@ -56,7 +39,7 @@ class StampViewModel @Inject constructor(
     private fun getMyStampList() {
         viewModelScope.launch {
             stampRepository.getMyStampList().onSuccess { stampList ->
-                Log.e("TAG", "getMyStampList: $stampList", )
+                _state.value = _state.value.copy(myStampList = stampList.toPersistentList())
             }.onFailure(Timber::e)
         }
     }
@@ -68,7 +51,7 @@ class StampViewModel @Inject constructor(
                 userY = 35.1593662.toString(),
                 radius = 1000
             ).onSuccess { stampList ->
-                Log.e("TAG", "getNearbyStampList: $stampList", )
+                _state.value = _state.value.copy(nearbyStampList = stampList.toPersistentList())
             }.onFailure(Timber::e)
         }
     }
