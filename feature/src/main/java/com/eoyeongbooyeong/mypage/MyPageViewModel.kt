@@ -28,6 +28,10 @@ class MyPageViewModel @Inject constructor(
     val sideEffects: SharedFlow<MyPageSideEffect>
         get() = _sideEffects.asSharedFlow()
 
+    init {
+        getUserNickname()
+    }
+
     fun navigateToWebView(url: String) {
         viewModelScope.launch {
             _sideEffects.emit(MyPageSideEffect.NavigateToWebView(url))
