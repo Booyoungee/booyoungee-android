@@ -7,6 +7,8 @@ import javax.inject.Inject
 class StampDataSourceImpl @Inject constructor(
     private val stampService: StampService,
 ) : StampDataSource {
+    override suspend fun getMyStampList() = stampService.getMyStampList().data.contents
+
     override suspend fun getNearbyStampList(
         userX: String,
         userY: String,

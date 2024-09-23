@@ -26,7 +26,8 @@ class StampViewModel @Inject constructor(
 
     init {
         getUserNickname()
-        getNearbyStampList()
+        getMyStampList()
+        // getNearbyStampList()
         _state.value = StampState(
             stampList = persistentListOf("1", "2", "3", "4"),
             collectedStampList = persistentListOf(
@@ -48,6 +49,14 @@ class StampViewModel @Inject constructor(
         viewModelScope.launch {
             userRepository.getUserNickname().onSuccess { nickname ->
                 _state.value = _state.value.copy(userName = nickname)
+            }.onFailure(Timber::e)
+        }
+    }
+
+    private fun getMyStampList() {
+        viewModelScope.launch {
+            stampRepository.getMyStampList().onSuccess { stampList ->
+                Log.e("TAG", "getMyStampList: $stampList", )
             }.onFailure(Timber::e)
         }
     }

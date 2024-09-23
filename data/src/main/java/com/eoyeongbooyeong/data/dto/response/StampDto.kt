@@ -21,9 +21,9 @@ data class StampDto (
     @SerialName("updatedAt")
     val updatedAt: String?,
     @SerialName("mapX")
-    val mapX: String,
+    val mapX: String?,
     @SerialName("mapY")
-    val mapY: String
+    val mapY: String?
 ) {
     fun toDomain() = StampEntity(
         stampId = stampId,

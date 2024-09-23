@@ -8,6 +8,10 @@ import javax.inject.Inject
 class StampRepositoryImpl @Inject constructor(
     private val stampDataSource: StampDataSource,
 ) : StampRepository {
+    override suspend fun getMyStampList(): Result<List<StampEntity>> = runCatching {
+        stampDataSource.getMyStampList().map { it.toDomain() }
+    }
+
     override suspend fun getNearbyStampList(
         userX: String,
         userY: String,

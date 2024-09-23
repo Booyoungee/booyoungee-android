@@ -8,6 +8,6 @@ data class StampEntity (
     val images: List<String> = emptyList(),
     val createdAt: String? = null,
     val updatedAt: String? = null,
-    val mapX: String = "",
-    val mapY: String = ""
+    val mapX: String? = null,
+    val mapY: String? = null
 )
