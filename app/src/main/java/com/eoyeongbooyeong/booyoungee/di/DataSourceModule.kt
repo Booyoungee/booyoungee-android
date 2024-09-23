@@ -5,6 +5,7 @@ import com.eoyeongbooyeong.data.datasource.BookmarkDataSource
 import com.eoyeongbooyeong.data.datasource.MovieDataSource
 import com.eoyeongbooyeong.data.datasource.PlaceDataSource
 import com.eoyeongbooyeong.data.datasource.ReviewDataSource
+import com.eoyeongbooyeong.data.datasource.StampDataSource
 import com.eoyeongbooyeong.data.datasource.TourInfoOpenApiDataSource
 import com.eoyeongbooyeong.data.datasource.UserDataSource
 import com.eoyeongbooyeong.data.datasourceImpl.AuthDataSourceImpl
@@ -12,6 +13,7 @@ import com.eoyeongbooyeong.data.datasourceImpl.BookmarkDataSourceImpl
 import com.eoyeongbooyeong.data.datasourceImpl.MovieDataSourceImpl
 import com.eoyeongbooyeong.data.datasourceImpl.PlaceDataSourceImpl
 import com.eoyeongbooyeong.data.datasourceImpl.ReviewDataSourceImpl
+import com.eoyeongbooyeong.data.datasourceImpl.StampDataSourceImpl
 import com.eoyeongbooyeong.data.datasourceImpl.TourInfoOpenApiDataSourceImpl
 import com.eoyeongbooyeong.data.datasourceImpl.UserDataSourceImpl
 import dagger.Binds
@@ -51,4 +53,8 @@ internal abstract class DataSourceModule {
     @Binds
     @Singleton
     abstract fun provideMovieDataSource(movieDataSourceImpl: MovieDataSourceImpl): MovieDataSource
+
+    @Binds
+    @Singleton
+    abstract fun provideStampDataSource(stampDataSourceImpl: StampDataSourceImpl): StampDataSource
 }
