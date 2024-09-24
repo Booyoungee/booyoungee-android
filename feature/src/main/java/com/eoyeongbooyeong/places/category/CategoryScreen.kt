@@ -263,7 +263,7 @@ fun PlaceCategoryScreen(
                         reviewCount = place.reviewCount,
                         likedCount = place.likeCount,
                         movieNameList = place.movies,
-                        placeImageUrl = place.images.firstOrNull(),
+                        placeImageUrl = place.images.firstOrNull() ?: place.posterUrl?.firstOrNull(),
                         onClick = { navigateToPlaceDetail(place.placeId.toInt(), placeType) },
                         showBookmarkIcon = false,
                     )
