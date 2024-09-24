@@ -1,11 +1,16 @@
 package com.eoyeongbooyeong.stamp
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -25,25 +30,32 @@ import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.eoyeongbooyeong.core.designsystem.component.topbar.BooTextTopAppBar
 import com.eoyeongbooyeong.core.designsystem.theme.Black
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Gray400
 import com.eoyeongbooyeong.core.designsystem.theme.Purple
 import com.eoyeongbooyeong.core.designsystem.theme.White
+import com.eoyeongbooyeong.domain.entity.StampEntity
 import com.eoyeongbooyeong.stamp.component.StampItem
+import com.google.android.gms.location.LocationServices
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
@@ -51,15 +63,77 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun StampRoute(
     paddingValues: PaddingValues,
+    navigateToPlaceDetail: (Int, String) -> Unit,
     viewModel: StampViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val context = LocalContext.current
+
+    val focusLocationProviderClient = remember {
+        LocationServices.getFusedLocationProviderClient(context)
+    }
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.getMyStampList()
+
+        if (ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            viewModel.setMyLocationError(false)
+            focusLocationProviderClient.lastLocation.addOnSuccessListener { location ->
+                viewModel.setMyLocation(
+                    userX = location?.longitude.toString(),
+                    userY = location?.latitude.toString()
+                )
+                viewModel.getNearbyStampList(
+                    userX = location?.longitude.toString(),
+                    userY = location?.latitude.toString()
+                )
+            }.addOnFailureListener {
+                viewModel.setMyLocationError()
+            }
+        } else {
+            viewModel.setMyLocationError()
+        }
+    }
+
+    LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
+        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    is StampSideEffect.ShowToast -> {
+                        Toast.makeText(
+                            context,
+                            "\"${sideEffect.placeName}\" 스탬프를 찍었어요!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+    }
 
     StampScreen(
         paddingValues = paddingValues,
         userName = state.userName,
-        stampList = state.stampList,
-        collectedStampList = state.collectedStampList,
+        isLocationError = state.isLocationError,
+        stampList = state.nearbyStampList,
+        collectedStampList = state.myStampList,
+        stampPlace = { placeName, placeId, type, mapX, mapY ->
+            viewModel.stampPlace(
+                placeName,
+                placeId,
+                type,
+                mapX,
+                mapY
+            )
+        },
+        navigateToPlaceDetail = navigateToPlaceDetail,
     )
 }
 
@@ -67,8 +141,11 @@ internal fun StampRoute(
 private fun StampScreen(
     paddingValues: PaddingValues = PaddingValues(0.dp),
     userName: String = "부영이",
-    stampList: ImmutableList<String> = persistentListOf(),
-    collectedStampList: ImmutableList<String> = persistentListOf(),
+    isLocationError: Boolean = false,
+    stampList: ImmutableList<StampEntity> = persistentListOf(),
+    collectedStampList: ImmutableList<StampEntity> = persistentListOf(),
+    stampPlace: (String, Int, String, String, String) -> Unit = { _, _, _, _, _ -> },
+    navigateToPlaceDetail: (Int, String) -> Unit = { _, _ -> },
 ) {
     Column(
         modifier = Modifier
@@ -131,32 +208,69 @@ private fun StampScreen(
                     .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                CollectedStampCard(
-                    stampCount = collectedStampList.size
-                )
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(3),
-                    modifier = Modifier
-                        .padding(horizontal = 24.dp)
-                        .fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(28.dp),
-                    horizontalArrangement = Arrangement.spacedBy(13.dp),
-                ) {
-                    items(
-                        if (index == 0) stampList else collectedStampList
-                    ) { item ->
-                        StampItem(
-                            imageUrl = null,
-                            text = item,
-                            isLocked = index == 1
-                        )
-                    }
-                    item(
-                        span = {
-                            GridItemSpan(maxLineSpan)
-                        }
+                if (isLocationError && index == 0) {
+                    Spacer(modifier = Modifier.weight(1f))
+                    Image(
+                        painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_stamp_boo),
+                        modifier = Modifier
+                            .fillMaxWidth(0.3f)
+                            .aspectRatio(1f),
+                        contentDescription = null,
+                    )
+                    Text(
+                        text = "위치 정보를 가져오지 못했어요",
+                        style = BooTheme.typography.head2,
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "위치 권한을 허용해주세요",
+                        style = BooTheme.typography.body2,
+                    )
+                    Spacer(modifier = Modifier.weight(1.5f))
+                } else {
+                    CollectedStampCard(
+                        stampCount = collectedStampList.size
+                    )
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(3),
+                        modifier = Modifier
+                            .padding(horizontal = 24.dp)
+                            .fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(28.dp),
+                        horizontalArrangement = Arrangement.spacedBy(13.dp),
                     ) {
-                        Spacer(modifier = Modifier.height(24.dp))
+                        items(
+                            items = if (index == 0) stampList else collectedStampList,
+                            key = { it.placeId }
+                        ) { item ->
+                            StampItem(
+                                imageUrl = item.images.firstOrNull(),
+                                text = item.placeName,
+                                isLocked = index == 1
+                            ) {
+                                if (index == 0) {
+                                    stampPlace(
+                                        item.placeName,
+                                        item.placeId,
+                                        item.type,
+                                        item.mapX.toString(),
+                                        item.mapY.toString()
+                                    )
+                                } else {
+                                    navigateToPlaceDetail(
+                                        item.placeId,
+                                        item.type
+                                    )
+                                }
+                            }
+                        }
+                        item(
+                            span = {
+                                GridItemSpan(maxLineSpan)
+                            }
+                        ) {
+                            Spacer(modifier = Modifier.height(24.dp))
+                        }
                     }
                 }
             }
