@@ -265,6 +265,7 @@ fun PlaceCategoryScreen(
                         movieNameList = place.movies,
                         placeImageUrl = place.images.firstOrNull(),
                         onClick = { navigateToPlaceDetail(place.placeId.toInt(), placeType) },
+                        showBookmarkIcon = false,
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                 }
