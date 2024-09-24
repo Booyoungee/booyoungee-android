@@ -1,7 +1,6 @@
 package com.eoyeongbooyeong.places.category
 
-import SortingDropdownMenu
-import android.util.Log
+import SortingBottomSheet
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -247,7 +246,7 @@ fun PlaceCategoryScreen(
             }
 
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
-                SortingDropdownMenu(
+                SortingBottomSheet(
                     onSortSelected = onSortingSelected,
                 )
             }

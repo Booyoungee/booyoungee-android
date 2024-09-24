@@ -1,6 +1,7 @@
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -10,15 +11,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
+import com.eoyeongbooyeong.core.designsystem.theme.BackgroundBlue
+import com.eoyeongbooyeong.core.designsystem.theme.Black
+import com.eoyeongbooyeong.core.designsystem.theme.Blue400
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
 import com.eoyeongbooyeong.core.designsystem.theme.Gray400
 import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.core.extension.noRippleClickable
 
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SortingDropdownMenu(
+fun SortingBottomSheet(
     onSortSelected: (String) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
     var selectedOption by remember { mutableStateOf("별점순") }
@@ -30,19 +37,24 @@ fun SortingDropdownMenu(
         "좋아요 많은 순" to "like"
     )
 
-    Box(modifier = Modifier.padding(vertical = 12.dp, horizontal = 24.dp), contentAlignment = Alignment.CenterEnd) {
+    Column(
+        modifier = modifier.background(White)
+    ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.End,
+            modifier = Modifier
+                .padding(vertical = 12.dp, horizontal = 24.dp)
+                .fillMaxWidth()
+                .background(White)
         ) {
             Text(
                 text = selectedOption,
-                modifier =
-                Modifier
+                modifier = Modifier
                     .noRippleClickable { expanded = true }
                     .padding(8.dp),
                 color = Gray400,
-                style = BooTheme.typography.caption1,
+                style = BooTheme.typography.body3,
             )
             Icon(
                 imageVector = if (expanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
@@ -51,26 +63,58 @@ fun SortingDropdownMenu(
                 modifier = Modifier.noRippleClickable { expanded = true },
             )
         }
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false },
-            modifier = Modifier.background(White).align(Alignment.CenterEnd),
-        ) {
-            options.forEach { option ->
-                DropdownMenuItem(
-                    text = { Text(text = option) },
-                    onClick = {
-                        selectedOption = option
-                        expanded = false
-                        onSortSelected(filterMapping[option] ?: "star")
-                    },
-                    modifier = Modifier.background(White).align(Alignment.End),
-                )
+
+        if (expanded) {
+            ModalBottomSheet(
+                onDismissRequest = { expanded = false },
+                sheetState = rememberModalBottomSheetState(
+                    skipPartiallyExpanded = true
+                ),
+                shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+                containerColor = White
+            ) {
+                // Sheet content
+                Column(
+                    modifier = Modifier
+                        .background(White)
+                        .fillMaxWidth()
+                ) {
+                    Text(
+                        text = "필터",
+                        style = BooTheme.typography.body1,
+                        color = Black,
+                        modifier = Modifier.padding(vertical = 12.dp).align(Alignment.CenterHorizontally)
+                    )
+                    options.forEach { option ->
+                        Text(
+                            text = option,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .noRippleClickable {
+                                    selectedOption = option
+                                    expanded = false
+                                    onSortSelected(filterMapping[option] ?: "star")
+                                }.background(
+                                    if(selectedOption == option) {
+                                        BackgroundBlue.copy(alpha = 0.5f)
+                                    } else {
+                                        White
+                                    }
+                                ).padding(vertical = 18.dp, horizontal = 16.dp),
+                            style =
+                            if(selectedOption == option) {
+                                BooTheme.typography.body3
+                            } else {
+                                BooTheme.typography.body4
+                            },
+                            color = Black
+                        )
+                    }
+                }
             }
         }
     }
 }
-
 
 @Composable
 @Preview
@@ -79,7 +123,7 @@ fun PreviewDropdownMenuComponent() {
         Column(
             modifier = Modifier.fillMaxSize().background(White),
         ) {
-            SortingDropdownMenu(onSortSelected = { Log.d("SortingDropdownMenu", it) })
+            SortingBottomSheet(onSortSelected = { Log.d("SortingDropdownMenu", it) })
         }
     }
 }
