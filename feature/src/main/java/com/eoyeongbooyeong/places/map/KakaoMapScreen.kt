@@ -14,7 +14,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,6 +22,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -45,7 +45,6 @@ import androidx.lifecycle.flowWithLifecycle
 import com.eoyeongbooyeong.category.component.PlaceInfoBox
 import com.eoyeongbooyeong.core.R
 import com.eoyeongbooyeong.core.designsystem.component.topbar.BooTextTopAppBar
-import com.eoyeongbooyeong.core.designsystem.theme.Black
 import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.core.extension.noRippleClickable
 import com.eoyeongbooyeong.core.extension.toast
@@ -141,9 +140,16 @@ internal fun KakakoMapScreen(
     val context = LocalContext.current
     val kakaoMap = remember { mutableStateOf<KakaoMap?>(null) }
     val mapView =
-        rememberMapView(context = context, onMapReady = { map ->
-            kakaoMap.value = map
-        }, placeList = placeList, placeType = placeType, onClickMarker = onClickMarker, onMapClicked = onMapClicked)
+        rememberMapView(
+            context = context,
+            onMapReady = { map ->
+                kakaoMap.value = map
+            },
+            placeList = placeList,
+            placeType = placeType,
+            onClickMarker = onClickMarker,
+            onMapClicked = onMapClicked,
+        )
 
     val locationPermissionGranted = remember { mutableStateOf(false) }
     val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
@@ -171,66 +177,61 @@ internal fun KakakoMapScreen(
         locationPermissionGranted.value = hasFineLocationPermission && hasCoarseLocationPermission
     }
 
-    Column(
+    Scaffold(
         modifier =
             Modifier
                 .fillMaxSize()
                 .background(color = White)
                 .statusBarsPadding()
                 .systemBarsPadding(),
-    ) {
-
-        BooTextTopAppBar(
-            leadingIcon = {
-                Icon(
-                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_left),
-                    contentDescription = "left",
-                    modifier = Modifier.noRippleClickable { onBackClick() },
-                )
-            },
-            text = "",
-        )
-
+        topBar = {
+            BooTextTopAppBar(
+                leadingIcon = {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_left),
+                        contentDescription = "left",
+                        modifier = Modifier.noRippleClickable { onBackClick() },
+                    )
+                },
+                text = "",
+            )
+        },
+        floatingActionButton = {
+            MapFloatingButton(
+                modifier = Modifier.padding(end = 24.dp, bottom = 30.dp),
+                onClick = {
+                    requestPermissionAndMoveToCurrentLocation(
+                        locationPermissionGranted,
+                        fusedLocationClient,
+                        kakaoMap,
+                        requestLocationPermissionLauncher,
+                        context,
+                    )
+                },
+                buttonState = FloatingButton(isMyLocationButton = true),
+            )
+        },
+    ) { contentPadding ->
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().padding(contentPadding),
             contentAlignment = Alignment.BottomCenter,
         ) {
             AndroidView(factory = { mapView })
 
-            Column(
-                modifier = Modifier.align(Alignment.BottomEnd),
-            ) {
-                MapFloatingButton(
-                    modifier = Modifier.padding(end = 24.dp, bottom = 30.dp),
-                    onClick = {
-                        requestPermissionAndMoveToCurrentLocation(
-                            locationPermissionGranted,
-                            fusedLocationClient,
-                            kakaoMap,
-                            requestLocationPermissionLauncher,
-                            context,
-                        )
-                    },
-                    buttonState = FloatingButton(isMyLocationButton = true),
-                )
-            }
-
             if (showDetailBox) {
                 Box(
-                    modifier =
-                    Modifier.wrapContentSize().zIndex(2f).padding(16.dp),
+                    modifier = Modifier.wrapContentSize().zIndex(2f).padding(16.dp),
                     contentAlignment = Alignment.BottomCenter,
                 ) {
                     PlaceInfoBox(
                         placeEntity = selectedPlaceDetailsEntity,
                         modifier = Modifier.padding(16.dp).fillMaxWidth(),
                         onClick = {
-                        Log.d(
-                            "KakaoMapRoute",
-                            "selectedPlaceDetailsEntity: $selectedPlaceDetailsEntity"
-                        )
-                        onClickPlaceDetail(selectedPlaceDetailsEntity.placeId.toInt(), placeType)
-                    }
+                            onClickPlaceDetail(
+                                selectedPlaceDetailsEntity.placeId.toInt(),
+                                placeType,
+                            )
+                        },
                     )
                 }
             }
@@ -291,22 +292,24 @@ fun rememberMapView(
                             val label = map.labelManager?.layer
 
                             val styles = LabelStyles.from(LabelStyle.from(markerIconResId))
-                            val labelOptions = LabelOptions.from(location).setStyles(styles).setTag(place) // place로 설정
+                            val labelOptions =
+                                LabelOptions
+                                    .from(location)
+                                    .setStyles(styles)
+                                    .setTag(place) // place로 설정
 
                             return label?.addLabel(labelOptions)
                                 ?: error("Label creation failed")
                         }
 
-                        private fun markerClickListener(
-                            map: KakaoMap,
-                        ) {
+                        private fun markerClickListener(map: KakaoMap) {
                             val markerStateMap = mutableMapOf<Label, Boolean>()
                             var previousClickedLabel: Label? = null
 
                             map.setOnLabelClickListener { _, _, label ->
                                 previousClickedLabel?.let { prevLabel ->
                                     prevLabel.changeStyles(
-                                        LabelStyles.from(LabelStyle.from(markerIconResId))
+                                        LabelStyles.from(LabelStyle.from(markerIconResId)),
                                     )
                                 }
 
@@ -328,7 +331,7 @@ fun rememberMapView(
                                 map.setOnMapClickListener { _, _, _, _ ->
                                     previousClickedLabel?.let { prevLabel ->
                                         prevLabel.changeStyles(
-                                            LabelStyles.from(LabelStyle.from(markerIconResId))
+                                            LabelStyles.from(LabelStyle.from(markerIconResId)),
                                         )
                                         previousClickedLabel = null
                                     }
