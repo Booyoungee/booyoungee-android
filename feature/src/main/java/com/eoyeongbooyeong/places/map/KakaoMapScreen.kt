@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
@@ -14,6 +15,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -65,6 +67,8 @@ import com.kakao.vectormap.label.Label
 import com.kakao.vectormap.label.LabelOptions
 import com.kakao.vectormap.label.LabelStyle
 import com.kakao.vectormap.label.LabelStyles
+import com.kakao.vectormap.label.LabelTextBuilder
+import com.kakao.vectormap.label.LabelTextStyle
 
 private const val BUSAN_STATION_LATITUDE = 35.114495
 private const val BUSAN_STATION_LONGTITUDE = 129.03933
@@ -196,31 +200,35 @@ internal fun KakakoMapScreen(
                 text = "",
             )
         },
-        floatingActionButton = {
-            MapFloatingButton(
-                modifier = Modifier.padding(end = 24.dp, bottom = 30.dp),
-                onClick = {
-                    requestPermissionAndMoveToCurrentLocation(
-                        locationPermissionGranted,
-                        fusedLocationClient,
-                        kakaoMap,
-                        requestLocationPermissionLauncher,
-                        context,
-                    )
-                },
-                buttonState = FloatingButton(isMyLocationButton = true),
-            )
-        },
     ) { contentPadding ->
+
         Box(
             modifier = Modifier.fillMaxSize().padding(contentPadding),
             contentAlignment = Alignment.BottomCenter,
         ) {
             AndroidView(factory = { mapView })
 
+            Column(
+                modifier = Modifier.align(Alignment.BottomEnd),
+            ) {
+                MapFloatingButton(
+                    modifier = Modifier.padding(end = 24.dp, bottom = 30.dp),
+                    onClick = {
+                        requestPermissionAndMoveToCurrentLocation(
+                            locationPermissionGranted,
+                            fusedLocationClient,
+                            kakaoMap,
+                            requestLocationPermissionLauncher,
+                            context,
+                        )
+                    },
+                    buttonState = FloatingButton(isMyLocationButton = true),
+                )
+            }
+
             if (showDetailBox) {
                 Box(
-                    modifier = Modifier.wrapContentSize().zIndex(2f).padding(16.dp),
+                    modifier = Modifier.wrapContentSize().zIndex(10f).padding(16.dp),
                     contentAlignment = Alignment.BottomCenter,
                 ) {
                     PlaceInfoBox(
@@ -291,11 +299,13 @@ fun rememberMapView(
                         ): Label {
                             val label = map.labelManager?.layer
 
-                            val styles = LabelStyles.from(LabelStyle.from(markerIconResId))
-                            val labelOptions =
-                                LabelOptions
+                            val styles = LabelStyles.from(LabelStyle.from(markerIconResId).setTextStyles(25, Color.BLACK))
+                            val texts = LabelTextBuilder().setTexts(place.name)
+
+                            val labelOptions = LabelOptions
                                     .from(location)
                                     .setStyles(styles)
+                                    .setTexts(texts)
                                     .setTag(place) // place로 설정
 
                             return label?.addLabel(labelOptions)
@@ -309,13 +319,13 @@ fun rememberMapView(
                             map.setOnLabelClickListener { _, _, label ->
                                 previousClickedLabel?.let { prevLabel ->
                                     prevLabel.changeStyles(
-                                        LabelStyles.from(LabelStyle.from(markerIconResId)),
+                                        LabelStyles.from(LabelStyle.from(markerIconResId).setTextStyles(25, Color.BLACK)),
                                     )
                                 }
 
                                 val newStyleResId = R.drawable.ic_marker_clicked
                                 label.changeStyles(
-                                    LabelStyles.from(LabelStyle.from(newStyleResId)),
+                                    LabelStyles.from(LabelStyle.from(newStyleResId).setTextStyles(25, Color.BLACK)),
                                 )
 
                                 markerStateMap[label] = true
@@ -331,11 +341,10 @@ fun rememberMapView(
                                 map.setOnMapClickListener { _, _, _, _ ->
                                     previousClickedLabel?.let { prevLabel ->
                                         prevLabel.changeStyles(
-                                            LabelStyles.from(LabelStyle.from(markerIconResId)),
+                                            LabelStyles.from(LabelStyle.from(markerIconResId).setTextStyles(25, Color.BLACK)),
                                         )
                                         previousClickedLabel = null
                                     }
-
                                     onMapClicked()
                                 }
                                 true

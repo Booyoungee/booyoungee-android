@@ -59,7 +59,6 @@ class PlaceDetailsViewModel
                                 likeCount = it.likeCount,
                                 bookMarkCount = it.bookmarkCount,
                             )
-                        Timber.tag("PlaceDetailsViewModel").d(it.toString())
                     }.onFailure {
                         _sideEffects.emit(PlaceDetailsSideEffect.ShowToast(it.message.toString()))
                     }
