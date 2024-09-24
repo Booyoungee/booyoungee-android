@@ -39,6 +39,7 @@ import androidx.lifecycle.flowWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.eoyeongbooyeong.core.R
+import com.eoyeongbooyeong.core.designsystem.component.WhiteLoadingWithProgressIndicator
 import com.eoyeongbooyeong.core.designsystem.component.star.Review
 import com.eoyeongbooyeong.core.designsystem.component.star.ReviewStar
 import com.eoyeongbooyeong.core.designsystem.component.topbar.BooTextTopAppBar
@@ -125,6 +126,7 @@ fun PlaceDetailRoute(
         onAccuseClick = { reviewId ->
             viewModel.postAccuseReview(commentId = reviewId)
         },
+        isLoading = state.value.isLoading,
     )
 }
 
@@ -151,6 +153,7 @@ fun PlaceDetailScreen(
     isBookmark: Boolean = false,
     onBlockClick: (Int) -> Unit = {},
     onAccuseClick: (Int) -> Unit = {},
+    isLoading: Boolean = false,
 ) {
     Scaffold(
         modifier =
@@ -182,6 +185,7 @@ fun PlaceDetailScreen(
             )
         },
     ) { innerPadding ->
+
         LazyColumn(
             modifier =
                 Modifier
@@ -193,27 +197,19 @@ fun PlaceDetailScreen(
                 LazyRow {
                     itemsIndexed(imageUrl) { index, imageUrl ->
                         AsyncImage(
-                            model =
-                                ImageRequest
-                                    .Builder(LocalContext.current)
-                                    .data(imageUrl)
-                                    .crossfade(true)
-                                    .build(),
-                            placeholder = painterResource(R.drawable.img_default_5),
+                            model = imageUrl,
+                            placeholder = painterResource(R.drawable.default_white_img),
                             contentDescription = "PlaceDetailsEntity Detail Image",
                             contentScale = ContentScale.Crop,
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .height(320.dp)
-                                    .padding(10.dp),
+                            modifier = Modifier.fillMaxWidth().height(320.dp).padding(10.dp),
+                            error = painterResource(R.drawable.img_default_5)
                         )
                     }
                 }
             }
 
             // TODO 인티케이터
-            item {  }
+            item { }
 
             item {
                 Row(
@@ -335,6 +331,10 @@ fun PlaceDetailScreen(
                     )
                 }
             }
+        }
+
+        if (isLoading) {
+            WhiteLoadingWithProgressIndicator()
         }
     }
 }

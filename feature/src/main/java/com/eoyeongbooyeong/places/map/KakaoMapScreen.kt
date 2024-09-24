@@ -46,6 +46,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.eoyeongbooyeong.category.component.PlaceInfoBox
 import com.eoyeongbooyeong.core.R
+import com.eoyeongbooyeong.core.designsystem.component.LoadingWithProgressIndicator
+import com.eoyeongbooyeong.core.designsystem.component.WhiteLoadingWithProgressIndicator
 import com.eoyeongbooyeong.core.designsystem.component.topbar.BooTextTopAppBar
 import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.core.extension.noRippleClickable
@@ -123,8 +125,11 @@ fun KakaoMapRoute(
             onBackClick = onBackClick,
             onClickPlaceDetail = onClickPlaceDetail,
             resetClickedPlace = viewModel::resetClickedPlace,
+            isLoading = state.value.isLoading,
         )
+        viewModel.updateKakaoMapLoadingState(false)
     } else {
+        viewModel.updateKakaoMapLoadingState(true)
         Log.d("KakaoMapRoute", "No placeList")
     }
 }
@@ -139,6 +144,7 @@ internal fun KakakoMapScreen(
     onBackClick: () -> Unit,
     onClickPlaceDetail: (Int, String) -> Unit,
     resetClickedPlace: () -> Unit = {},
+    isLoading: Boolean = false,
 ) {
     val context = LocalContext.current
     val kakaoMap = remember { mutableStateOf<KakaoMap?>(null) }
@@ -243,6 +249,10 @@ internal fun KakakoMapScreen(
                     )
                 }
             }
+        }
+
+        if (isLoading) {
+            WhiteLoadingWithProgressIndicator()
         }
     }
 }

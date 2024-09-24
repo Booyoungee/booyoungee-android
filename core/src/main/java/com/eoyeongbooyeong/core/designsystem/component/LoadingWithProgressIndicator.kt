@@ -12,13 +12,19 @@ import com.eoyeongbooyeong.core.designsystem.theme.White
 @Composable
 fun LoadingWithProgressIndicator() {
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(White.copy(alpha = 0.5f)),
+        modifier = Modifier.fillMaxSize().background(White.copy(alpha = 0.5f)),
         contentAlignment = Alignment.Center
     ) {
-        androidx.compose.material3.CircularProgressIndicator(
-            color = Purple
-        )
+        androidx.compose.material3.CircularProgressIndicator( color = Purple )
+    }
+}
+
+@Composable
+fun WhiteLoadingWithProgressIndicator() {
+    Box(
+        modifier = Modifier.fillMaxSize().background(White),
+        contentAlignment = Alignment.Center
+    ) {
+        androidx.compose.material3.CircularProgressIndicator( color = Purple )
     }
 }
