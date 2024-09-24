@@ -185,7 +185,7 @@ internal fun MainScreen(
                     )
 
                     kakaoMapNavGraph(
-                        navigateUp = navigator::navigateUpAndClearStackToHome,
+                        navigateUp = navigator::navigateUpIfNotHome,
                         navigateToPlaceDetail = { placeId, placeType ->
                             navigator.navigateToPlaceDetail(
                                 navOptions { launchSingleTop = true },

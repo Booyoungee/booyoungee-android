@@ -1,6 +1,6 @@
 package com.eoyeongbooyeong.places.category
 
-import SortingDropdownMenu
+import SortingBottomSheet
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -16,7 +16,9 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults
@@ -50,9 +52,8 @@ import com.eoyeongbooyeong.core.extension.toast
 import com.eoyeongbooyeong.domain.entity.PlaceInfoEntity
 import com.eoyeongbooyeong.domain.entity.PlaceType
 import com.eoyeongbooyeong.feature.R
-import com.eoyeongbooyeong.places.component.FloatingButtonContainer
+import com.eoyeongbooyeong.places.component.NavigateToMapFloatingButton
 import com.eoyeongbooyeong.search.component.PlaceInfoListItem
-import com.google.common.collect.ImmutableList
 
 @Composable
 fun PlaceCategoryRoute(
@@ -72,14 +73,19 @@ fun PlaceCategoryRoute(
             "movie" -> {
                 viewModel.getMoviePlaceListWitFilter(state.value.filter)
                 viewModel.updatePlaceType("movie")
+                Log.e("TAG", "PlaceCategoryRoute: movie", )
             }
+
             "store" -> {
                 viewModel.getLocalStorePlaceListWitFilter(state.value.filter)
                 viewModel.updatePlaceType("store")
+                Log.e("TAG", "PlaceCategoryRoute: store", )
             }
+
             "tour" -> {
                 viewModel.getTourPlaceListWitFilter(state.value.filter)
                 viewModel.updatePlaceType("tour")
+                Log.e("TAG", "PlaceCategoryRoute: tour", )
             }
         }
     }
@@ -115,7 +121,7 @@ fun PlaceCategoryRoute(
             }
     }
 
-    if(state.value.placeType.isNotBlank()) {
+    if (state.value.placeType.isNotBlank()) {
         PlaceCategoryScreen(
             placeType = state.value.placeType,
             modifier = modifier,
@@ -148,6 +154,7 @@ fun PlaceCategoryScreen(
     navigateToPlaceDetail: (Int, String) -> Unit = { _, _ -> },
     navigateToKakaoMap: (String) -> Unit = {},
 ) {
+
     val selectedIndex =
         remember {
             mutableStateOf(
@@ -159,6 +166,7 @@ fun PlaceCategoryScreen(
                 },
             )
         }
+
     val tabItemTitle =
         listOf(
             stringResource(R.string.movie),
@@ -166,51 +174,64 @@ fun PlaceCategoryScreen(
             stringResource(R.string.tour),
         )
 
-    Column(
-        modifier =
-            modifier
-                .fillMaxSize()
-                .background(White)
-                .statusBarsPadding()
-                .systemBarsPadding(),
-    ) {
-        BooTextTopAppBar(
-            leadingIcon = {
-                Icon(
-                    imageVector = ImageVector.vectorResource(id = com.eoyeongbooyeong.core.R.drawable.ic_left),
-                    contentDescription = "left",
-                    modifier = Modifier.noRippleClickable { onBackClick() },
-                )
-            },
-            text = "",
-        )
-
-        TabRow(
-            selectedTabIndex = selectedIndex.value,
-            containerColor = Transparent,
-            contentColor = Black,
-            indicator = { tabPositions ->
-                TabRowDefaults.SecondaryIndicator(
-                    modifier = Modifier.tabIndicatorOffset(tabPositions[selectedIndex.value]),
-                    color = Purple,
-                )
-            },
+    Scaffold(
+        modifier = modifier
+            .fillMaxSize()
+            .background(White)
+            .statusBarsPadding()
+            .systemBarsPadding(),
+        topBar = {
+            BooTextTopAppBar(
+                leadingIcon = {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = com.eoyeongbooyeong.core.R.drawable.ic_left),
+                        contentDescription = "left",
+                        modifier = Modifier.noRippleClickable { onBackClick() },
+                    )
+                },
+                text = "",
+            )
+        },
+        floatingActionButton = {
+            NavigateToMapFloatingButton(
+                onClick = {
+                    navigateToKakaoMap(placeType)
+                },
+            )
+        },
+        floatingActionButtonPosition = FabPosition.Center
+    ) { contentPadding ->
+        Column(
+            modifier = modifier
+                .padding(contentPadding)
+                .background(White),
         ) {
-            tabItemTitle.forEachIndexed { index, _ ->
-                Tab(
-                    selected = selectedIndex.value == index,
-                    onClick = {
-                        selectedIndex.value = index
-                        when (index) {
-                            0 -> viewModel.sendSideEffect(CategorySideEffect.clickMovieTab)
-                            1 -> viewModel.sendSideEffect(CategorySideEffect.clickLocalStoreTab)
-                            2 -> viewModel.sendSideEffect(CategorySideEffect.clickTourTab)
-                        }
-                    },
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                ) {
-                    Box(
-                        modifier =
+            TabRow(
+                selectedTabIndex = selectedIndex.value,
+                containerColor = Transparent,
+                contentColor = Black,
+                indicator = { tabPositions ->
+                    TabRowDefaults.SecondaryIndicator(
+                        modifier = Modifier.tabIndicatorOffset(tabPositions[selectedIndex.value]),
+                        color = Purple,
+                    )
+                },
+            ) {
+                tabItemTitle.forEachIndexed { index, _ ->
+                    Tab(
+                        selected = selectedIndex.value == index,
+                        onClick = {
+                            selectedIndex.value = index
+                            when (index) {
+                                0 -> viewModel.sendSideEffect(CategorySideEffect.clickMovieTab)
+                                1 -> viewModel.sendSideEffect(CategorySideEffect.clickLocalStoreTab)
+                                2 -> viewModel.sendSideEffect(CategorySideEffect.clickTourTab)
+                            }
+                        },
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                    ) {
+                        Box(
+                            modifier =
                             Modifier
                                 .clickable(
                                     interactionSource = remember { MutableInteractionSource() },
@@ -224,65 +245,49 @@ fun PlaceCategoryScreen(
                                             2 -> viewModel.sendSideEffect(CategorySideEffect.clickTourTab)
                                         }
                                     }
-                                }.padding(top = 8.dp, start = 24.dp, end = 24.dp, bottom = 6.dp),
-                    ) {
-                        Text(
-                            text = tabItemTitle[index],
-                            style = BooTheme.typography.caption1,
-                            modifier = Modifier.padding(vertical = 14.dp),
-                        )
+                                }
+                                .padding(top = 8.dp, start = 24.dp, end = 24.dp, bottom = 6.dp),
+                        ) {
+                            Text(
+                                text = tabItemTitle[index],
+                                style = BooTheme.typography.caption1,
+                                modifier = Modifier.padding(vertical = 14.dp),
+                            )
+                        }
                     }
                 }
             }
+
+            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
+                SortingBottomSheet(
+                    onSortSelected = onSortingSelected,
+                )
+            }
+
+            LazyColumn(
+                modifier = Modifier.padding(horizontal = 24.dp),
+            ) {
+                items(placeList) { place ->
+                    PlaceInfoListItem(
+                        placeName = place.name,
+                        address = place.address,
+                        star = place.stars,
+                        reviewCount = place.reviewCount,
+                        likedCount = place.likeCount,
+                        movieNameList = place.movies,
+                        placeImageUrl = place.images.firstOrNull() ?: place.posterUrl?.firstOrNull(),
+                        onClick = { navigateToPlaceDetail(place.placeId.toInt(), placeType) },
+                        showBookmarkIcon = false,
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+            }
+            Spacer(modifier = Modifier.height(12.dp))
         }
 
-        Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
-            SortingDropdownMenu(
-                onSortSelected = onSortingSelected,
-            )
-        }
-
-        PlaceList(
-            searchResultList = placeList,
-            navigateToPlaceDetail = navigateToPlaceDetail,
-            placeType = placeType,
-            modifier = Modifier.padding(horizontal = 24.dp)
-        )
-        Spacer(modifier = Modifier.height(12.dp))
-        // TODO 플로팅 버튼 Z 축 위로 올리기
-        FloatingButtonContainer(
-            onClick = { navigateToKakaoMap(placeType) },
-        )
-    }
-
-    // API 호출 후 loading 상태인 경우
-    if (isLoading) {
-        LoadingWithProgressIndicator()
-    }
-}
-
-@Composable
-fun PlaceList(
-    modifier: Modifier = Modifier,
-    searchResultList: List<PlaceInfoEntity>,
-    navigateToPlaceDetail: (Int, String) -> Unit = { _, _ -> },
-    placeType: String,
-) {
-    LazyColumn(
-        modifier = modifier
-    ) {
-        items(searchResultList) { place ->
-            PlaceInfoListItem(
-                placeName = place.name,
-                address = place.address,
-                star = place.stars,
-                reviewCount = place.reviewCount,
-                likedCount = place.likeCount,
-                movieNameList = place.movies,
-                placeImageUrl = place.images.firstOrNull(),
-                onClick = { navigateToPlaceDetail(place.placeId.toInt(), placeType) },
-            )
-            Spacer(modifier = Modifier.height(16.dp))
+        // API 호출 후 loading 상태인 경우
+        if (isLoading) {
+            LoadingWithProgressIndicator()
         }
     }
 }

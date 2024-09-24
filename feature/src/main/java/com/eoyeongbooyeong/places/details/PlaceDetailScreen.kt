@@ -3,6 +3,7 @@ package com.eoyeongbooyeong.places.details
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,8 +15,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -23,6 +27,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -38,6 +43,7 @@ import androidx.lifecycle.flowWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.eoyeongbooyeong.core.R
+import com.eoyeongbooyeong.core.designsystem.component.WhiteLoadingWithProgressIndicator
 import com.eoyeongbooyeong.core.designsystem.component.star.Review
 import com.eoyeongbooyeong.core.designsystem.component.star.ReviewStar
 import com.eoyeongbooyeong.core.designsystem.component.topbar.BooTextTopAppBar
@@ -92,7 +98,7 @@ fun PlaceDetailRoute(
         movieList = placeInfoEntity.movies?.joinToString(", ") ?: "",
         movieTitle = placeInfoEntity.name,
         tel = placeInfoEntity.tel,
-        imageUrl = placeInfoEntity.images.firstOrNull() ?: "", // TODO
+        imageUrl = placeInfoEntity.images,
         stampCount = placeInfoEntity.stampCount,
         placeAddress = placeInfoEntity.address,
         placeDetailReviewCount = placeInfoEntity.reviewCount,
@@ -124,6 +130,7 @@ fun PlaceDetailRoute(
         onAccuseClick = { reviewId ->
             viewModel.postAccuseReview(commentId = reviewId)
         },
+        isLoading = state.value.isLoading,
     )
 }
 
@@ -132,7 +139,7 @@ fun PlaceDetailScreen(
     placeId: Int,
     modifier: Modifier = Modifier,
     movieTitle: String = "",
-    imageUrl: String = "",
+    imageUrl: List<String> = emptyList(),
     stampCount: Int = 0,
     placeAddress: String = "",
     movieList: String = "",
@@ -150,12 +157,14 @@ fun PlaceDetailScreen(
     isBookmark: Boolean = false,
     onBlockClick: (Int) -> Unit = {},
     onAccuseClick: (Int) -> Unit = {},
+    isLoading: Boolean = false,
 ) {
     Scaffold(
-        modifier = modifier
-            .fillMaxSize()
-            .systemBarsPadding()
-            .statusBarsPadding(),
+        modifier =
+            modifier
+                .fillMaxSize()
+                .systemBarsPadding()
+                .statusBarsPadding(),
         topBar = {
             BooTextTopAppBar(
                 leadingIcon = {
@@ -180,37 +189,62 @@ fun PlaceDetailScreen(
             )
         },
     ) { innerPadding ->
+
         LazyColumn(
             modifier =
-            Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .background(White),
+                Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .background(White),
         ) {
             item {
-                AsyncImage(
-                    model =
-                    ImageRequest
-                        .Builder(LocalContext.current)
-                        .data(imageUrl.ifEmpty { R.drawable.img_default_5 })
-                        .crossfade(true)
-                        .build(),
-                    placeholder = painterResource(R.drawable.img_default_5),
-                    contentDescription = "PlaceDetailsEntity Detail Image",
-                    contentScale = ContentScale.Crop,
-                    modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .height(320.dp),
-                )
+                if (imageUrl.isNullOrEmpty()) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(320.dp)
+                            .padding(10.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Image(
+                            painter = painterResource(R.drawable.img_default_5),
+                            contentDescription = "Default Image",
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .width(280.dp)
+                                .height(280.dp)
+                                .clip(RoundedCornerShape(8.dp))
+                        )
+                    }
+                } else {
+                    LazyRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = if (imageUrl.size == 1) Arrangement.Center else Arrangement.Start
+                    ) {
+                        itemsIndexed(imageUrl) { index, imageUrl ->
+                            AsyncImage(
+                                model = imageUrl,
+                                placeholder = painterResource(R.drawable.default_white_img),
+                                contentDescription = "PlaceDetailsEntity Detail Image",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .width(320.dp)
+                                    .height(320.dp)
+                                    .padding(start = 10.dp, end = 10.dp)
+                                    .clip(RoundedCornerShape(8.dp)),
+                                error = painterResource(R.drawable.img_default_5)
+                            )
+                        }
+                    }
+                }
             }
 
             item {
                 Row(
                     modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(top = 28.dp, start = 24.dp, end = 24.dp),
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(top = 28.dp, start = 24.dp, end = 24.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     Text(text = movieTitle, style = BooTheme.typography.head2, color = Black)
@@ -272,10 +306,10 @@ fun PlaceDetailScreen(
                 Spacer(modifier = Modifier.height(12.dp))
                 Spacer(
                     modifier =
-                    Modifier
-                        .height(10.dp)
-                        .fillMaxWidth()
-                        .background(Gray100),
+                        Modifier
+                            .height(10.dp)
+                            .fillMaxWidth()
+                            .background(Gray100),
                 )
                 Spacer(modifier = Modifier.height(24.dp))
             }
@@ -321,10 +355,14 @@ fun PlaceDetailScreen(
                         reviewContent = review.reviewContent,
                         reviewDate = formatReviewDate(review.createdAt),
                         onBlockClick = onBlockClick,
-                        onReportClick = onAccuseClick
+                        onReportClick = onAccuseClick,
                     )
                 }
             }
+        }
+
+        if (isLoading) {
+            WhiteLoadingWithProgressIndicator()
         }
     }
 }
@@ -335,51 +373,51 @@ fun PlaceDetailScreenPreview() {
     BooTheme {
         PlaceDetailScreen(
             movieTitle = "영화 제목",
-            imageUrl = "https://picsum.photos/200/300",
+            imageUrl = listOf("https://picsum.photos/200/300"),
             stampCount = 10,
             placeAddress = "부산 기장군 철마면 웅천리 520-10",
             placeDetailReviewCount = 10,
             placeDetailLikedCount = 20,
             placeDetailStarScore = 4.5,
             reviewInfoEntityTotalList =
-            listOf(
-                ReviewInfoEntity(
-                    id = 1,
-                    placeId = 1,
-                    writerId = 1,
-                    writerNickName = "User1",
-                    reviewScore = 4.5,
-                    reviewContent = "너무 좋아요 너무 좋아요 너무 좋아요 너무 좋아요 너무 좋아요 너무 좋아요너무 좋아요너무 좋아요",
-                    createdAt = "2024-01-01",
+                listOf(
+                    ReviewInfoEntity(
+                        id = 1,
+                        placeId = 1,
+                        writerId = 1,
+                        writerNickName = "User1",
+                        reviewScore = 4.5,
+                        reviewContent = "너무 좋아요 너무 좋아요 너무 좋아요 너무 좋아요 너무 좋아요 너무 좋아요너무 좋아요너무 좋아요",
+                        createdAt = "2024-01-01",
+                    ),
+                    ReviewInfoEntity(
+                        id = 1,
+                        placeId = 1,
+                        writerId = 1,
+                        writerNickName = "User1",
+                        reviewScore = 4.5,
+                        reviewContent = "너무 좋아요",
+                        createdAt = "2024-01-01",
+                    ),
+                    ReviewInfoEntity(
+                        id = 1,
+                        placeId = 1,
+                        writerId = 1,
+                        writerNickName = "User1",
+                        reviewScore = 4.5,
+                        reviewContent = "너무 좋아요",
+                        createdAt = "2024-01-01",
+                    ),
+                    ReviewInfoEntity(
+                        id = 1,
+                        placeId = 1,
+                        writerId = 1,
+                        writerNickName = "User1",
+                        reviewScore = 4.5,
+                        reviewContent = "너무 좋아요",
+                        createdAt = "2024-01-01",
+                    ),
                 ),
-                ReviewInfoEntity(
-                    id = 1,
-                    placeId = 1,
-                    writerId = 1,
-                    writerNickName = "User1",
-                    reviewScore = 4.5,
-                    reviewContent = "너무 좋아요",
-                    createdAt = "2024-01-01",
-                ),
-                ReviewInfoEntity(
-                    id = 1,
-                    placeId = 1,
-                    writerId = 1,
-                    writerNickName = "User1",
-                    reviewScore = 4.5,
-                    reviewContent = "너무 좋아요",
-                    createdAt = "2024-01-01",
-                ),
-                ReviewInfoEntity(
-                    id = 1,
-                    placeId = 1,
-                    writerId = 1,
-                    writerNickName = "User1",
-                    reviewScore = 4.5,
-                    reviewContent = "너무 좋아요",
-                    createdAt = "2024-01-01",
-                ),
-            ),
             onClickWriteReview = {},
             onClickLike = {},
             onClickBookmark = {},

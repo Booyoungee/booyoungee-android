@@ -34,9 +34,15 @@ class KakaoMapViewModel
             }
         }
 
+    init {
+        updateKakaoMapLoadingState(true)
+    }
+
         fun updateState(newState: KakaoMapState) {
             _state.value = newState.copy()
         }
+
+        fun updateKakaoMapLoadingState(isLoading: Boolean) { updateState(state.value.copy(isLoading = isLoading)) }
 
         fun onMarkerClicked(place: PlaceInfoEntity) {
             updateState(
@@ -47,7 +53,7 @@ class KakaoMapViewModel
             )
         }
 
-        fun onMapClicked() {
+        fun resetClickedPlace() {
             updateState(
                 state.value.copy(
                     showDetailBox = false,
