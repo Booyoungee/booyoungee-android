@@ -18,6 +18,10 @@ data class PlaceWithCategoryDto(
     val likeCount: Int?,
     @SerialName("reviews")
     val reviewCount: Int?,
+    @SerialName("type")
+    val type: String?,
+    @SerialName("images")
+    val images: List<String>?,
     @SerialName("movieName")
     val movieName: String?,
     @SerialName("mapX")
@@ -37,5 +41,7 @@ data class PlaceWithCategoryDto(
             } else listOf(movieName),
             mapX = mapX ?: "129.03933",
             mapY = mapY ?: "35.114495",
+            type = type ?: "",
+            images = images ?: emptyList(),
         )
 }

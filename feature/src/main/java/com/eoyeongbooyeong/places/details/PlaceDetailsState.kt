@@ -11,5 +11,6 @@ data class PlaceDetailsState(
     val isLiked: Boolean = false,
     val isBookmarked: Boolean = false,
     val likeId: Int = 0,
-    val reviewList: List<ReviewInfoEntity> = emptyList()
+    val reviewList: List<ReviewInfoEntity> = emptyList(),
+    val isLoading: Boolean = false,
 )

@@ -42,12 +42,17 @@ class PlaceDetailsViewModel
             }
         }
 
+    init {
+        updateState(state.value.copy(isLoading = true))
+    }
+
         // 장소 상세 정보를 가져오는 함수
         fun getPlaceDetailsInfo(
             placeId: Int,
             placeType: String,
         ) {
             viewModelScope.launch {
+                _state.value = _state.value.copy(isLoading = true)
                 placeRepository
                     .getPlaceDetails(placeId, placeType)
                     .onSuccess {
@@ -58,8 +63,8 @@ class PlaceDetailsViewModel
                                 isBookmarked = it.me.hasBookmark,
                                 likeCount = it.likeCount,
                                 bookMarkCount = it.bookmarkCount,
+                                isLoading = false,
                             )
-                        Timber.tag("PlaceDetailsViewModel").d(it.toString())
                     }.onFailure {
                         _sideEffects.emit(PlaceDetailsSideEffect.ShowToast(it.message.toString()))
                     }
@@ -72,12 +77,14 @@ class PlaceDetailsViewModel
             placeType: String,
         ) {
             viewModelScope.launch {
+                _state.value = _state.value.copy(isLoading = true)
                 placeRepository
                     .postBookMark(placeId, placeType)
                     .onSuccess { bookmarkResponse ->
                         _state.value =
                             _state.value.copy(
                                 isBookmarked = true,
+                                isLoading = false,
                             )
                         state.value.bookMarkCount++
                         // 북마크 추가 성공 시 상태 업데이트
@@ -91,12 +98,14 @@ class PlaceDetailsViewModel
         // 북마크 삭제 요청
         fun deleteBookMark(placeId: Int) {
             viewModelScope.launch {
+                _state.value = _state.value.copy(isLoading = true)
                 placeRepository
                     .deleteBookMark(placeId)
                     .onSuccess { bookmarkResponse ->
                         _state.value =
                             _state.value.copy(
                                 isBookmarked = false,
+                                isLoading = false,
                             )
                         state.value.bookMarkCount--
                         // 북마크 삭제 성공 시 상태 업데이트
@@ -110,6 +119,7 @@ class PlaceDetailsViewModel
         // 좋아요 추가 요청
         fun postLike(placeId: Int) {
             viewModelScope.launch {
+                _state.value = _state.value.copy(isLoading = true)
                 placeRepository
                     .postLike(placeId)
                     .onSuccess { likeResponse ->
@@ -117,6 +127,7 @@ class PlaceDetailsViewModel
                             _state.value.copy(
                                 isLiked = true,
                                 likeId = likeResponse.likeId,
+                                isLoading = false,
                             )
                         state.value.likeCount++
                         // 좋아요 추가 성공 시 상태 업데이트
@@ -130,6 +141,7 @@ class PlaceDetailsViewModel
         // 좋아요 삭제 요청
         fun deleteLike(placeId: Int) {
             viewModelScope.launch {
+                _state.value = _state.value.copy(isLoading = true)
                 placeRepository
                     .deleteLike(placeId)
                     .onSuccess { likeResponse ->
@@ -137,6 +149,7 @@ class PlaceDetailsViewModel
                             _state.value.copy(
                                 isLiked = false,
                                 likeId = likeResponse.likeId,
+                                isLoading = false,
                             )
                         state.value.likeCount--
                         // 좋아요 삭제 성공 시 상태 업데이트
@@ -149,10 +162,11 @@ class PlaceDetailsViewModel
 
         fun getReviews(placeId: Int) {
             viewModelScope.launch {
+                _state.value = _state.value.copy(isLoading = true)
                 reviewRepository
                     .getReviews(placeId)
                     .onSuccess {
-                        _state.value = _state.value.copy(reviewList = it)
+                        _state.value = _state.value.copy(reviewList = it, isLoading = false)
                     }.onFailure {
                         _sideEffects.emit(PlaceDetailsSideEffect.ShowToast(it.message.toString()))
                     }
@@ -165,11 +179,13 @@ class PlaceDetailsViewModel
             placeId: Int,
         ) {
             viewModelScope.launch {
+                _state.value = _state.value.copy(isLoading = true)
                 userRepository
                     .blockUser(blockUserId)
                     .onSuccess {
                         _sideEffects.emit(PlaceDetailsSideEffect.ShowToast("해당 사용자를 차단했습니다."))
                         getReviews(placeId)
+                        _state.value = _state.value.copy(isLoading = false)
                     }.onFailure {
                         _sideEffects.emit(PlaceDetailsSideEffect.ShowToast(it.message.toString()))
                     }
@@ -179,10 +195,12 @@ class PlaceDetailsViewModel
         // 리뷰 신고
         fun postAccuseReview(commentId: Int) {
             viewModelScope.launch {
+                _state.value = _state.value.copy(isLoading = true)
                 reviewRepository
                     .accuseReview(commentId)
                     .onSuccess {
                         _sideEffects.emit(PlaceDetailsSideEffect.ShowToast("해당 리뷰를 신고했습니다."))
+                        _state.value = _state.value.copy(isLoading = false)
                     }.onFailure {
                         _sideEffects.emit(PlaceDetailsSideEffect.ShowToast(it.message.toString()))
                     }

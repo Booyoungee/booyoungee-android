@@ -59,7 +59,7 @@ data class PlaceDto(
         name = name,
         address = address,
         tel = tel,
-        images = images,
+        images = images + posterUrl.orEmpty(),
         type = type,
         movies = movies,
         posterUrl = posterUrl,
