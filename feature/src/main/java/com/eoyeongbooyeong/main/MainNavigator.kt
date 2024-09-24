@@ -113,10 +113,6 @@ internal class MainNavigator(
         navController.navigate(KakaoMap(placeType), navOption)
     }
 
-    fun navigateUpAndClearStackToHome() {
-        navController.popBackStack(Home, inclusive = false)
-    }
-
     private inline fun <reified T : Route> isSameCurrentDestination(): Boolean =
         navController.currentDestination?.hasRoute<T>() == true
 

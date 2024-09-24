@@ -150,6 +150,7 @@ fun PlaceCategoryScreen(
     navigateToPlaceDetail: (Int, String) -> Unit = { _, _ -> },
     navigateToKakaoMap: (String) -> Unit = {},
 ) {
+
     val selectedIndex =
         remember {
             mutableStateOf(
@@ -161,6 +162,11 @@ fun PlaceCategoryScreen(
                 },
             )
         }
+
+    LaunchedEffect(key1 = Unit) {
+        selectedIndex.value = 0
+    }
+
     val tabItemTitle =
         listOf(
             stringResource(R.string.movie),
