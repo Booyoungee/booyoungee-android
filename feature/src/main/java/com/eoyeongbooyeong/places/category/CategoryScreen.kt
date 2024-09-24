@@ -1,6 +1,7 @@
 package com.eoyeongbooyeong.places.category
 
 import SortingBottomSheet
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -72,16 +73,19 @@ fun PlaceCategoryRoute(
             "movie" -> {
                 viewModel.getMoviePlaceListWitFilter(state.value.filter)
                 viewModel.updatePlaceType("movie")
+                Log.e("TAG", "PlaceCategoryRoute: movie", )
             }
 
             "store" -> {
                 viewModel.getLocalStorePlaceListWitFilter(state.value.filter)
                 viewModel.updatePlaceType("store")
+                Log.e("TAG", "PlaceCategoryRoute: store", )
             }
 
             "tour" -> {
                 viewModel.getTourPlaceListWitFilter(state.value.filter)
                 viewModel.updatePlaceType("tour")
+                Log.e("TAG", "PlaceCategoryRoute: tour", )
             }
         }
     }
@@ -163,10 +167,6 @@ fun PlaceCategoryScreen(
             )
         }
 
-    LaunchedEffect(key1 = Unit) {
-        selectedIndex.value = 0
-    }
-
     val tabItemTitle =
         listOf(
             stringResource(R.string.movie),
@@ -175,7 +175,11 @@ fun PlaceCategoryScreen(
         )
 
     Scaffold(
-        modifier = modifier.fillMaxSize().background(White).statusBarsPadding().systemBarsPadding(),
+        modifier = modifier
+            .fillMaxSize()
+            .background(White)
+            .statusBarsPadding()
+            .systemBarsPadding(),
         topBar = {
             BooTextTopAppBar(
                 leadingIcon = {
@@ -198,7 +202,9 @@ fun PlaceCategoryScreen(
         floatingActionButtonPosition = FabPosition.Center
     ) { contentPadding ->
         Column(
-            modifier = modifier.padding(contentPadding).background(White),
+            modifier = modifier
+                .padding(contentPadding)
+                .background(White),
         ) {
             TabRow(
                 selectedTabIndex = selectedIndex.value,
@@ -239,7 +245,8 @@ fun PlaceCategoryScreen(
                                             2 -> viewModel.sendSideEffect(CategorySideEffect.clickTourTab)
                                         }
                                     }
-                                }.padding(top = 8.dp, start = 24.dp, end = 24.dp, bottom = 6.dp),
+                                }
+                                .padding(top = 8.dp, start = 24.dp, end = 24.dp, bottom = 6.dp),
                         ) {
                             Text(
                                 text = tabItemTitle[index],

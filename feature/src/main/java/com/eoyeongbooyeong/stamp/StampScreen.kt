@@ -227,6 +227,25 @@ private fun StampScreen(
                         style = BooTheme.typography.body2,
                     )
                     Spacer(modifier = Modifier.weight(1.5f))
+                } else if (stampList.isEmpty() && index == 0) {
+                    Spacer(modifier = Modifier.weight(1f))
+                    Image(
+                        painter = painterResource(id = com.eoyeongbooyeong.core.R.drawable.ic_stamp_boo),
+                        modifier = Modifier
+                            .fillMaxWidth(0.3f)
+                            .aspectRatio(1f),
+                        contentDescription = null,
+                    )
+                    Text(
+                        text = "근처에 부영이가 없어요",
+                        style = BooTheme.typography.head2,
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "부영이를 찾으며 부산을 여행해봐요",
+                        style = BooTheme.typography.body2,
+                    )
+                    Spacer(modifier = Modifier.weight(1.5f))
                 } else {
                     CollectedStampCard(
                         stampCount = collectedStampList.size
