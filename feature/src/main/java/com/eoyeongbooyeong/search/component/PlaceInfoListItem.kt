@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -76,6 +77,7 @@ internal fun PlaceInfoListItem(
                     .clip(RoundedCornerShape(5.dp)),
                 placeholder = painterResource(id = com.eoyeongbooyeong.core.R.drawable.img_default_5),
                 error = painterResource(id = com.eoyeongbooyeong.core.R.drawable.img_default_5),
+                contentScale = ContentScale.Crop
             )
 
             Spacer(modifier = Modifier.width(10.dp))
