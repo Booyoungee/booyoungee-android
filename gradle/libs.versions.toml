@@ -3,7 +3,7 @@ accompanistSystemuicontroller = "0.28.0"
 compileSdk = "34"
 minSdk = "28"
 targetSdk = "34"
-versionName = "1.1.0"
+versionName = "1.1.1"
 versionCode = "10100"
 
 agp = "8.5.0"
