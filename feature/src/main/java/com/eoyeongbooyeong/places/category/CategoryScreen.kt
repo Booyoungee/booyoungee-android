@@ -1,6 +1,7 @@
 package com.eoyeongbooyeong.places.category
 
 import SortingDropdownMenu
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -192,7 +193,7 @@ fun PlaceCategoryScreen(
         floatingActionButtonPosition = FabPosition.Center
     ) { contentPadding ->
         Column(
-            modifier = modifier.padding(contentPadding),
+            modifier = modifier.padding(contentPadding).background(White),
         ) {
             TabRow(
                 selectedTabIndex = selectedIndex.value,
