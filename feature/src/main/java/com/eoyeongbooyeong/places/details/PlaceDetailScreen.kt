@@ -3,6 +3,7 @@ package com.eoyeongbooyeong.places.details
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,9 +15,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -24,6 +27,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -194,22 +198,46 @@ fun PlaceDetailScreen(
                     .background(White),
         ) {
             item {
-                LazyRow {
-                    itemsIndexed(imageUrl) { index, imageUrl ->
-                        AsyncImage(
-                            model = imageUrl,
-                            placeholder = painterResource(R.drawable.default_white_img),
-                            contentDescription = "PlaceDetailsEntity Detail Image",
+                if (imageUrl.isNullOrEmpty()) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(320.dp)
+                            .padding(10.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Image(
+                            painter = painterResource(R.drawable.img_default_5),
+                            contentDescription = "Default Image",
                             contentScale = ContentScale.Crop,
-                            modifier = Modifier.fillMaxWidth().height(320.dp).padding(10.dp),
-                            error = painterResource(R.drawable.img_default_5)
+                            modifier = Modifier
+                                .width(280.dp)
+                                .height(280.dp)
+                                .clip(RoundedCornerShape(8.dp))
                         )
+                    }
+                } else {
+                    LazyRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = if (imageUrl.size == 1) Arrangement.Center else Arrangement.Start
+                    ) {
+                        itemsIndexed(imageUrl) { index, imageUrl ->
+                            AsyncImage(
+                                model = imageUrl,
+                                placeholder = painterResource(R.drawable.default_white_img),
+                                contentDescription = "PlaceDetailsEntity Detail Image",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .width(320.dp)
+                                    .height(320.dp)
+                                    .padding(start = 10.dp, end = 10.dp)
+                                    .clip(RoundedCornerShape(8.dp)),
+                                error = painterResource(R.drawable.img_default_5)
+                            )
+                        }
                     }
                 }
             }
-
-            // TODO 인티케이터
-            item { }
 
             item {
                 Row(
