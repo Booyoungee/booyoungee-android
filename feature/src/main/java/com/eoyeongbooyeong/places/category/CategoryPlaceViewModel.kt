@@ -59,7 +59,8 @@ class CategoryPlaceViewModel
                                 isLoading = false,
                             )
                     }.onFailure {
-                        _sideEffects.emit(CategorySideEffect.ShowToast(it.message.toString()))
+                        // _sideEffects.emit(CategorySideEffect.ShowToast(it.message.toString()))
+                        _sideEffects.emit(CategorySideEffect.ShowToast("OPEN API 내 문제가 발생했습니다."))
                     }
             }
         }
