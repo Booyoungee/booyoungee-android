@@ -68,7 +68,6 @@ import com.kakao.vectormap.label.LabelOptions
 import com.kakao.vectormap.label.LabelStyle
 import com.kakao.vectormap.label.LabelStyles
 import com.kakao.vectormap.label.LabelTextBuilder
-import com.kakao.vectormap.label.LabelTextStyle
 
 private const val BUSAN_STATION_LATITUDE = 35.114495
 private const val BUSAN_STATION_LONGTITUDE = 129.03933
@@ -123,7 +122,7 @@ fun KakaoMapRoute(
             selectedPlaceDetailsEntity = state.value.selectedPlace ?: PlaceInfoEntity(),
             onBackClick = onBackClick,
             onClickPlaceDetail = onClickPlaceDetail,
-            onMapClicked = viewModel::onMapClicked,
+            resetClickedPlace = viewModel::resetClickedPlace,
         )
     } else {
         Log.d("KakaoMapRoute", "No placeList")
@@ -139,7 +138,7 @@ internal fun KakakoMapScreen(
     selectedPlaceDetailsEntity: PlaceInfoEntity,
     onBackClick: () -> Unit,
     onClickPlaceDetail: (Int, String) -> Unit,
-    onMapClicked: () -> Unit = {},
+    resetClickedPlace: () -> Unit = {},
 ) {
     val context = LocalContext.current
     val kakaoMap = remember { mutableStateOf<KakaoMap?>(null) }
@@ -152,7 +151,7 @@ internal fun KakakoMapScreen(
             placeList = placeList,
             placeType = placeType,
             onClickMarker = onClickMarker,
-            onMapClicked = onMapClicked,
+            onMapClicked = resetClickedPlace,
         )
 
     val locationPermissionGranted = remember { mutableStateOf(false) }
@@ -239,6 +238,7 @@ internal fun KakakoMapScreen(
                                 selectedPlaceDetailsEntity.placeId.toInt(),
                                 placeType,
                             )
+                            resetClickedPlace()
                         },
                     )
                 }

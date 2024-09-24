@@ -47,7 +47,7 @@ class KakaoMapViewModel
             )
         }
 
-        fun onMapClicked() {
+        fun resetClickedPlace() {
             updateState(
                 state.value.copy(
                     showDetailBox = false,
