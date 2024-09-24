@@ -96,6 +96,8 @@ dependencies {
     // Phoenix
     implementation(libs.jakewharton.process.phoenix)
 
+    implementation(libs.accompanist.systemuicontroller)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

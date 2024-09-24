@@ -1,5 +1,6 @@
 package com.eoyeongbooyeong.stamp
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -14,8 +15,14 @@ fun NavController.navigateToStamp(navOptions: NavOptions) {
     navigate(Stamp, navOptions)
 }
 
-fun NavGraphBuilder.stampNavGraph() {
+fun NavGraphBuilder.stampNavGraph(
+    paddingValues: PaddingValues,
+    navigateToPlaceDetail: (Int, String) -> Unit,
+) {
     composable<Stamp> {
-        StampScreen()
+        StampRoute(
+            paddingValues = paddingValues,
+            navigateToPlaceDetail = navigateToPlaceDetail,
+        )
     }
 }

@@ -7,6 +7,7 @@ import com.eoyeongbooyeong.data.service.BookmarkService
 import com.eoyeongbooyeong.data.service.MovieService
 import com.eoyeongbooyeong.data.service.PlaceService
 import com.eoyeongbooyeong.data.service.ReviewService
+import com.eoyeongbooyeong.data.service.StampService
 import com.eoyeongbooyeong.data.service.TourInfoOpenApiService
 import com.eoyeongbooyeong.data.service.UserService
 import dagger.Module
@@ -57,4 +58,9 @@ object ServiceModule {
     @Singleton
     fun provideMovieService(@JWT retrofit: Retrofit): MovieService =
         retrofit.create(MovieService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideStampService(@JWT retrofit: Retrofit): StampService =
+        retrofit.create(StampService::class.java)
 }

@@ -5,6 +5,7 @@ import com.eoyeongbooyeong.data.repositoryImpl.BookmarkRepositoryImpl
 import com.eoyeongbooyeong.data.repositoryImpl.MovieRepositoryImpl
 import com.eoyeongbooyeong.data.repositoryImpl.PlaceRepositoryImpl
 import com.eoyeongbooyeong.data.repositoryImpl.ReviewRepositoryImpl
+import com.eoyeongbooyeong.data.repositoryImpl.StampRepositoryImpl
 import com.eoyeongbooyeong.data.repositoryImpl.TourInfoOpenApiRepositoryImpl
 import com.eoyeongbooyeong.data.repositoryImpl.UserRepositoryImpl
 import com.eoyeongbooyeong.domain.repository.AuthRepository
@@ -12,6 +13,7 @@ import com.eoyeongbooyeong.domain.repository.BookmarkRepository
 import com.eoyeongbooyeong.domain.repository.MovieRepository
 import com.eoyeongbooyeong.domain.repository.PlaceRepository
 import com.eoyeongbooyeong.domain.repository.ReviewRepository
+import com.eoyeongbooyeong.domain.repository.StampRepository
 import com.eoyeongbooyeong.domain.repository.TourInfoRepository
 import com.eoyeongbooyeong.domain.repository.UserRepository
 import dagger.Binds
@@ -56,4 +58,10 @@ internal abstract class RepositoryModule {
     abstract fun provideMovieRepository(
         movieRepositoryImpl: MovieRepositoryImpl,
     ): MovieRepository
+
+    @Binds
+    @Singleton
+    abstract fun provideStampRepository(
+        stampRepositoryImpl: StampRepositoryImpl,
+    ): StampRepository
 }

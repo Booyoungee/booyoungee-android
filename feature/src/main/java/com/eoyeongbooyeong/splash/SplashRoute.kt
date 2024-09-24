@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,6 +16,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
 import com.eoyeongbooyeong.core.designsystem.theme.Blue100
+import com.eoyeongbooyeong.core.designsystem.theme.Gray400
+import com.eoyeongbooyeong.core.designsystem.theme.White
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun SplashRoute(
@@ -26,6 +30,34 @@ fun SplashRoute(
 
     LaunchedEffect(key1 = Unit) {
         viewModel.showSplash()
+    }
+
+    val systemUiController = rememberSystemUiController()
+    val customColor = Blue100
+
+    DisposableEffect(systemUiController) {
+        systemUiController.setSystemBarsColor(
+            color = customColor,
+            darkIcons = true
+        )
+
+        systemUiController.setNavigationBarColor(
+            color = customColor,
+            darkIcons = true
+        )
+
+        onDispose {
+            systemUiController.setStatusBarColor(
+                color = White,
+                darkIcons = true,
+                transformColorForLightContent = { Gray400 }
+            )
+            systemUiController.setNavigationBarColor(
+                color = White,
+                darkIcons = true,
+                navigationBarContrastEnforced = false
+            )
+        }
     }
 
     LaunchedEffect(viewModel.sideEffects, lifecycleOwner) {
