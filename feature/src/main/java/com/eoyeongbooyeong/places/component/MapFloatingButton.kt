@@ -98,19 +98,3 @@ fun NavigateToMapFloatingButton(
         }
     }
 }
-
-@Composable
-@Preview
-fun MapFloatingButtonPreview() {
-    BooTheme {
-        MapFloatingButton(
-            buttonState = FloatingButton(isMyLocationButton = true),
-            onClick = {},
-        )
-        MapFloatingButton(
-            buttonState = FloatingButton(isBookmarkButton = true),
-            onClick = {},
-        )
-        NavigateToMapFloatingButton()
-    }
-}
