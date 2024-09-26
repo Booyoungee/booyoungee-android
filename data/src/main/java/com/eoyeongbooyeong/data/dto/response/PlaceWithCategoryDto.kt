@@ -43,5 +43,6 @@ data class PlaceWithCategoryDto(
             mapY = mapY ?: "35.114495",
             type = type ?: "",
             images = images ?: emptyList(),
+            reviewCount = reviewCount ?: 0
         )
 }
