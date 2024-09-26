@@ -227,7 +227,7 @@ internal fun MyPageScreen(
                     style = BooTheme.typography.caption2
                 )
                 Text(
-                    text = "1.1.1",
+                    text = "1.1.2",
                     color = Gray400,
                     style = BooTheme.typography.caption2
                 )
