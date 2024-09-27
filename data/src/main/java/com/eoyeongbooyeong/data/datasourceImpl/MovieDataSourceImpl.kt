@@ -1,7 +1,7 @@
 package com.eoyeongbooyeong.data.datasourceImpl
 
 import com.eoyeongbooyeong.data.datasource.MovieDataSource
-import com.eoyeongbooyeong.data.dto.response.MoviePlaceDto
+import com.eoyeongbooyeong.data.dto.response.MovieDto
 import com.eoyeongbooyeong.data.service.MovieService
 import javax.inject.Inject
 
@@ -12,7 +12,7 @@ class MovieDataSourceImpl @Inject constructor(
         numOfRows: Int,
         pageNo: Int,
         keyword: String,
-    ): List<MoviePlaceDto> {
-        return movieService.searchOnKeyword(numOfRows, pageNo, keyword).data.contents
+    ): MovieDto {
+        return movieService.searchOnKeyword(numOfRows, pageNo, keyword).data
     }
 }

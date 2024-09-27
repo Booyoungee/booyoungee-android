@@ -10,4 +10,7 @@ data class SearchState(
     val hotTravelDestinations: ImmutableList<HotPlaceEntity> = persistentListOf(),
     val searchResults: ImmutableList<PlaceDetailsEntity> = persistentListOf(),
     val isLoading: Boolean = false,
+    val isEmpty: Boolean = false,
+    val totalCount: Int = 0,
+    val isPagingLoading: Boolean = false,
 )

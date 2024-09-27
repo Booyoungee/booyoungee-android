@@ -13,6 +13,6 @@ class MovieRepositoryImpl @Inject constructor(
         pageNo: Int,
         keyword: String,
     ): Result<List<MoviePlaceEntity>> = runCatching {
-        movieDataSource.searchOnKeyword(numOfRows, pageNo, keyword).map { it.toDomain() }
+        movieDataSource.searchOnKeyword(numOfRows, pageNo, keyword).contents.map { it.toDomain() }
     }
 }

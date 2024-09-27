@@ -1,6 +1,7 @@
 package com.eoyeongbooyeong.data.datasourceImpl
 
 import com.eoyeongbooyeong.data.datasource.TourInfoOpenApiDataSource
+import com.eoyeongbooyeong.data.dto.response.MovieDto
 import com.eoyeongbooyeong.data.service.TourInfoOpenApiService
 import javax.inject.Inject
 
@@ -11,5 +12,6 @@ class TourInfoOpenApiDataSourceImpl @Inject constructor(
         numOfRows: Int,
         pageNo: Int,
         keyword: String,
-    ) = tourInfoOpenApiService.searchOnKeyword(numOfRows, pageNo, keyword)
+    ): MovieDto =
+        tourInfoOpenApiService.searchOnKeyword(numOfRows, pageNo, keyword).data
 }

@@ -41,6 +41,7 @@ import com.eoyeongbooyeong.core.designsystem.theme.Gray100
 import com.eoyeongbooyeong.core.designsystem.theme.Gray400
 import com.eoyeongbooyeong.core.designsystem.theme.White
 import com.eoyeongbooyeong.core.extension.noRippleClickable
+import com.eoyeongbooyeong.feature.BuildConfig
 import com.jakewharton.processphoenix.ProcessPhoenix
 
 @Composable
@@ -227,7 +228,7 @@ internal fun MyPageScreen(
                     style = BooTheme.typography.caption2
                 )
                 Text(
-                    text = "1.1.1",
+                    text = BuildConfig.VERSION_NAME,
                     color = Gray400,
                     style = BooTheme.typography.caption2
                 )

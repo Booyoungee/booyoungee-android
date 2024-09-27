@@ -1,7 +1,7 @@
 package com.eoyeongbooyeong.data.datasource
 
-import com.eoyeongbooyeong.data.dto.response.MoviePlaceDto
+import com.eoyeongbooyeong.data.dto.response.MovieDto
 
 interface MovieDataSource {
-    suspend fun searchOnKeyword(numOfRows: Int, pageNo: Int, keyword: String): List<MoviePlaceDto>
+    suspend fun searchOnKeyword(numOfRows: Int, pageNo: Int, keyword: String): MovieDto
 }

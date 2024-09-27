@@ -11,6 +11,7 @@ android {
     namespace = "com.eoyeongbooyeong.feature"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
+
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
 
@@ -18,6 +19,8 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        buildConfigField("String", "VERSION_NAME", "\"${libs.versions.versionName.get()}\"")
     }
 
     buildTypes {
@@ -38,6 +41,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.kotlinCompilerExtensionVersion.get()
@@ -97,6 +101,7 @@ dependencies {
     implementation(libs.jakewharton.process.phoenix)
 
     implementation(libs.accompanist.systemuicontroller)
+    implementation(libs.androidx.paging.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
