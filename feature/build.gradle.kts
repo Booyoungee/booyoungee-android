@@ -97,6 +97,7 @@ dependencies {
     implementation(libs.jakewharton.process.phoenix)
 
     implementation(libs.accompanist.systemuicontroller)
+    implementation(libs.androidx.paging.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

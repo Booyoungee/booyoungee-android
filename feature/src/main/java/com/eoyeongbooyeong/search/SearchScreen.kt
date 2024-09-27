@@ -24,6 +24,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.eoyeongbooyeong.core.designsystem.component.LoadingWithProgressIndicator
 import com.eoyeongbooyeong.core.designsystem.component.textfield.BooSearchTextField
 import com.eoyeongbooyeong.core.designsystem.theme.BooTheme
@@ -46,6 +48,8 @@ internal fun SearchRoute(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val query by viewModel.query.collectAsStateWithLifecycle()
+    val searchResults = viewModel.searchResults.collectAsLazyPagingItems()
+
     val lifecycleOwner = LocalLifecycleOwner.current
 
     LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
@@ -66,7 +70,9 @@ internal fun SearchRoute(
         isLoading = state.isLoading,
         hotTravelDestinationsFetchTime = state.hotTravelDestinationsFetchTime,
         hotTravelDestinations = state.hotTravelDestinations,
-        searchResults = state.searchResults,
+        searchResults = searchResults,
+        totalCounts = state.totalCount,
+        isPagingLoading = state.isPagingLoading,
         clickHotPlace = viewModel::clickHotPlace,
         queryValueChanged = viewModel::queryValueChanged,
         navigateUp = viewModel::navigateUp,
@@ -80,7 +86,9 @@ private fun SearchScreen(
     hotTravelDestinationsFetchTime: String = "2024년 10월 01일 08:00 기준",
     isLoading: Boolean = false,
     hotTravelDestinations: ImmutableList<HotPlaceEntity> = persistentListOf(),
-    searchResults: ImmutableList<PlaceDetailsEntity> = persistentListOf(),
+    searchResults: LazyPagingItems<PlaceDetailsEntity>,
+    totalCounts: Int = 0,
+    isPagingLoading: Boolean = false,
     clickHotPlace: (String) -> Unit = {},
     queryValueChanged: (String) -> Unit = {},
     navigateUp: () -> Unit = {},
@@ -119,16 +127,16 @@ private fun SearchScreen(
             )
         }
 
-        if (query.isEmpty()) {
+        if (isLoading) {
+            LoadingWithProgressIndicator()
+        } else if (query.isEmpty()) {
             HotTravelDestinationsScreen(
                 modifier = Modifier.fillMaxSize(),
                 hotTravelDestinationsFetchTime = hotTravelDestinationsFetchTime,
                 hotTravelDestinations = hotTravelDestinations,
                 clickHotPlace = clickHotPlace,
             )
-        } else if (isLoading) {
-            LoadingWithProgressIndicator()
-        } else if (searchResults.isEmpty()) {
+        } else if (searchResults.itemCount == 0) {
             NoResultScreen(
                 query = query,
                 modifier = Modifier.fillMaxSize(),
@@ -136,7 +144,8 @@ private fun SearchScreen(
         } else {
             SearchResultScreen(
                 modifier = Modifier.fillMaxSize(),
-                resultCount = searchResults.size,
+                isLoading = isPagingLoading,
+                resultCount = totalCounts,
                 searchResultList = searchResults,
             ) { id, type ->
                 navigateToPlaceDetail(id, type)
@@ -149,6 +158,6 @@ private fun SearchScreen(
 @Composable
 fun SearchScreenPreview() {
     BooTheme {
-        SearchScreen()
+        // SearchScreen()
     }
 }

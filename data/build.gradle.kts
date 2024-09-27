@@ -60,5 +60,8 @@ dependencies {
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.kotlin.serialization)
 
+    // paging
+    implementation("androidx.paging:paging-common:3.3.2")
+
     implementation(libs.kotlinx.serialization.json)
 }

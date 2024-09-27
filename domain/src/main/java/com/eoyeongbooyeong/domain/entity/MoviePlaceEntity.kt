@@ -9,9 +9,9 @@ data class MoviePlaceEntity(
     val stars: Float,
     val likes: Int,
     val reviews: Int,
-    val movieName: String,
+    val movieName: String?,
     val type: String,
-    val images: List<String>
+    val images: List<String>,
 ) {
     fun toPlaceDetailsEntity() = PlaceDetailsEntity(
         placeId = id.toString(),
@@ -22,6 +22,6 @@ data class MoviePlaceEntity(
         reviewCount = reviews,
         type = type,
         imageUrl = images,
-        movieNameList = listOf(movieName)
+        movieNameList = if (movieName != null) listOf(movieName) else null
     )
 }

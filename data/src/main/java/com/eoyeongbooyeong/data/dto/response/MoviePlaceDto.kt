@@ -31,7 +31,7 @@ data class MoviePlaceDto(
     @SerialName("reviews")
     val reviews: Int,
     @SerialName("movieName")
-    val movieName: String,
+    val movieName: String?,
     @SerialName("type")
     val type: String,
     @SerialName("images")
